@@ -1,12 +1,12 @@
 import { BOARD } from '../content/constants'
 import { findPlayer, rest } from './_lib/db'
-import { body, json, refuse } from './_lib/http'
+import { body, json, refuse, safely } from './_lib/http'
 
 export const config = { runtime: 'edge' }
 
 const ITEMS = new Set<string>([...BOARD.wer, ...BOARD.wo, ...BOARD.warum])
 
-export default async function handler(request: Request) {
+export default safely(async (request) => {
   if (request.method !== 'POST') return refuse('Nur POST', 405)
   const input = await body(request)
   const player = await findPlayer(input.code, input.player)
@@ -22,4 +22,4 @@ export default async function handler(request: Request) {
     'resolution=merge-duplicates',
   )
   return json({ ok: true })
-}
+})

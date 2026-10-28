@@ -1,13 +1,13 @@
 import { DAYS } from '../content/days'
 import type { PublicDay } from '../content/types'
 import { findPlayer } from './_lib/db'
-import { dayNumber, json, refuse } from './_lib/http'
+import { dayNumber, json, refuse, safely } from './_lib/http'
 import { hintLevel, solvedDays } from './_lib/progress'
 import { isPreview, unlockedThrough } from './_lib/unlock'
 
 export const config = { runtime: 'edge' }
 
-export default async function handler(request: Request) {
+export default safely(async (request) => {
   const parameters = new URL(request.url).searchParams
   const player = await findPlayer(parameters.get('code'), parameters.get('player'))
   if (!player) return refuse('Unbekannt. Bitte den Familien-Link neu öffnen.', 404)
@@ -36,4 +36,4 @@ export default async function handler(request: Request) {
       ? { reply: day.reply, clue: day.clue, strike: day.strike }
       : null,
   })
-}
+})

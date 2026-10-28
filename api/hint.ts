@@ -1,12 +1,12 @@
 import { DAYS } from '../content/days'
 import { findPlayer, rest } from './_lib/db'
-import { body, dayNumber, json, refuse } from './_lib/http'
+import { body, dayNumber, json, refuse, safely } from './_lib/http'
 import { hintLevel } from './_lib/progress'
 import { isPreview, unlockedThrough } from './_lib/unlock'
 
 export const config = { runtime: 'edge' }
 
-export default async function handler(request: Request) {
+export default safely(async (request) => {
   if (request.method !== 'POST') return refuse('Nur POST', 405)
   const input = await body(request)
   const player = await findPlayer(input.code, input.player)
@@ -24,4 +24,4 @@ export default async function handler(request: Request) {
     'resolution=merge-duplicates',
   )
   return json({ hints: DAYS[number - 1].hints.slice(0, level) })
-}
+})

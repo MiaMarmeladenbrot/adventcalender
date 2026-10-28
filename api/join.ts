@@ -1,9 +1,9 @@
 import { findFamily, rest, type Player } from './_lib/db'
-import { body, json, refuse } from './_lib/http'
+import { body, json, refuse, safely } from './_lib/http'
 
 export const config = { runtime: 'edge' }
 
-export default async function handler(request: Request) {
+export default safely(async (request) => {
   if (request.method !== 'POST') return refuse('Nur POST', 405)
   const { code, nickname } = await body(request)
   const family = await findFamily(code)
@@ -17,4 +17,4 @@ export default async function handler(request: Request) {
     'resolution=merge-duplicates,return=representation',
   )
   return json({ player: { id: player.id, nickname: player.nickname }, family: { name: family.name } })
-}
+})

@@ -1,12 +1,12 @@
 import { DAYS } from '../content/days'
 import { findFamily, findPlayer, rest } from './_lib/db'
-import { json, refuse } from './_lib/http'
+import { json, refuse, safely } from './_lib/http'
 import { solvedDays } from './_lib/progress'
 import { isPreview, unlockedThrough } from './_lib/unlock'
 
 export const config = { runtime: 'edge' }
 
-export default async function handler(request: Request) {
+export default safely(async (request) => {
   const parameters = new URL(request.url).searchParams
   const code = parameters.get('code')
   const player = await findPlayer(code, parameters.get('player'))
@@ -46,4 +46,4 @@ export default async function handler(request: Request) {
       furthest: Math.max(0, ...member.solves.map((solve) => solve.day)),
     })),
   })
-}
+})

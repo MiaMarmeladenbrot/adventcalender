@@ -1,13 +1,13 @@
 import { DAYS } from '../content/days'
 import { findPlayer, rest } from './_lib/db'
 import { isCorrect, trapFor } from './_lib/answers'
-import { body, dayNumber, json, refuse } from './_lib/http'
+import { body, dayNumber, json, refuse, safely } from './_lib/http'
 import { crossOut } from './_lib/progress'
 import { isPreview, unlockedThrough } from './_lib/unlock'
 
 export const config = { runtime: 'edge' }
 
-export default async function handler(request: Request) {
+export default safely(async (request) => {
   if (request.method !== 'POST') return refuse('Nur POST', 405)
   const input = await body(request)
   const player = await findPlayer(input.code, input.player)
@@ -31,4 +31,4 @@ export default async function handler(request: Request) {
   )
   await crossOut(player.id, day.strike)
   return json({ correct: true, solved: { reply: day.reply, clue: day.clue, strike: day.strike } })
-}
+})
