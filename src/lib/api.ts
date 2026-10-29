@@ -23,11 +23,32 @@ function headers() {
   return result
 }
 
+export class ApiError extends Error {
+  readonly status: number
+
+  constructor(message: string, status: number) {
+    super(message)
+    this.status = status
+  }
+}
+
+const OFFLINE = 'Hier oben ist der Empfang gerade weg. Prüf dein Internet und versuch es nochmal.'
+const BROKEN = 'Am Nordpol hakt gerade etwas. Versuch es gleich nochmal.'
+
 async function call<T>(path: string, init: RequestInit = {}): Promise<T> {
-  const response = await fetch(path, { ...init, headers: headers() })
+  let response: Response
+  try {
+    response = await fetch(path, { ...init, headers: headers() })
+  } catch {
+    throw new ApiError(OFFLINE, 0)
+  }
   const data = await response.json().catch(() => ({}))
-  if (!response.ok) throw new Error(data.error ?? `Fehler ${response.status}`)
+  if (!response.ok) throw new ApiError(response.status >= 500 ? BROKEN : (data.error ?? BROKEN), response.status)
   return data as T
+}
+
+export function messageOf(failure: unknown) {
+  return failure instanceof ApiError ? failure.message : BROKEN
 }
 
 function post<T>(path: string, payload: Record<string, unknown>) {

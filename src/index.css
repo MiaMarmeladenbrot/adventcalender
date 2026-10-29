@@ -770,6 +770,52 @@ input:focus-visible {
 .step:not(:disabled):not(.on):hover {
   color: var(--paper-ink);
 }
+.quip {
+  position: absolute;
+  z-index: 5;
+  left: 50%;
+  bottom: calc(100% + 2px);
+  width: max-content;
+  max-width: min(80%, 320px);
+  padding: 7px 12px;
+  border: 2px solid var(--paper-ink);
+  border-radius: 14px;
+  background: #ffffff;
+  color: var(--paper-ink);
+  font-family: var(--f-hand);
+  font-size: 1.05rem;
+  line-height: 1.25;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(42, 31, 26, 0.18);
+  transform: translateX(-50%);
+  animation: quip-in 0.3s ease-out;
+}
+.quip::before,
+.quip::after {
+  content: '';
+  position: absolute;
+  border-style: solid;
+  border-color: transparent;
+  border-bottom: 0;
+}
+.quip::before {
+  left: calc(50% - 10px);
+  bottom: -12px;
+  border-width: 12px 10px 0;
+  border-top-color: var(--paper-ink);
+}
+.quip::after {
+  left: calc(50% - 7px);
+  bottom: -8px;
+  border-width: 9px 7px 0;
+  border-top-color: #ffffff;
+}
+@keyframes quip-in {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(6px) scale(0.92);
+  }
+}
 .stamp {
   position: absolute;
   z-index: 4;

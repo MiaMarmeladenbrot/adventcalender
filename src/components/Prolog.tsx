@@ -1,6 +1,6 @@
 import { useState, type FormEvent } from 'react'
 import { PROLOG } from '../../content/constants'
-import { api } from '../lib/api'
+import { api, messageOf } from '../lib/api'
 import type { Line } from '../lib/types'
 import { House, Stage } from './Stage'
 
@@ -45,7 +45,7 @@ export function Prolog({ code, nickname, notice, onJoined, onContinue, onBack }:
       setJoined({ id: player.id, name: name.trim() })
       setStep(PROLOG.length)
     } catch (failure) {
-      setError(failure instanceof Error ? failure.message : 'Das hat nicht geklappt.')
+      setError(messageOf(failure))
     } finally {
       setBusy(false)
     }

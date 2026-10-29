@@ -20,3 +20,21 @@ export function Welcome() {
     </Stage>
   )
 }
+
+export function Waiting({ trouble, onRetry }: { trouble: string; onRetry: () => void }) {
+  return (
+    <Stage
+      sky={SKY}
+      eyebrow="Ein Rätsel-Adventskalender"
+      title="Wo ist der Schlitten?"
+      line={trouble ? ['snowman', trouble] : null}
+      ground={<Hill place={WORKSHOP} who="snowman" />}
+    >
+      {trouble && (
+        <button type="button" className="go" onClick={onRetry}>
+          Nochmal versuchen
+        </button>
+      )}
+    </Stage>
+  )
+}

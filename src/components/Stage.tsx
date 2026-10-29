@@ -14,13 +14,14 @@ interface Props {
   line?: Line | null
   tail?: 'center' | 'left' | 'right'
   stamp?: string
+  quip?: string
   note?: ReactNode
   ground: ReactNode
   onBack?: () => void
   children?: ReactNode
 }
 
-export function Stage({ sky, eyebrow, title, line, tail, stamp, note, ground, onBack, children }: Props) {
+export function Stage({ sky, eyebrow, title, line, tail, stamp, quip, note, ground, onBack, children }: Props) {
   const sheet = note !== undefined
   return (
     <section className={`stage${sheet ? ' sheet' : ''}`}>
@@ -47,6 +48,11 @@ export function Stage({ sky, eyebrow, title, line, tail, stamp, note, ground, on
         )}
       </div>
       <div className="stage-bottom">
+        {quip && (
+          <p className="quip" key={quip} role="status">
+            {quip}
+          </p>
+        )}
         <div className="stage-ground">{ground}</div>
         <div className="stage-foot">{children}</div>
       </div>

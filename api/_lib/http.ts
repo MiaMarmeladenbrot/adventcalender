@@ -16,7 +16,7 @@ export function safely(handler: (request: Request) => Promise<Response>) {
     } catch (failure) {
       const message = failure instanceof Error ? failure.message : String(failure)
       console.error(`${new URL(request.url).pathname}: ${message}`)
-      return refuse(`Am Nordpol ist etwas schiefgegangen: ${message}`, 500)
+      return refuse('Am Nordpol hakt gerade etwas. Versuch es gleich nochmal.', 500)
     }
   }
 }

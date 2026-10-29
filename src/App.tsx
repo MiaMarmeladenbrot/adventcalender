@@ -4,8 +4,8 @@ import { PaperDefs } from './components/Face'
 import { Landscape } from './components/Landscape'
 import { Notebook } from './components/Notebook'
 import { Prolog } from './components/Prolog'
-import { Welcome } from './components/Welcome'
-import { api, rememberPreviewToken } from './lib/api'
+import { Waiting, Welcome } from './components/Welcome'
+import { api, ApiError, messageOf, rememberPreviewToken } from './lib/api'
 import { familyCode, storedPlayer, storePlayer } from './lib/session'
 import type { GameState, View } from './lib/types'
 
@@ -38,6 +38,7 @@ export default function App() {
   const [book, setBook] = useState<'closed' | 'open' | 'closing'>('closed')
   const [fresh, setFresh] = useState<number | null>(null)
   const [error, setError] = useState('')
+  const [trouble, setTrouble] = useState('')
   useBlinking()
 
   useEffect(rememberPreviewToken, [])
@@ -46,15 +47,25 @@ export default function App() {
     if (!code || !player) return
     try {
       setState(await api.state(code, player))
+      setTrouble('')
     } catch (failure) {
-      storePlayer(code, null)
-      setPlayer(null)
-      setError(failure instanceof Error ? failure.message : 'Das hat nicht geklappt.')
+      if (failure instanceof ApiError && failure.status === 404) {
+        storePlayer(code, null)
+        setPlayer(null)
+        setError(failure.message)
+        return
+      }
+      setTrouble(messageOf(failure))
     }
   }, [code, player])
 
   useEffect(() => {
     void refresh()
+    const onReturn = () => {
+      if (document.visibilityState === 'visible') void refresh()
+    }
+    document.addEventListener('visibilitychange', onReturn)
+    return () => document.removeEventListener('visibilitychange', onReturn)
   }, [refresh])
 
   useEffect(() => {
@@ -72,8 +83,13 @@ export default function App() {
 
   async function mark(item: string, crossed: boolean) {
     if (!code || !player || !state) return
-    setState({ ...state, marks: { ...state.marks, [item]: crossed } })
-    await api.mark(code, player, item, crossed)
+    const previous = state.marks
+    setState({ ...state, marks: { ...previous, [item]: crossed } })
+    try {
+      await api.mark(code, player, item, crossed)
+    } catch {
+      setState((current) => (current ? { ...current, marks: previous } : current))
+    }
   }
 
   function backToMap(day?: number) {
@@ -112,9 +128,15 @@ export default function App() {
 
   if (!state) {
     return (
-      <main className="wrap">
-        <h1>Wo ist der Schlitten?</h1>
-        <p className="wnote">Einen Moment …</p>
+      <main className="stageview">
+        <PaperDefs />
+        <Waiting
+          trouble={trouble}
+          onRetry={() => {
+            setTrouble('')
+            void refresh()
+          }}
+        />
       </main>
     )
   }

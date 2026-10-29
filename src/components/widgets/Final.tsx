@@ -34,7 +34,7 @@ export function Final({ accuse, onFound }: Props) {
       setMessage('')
       setResult(response)
     } else {
-      setMessage('Der Weihnachtsmann schüttelt den Kopf. Schau nochmal ins Notizbuch.')
+      setMessage(response.message ?? 'Der Weihnachtsmann schüttelt den Kopf. Schau nochmal ins Notizbuch.')
       shake()
     }
   }

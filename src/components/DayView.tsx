@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState, type FormEvent, type ReactNode } from 'react'
 import { rudolphSvg, type Mood } from '../characters'
 import { placeOf, skyAt } from '../landscape'
-import { api } from '../lib/api'
+import { api, ApiError, messageOf } from '../lib/api'
 import { withTransition } from '../lib/transition'
 import type { AnswerResponse, DayResponse, Line, Solved, Who } from '../lib/types'
 import { Hill, Stage } from './Stage'
@@ -73,7 +73,8 @@ function Steps({ at, progress = 1, solved, disabled, onGo }: StepsProps) {
 
 export function DayView({ code, player, day, door, nickname, finalMessage, onSolved, onBack, onNotebook }: Props) {
   const [data, setData] = useState<DayResponse | null>(null)
-  const [error, setError] = useState('')
+  const [error, setError] = useState<{ message: string; status: number } | null>(null)
+  const [attempt, setAttempt] = useState(0)
   const [phase, setPhase] = useState<Phase>('talk')
   const [line, setLine] = useState(0)
   const [answer, setAnswer] = useState('')
@@ -96,11 +97,18 @@ export function DayView({ code, player, day, door, nickname, finalMessage, onSol
           setPhase(response.solved ? 'reply' : 'talk')
         })
       })
-      .catch((failure: Error) => current && setError(failure.message))
+      .catch((failure: unknown) => {
+        if (current) setError({ message: messageOf(failure), status: failure instanceof ApiError ? failure.status : 0 })
+      })
     return () => {
       current = false
     }
-  }, [code, player, day])
+  }, [code, player, day, attempt])
+
+  function retry() {
+    setError(null)
+    setAttempt(attempt + 1)
+  }
 
   function go(next: Phase) {
     withTransition(() => setPhase(next))
@@ -126,9 +134,13 @@ export function DayView({ code, player, day, door, nickname, finalMessage, onSol
   }
 
   async function submit(raw: string): Promise<AnswerResponse> {
-    const response = await api.answer(code, player, day, raw)
-    if (response.correct && response.solved && data?.day.widget?.kind !== 'final') finish(response.solved)
-    return response
+    try {
+      const response = await api.answer(code, player, day, raw)
+      if (response.correct && response.solved && data?.day.widget?.kind !== 'final') finish(response.solved)
+      return response
+    } catch (failure) {
+      return { correct: false, message: messageOf(failure) }
+    }
   }
 
   async function check(event: FormEvent) {
@@ -143,9 +155,15 @@ export function DayView({ code, player, day, door, nickname, finalMessage, onSol
 
   async function nextHint() {
     if (data && data.hints.length <= shownHints) {
-      const { hints } = await api.hint(code, player, day)
-      setData((previous) => (previous ? { ...previous, hints } : previous))
+      try {
+        const { hints } = await api.hint(code, player, day)
+        setData((previous) => (previous ? { ...previous, hints } : previous))
+      } catch (failure) {
+        setWrong(messageOf(failure))
+        return
+      }
     }
+    setWrong('')
     setShownHints(shownHints + 1)
   }
 
@@ -155,7 +173,7 @@ export function DayView({ code, player, day, door, nickname, finalMessage, onSol
 
   const place = placeOf(day)
   const solved = data?.solved ?? null
-  let who: Who = door?.who ?? 'santa'
+  let who: Who = door?.who ?? 'snowman'
   let spoken: Line | null = null
   let note: ReactNode = undefined
   let mood: Mood | undefined
@@ -163,10 +181,15 @@ export function DayView({ code, player, day, door, nickname, finalMessage, onSol
   let foot: ReactNode = null
 
   if (error) {
-    note = <p className="wrong">{error}</p>
-    foot = (
+    const final = error.status === 403 || error.status === 404
+    spoken = [who, error.status === 403 ? `Diese Tür ist noch verschlossen. Komm am ${day}. Dezember wieder!` : error.message]
+    foot = final ? (
       <button type="button" className="go" onClick={onBack}>
         Zurück zur Landschaft
+      </button>
+    ) : (
+      <button type="button" className="go" onClick={retry}>
+        Nochmal versuchen
       </button>
     )
   } else if (!data) {
@@ -269,7 +292,11 @@ export function DayView({ code, player, day, door, nickname, finalMessage, onSol
           {data.day.widget?.kind === 'torch' && <Torch digits={data.day.widget.digits} />}
           {data.day.widget?.kind === 'bells' && <Bells bells={data.day.widget.bells} recording={data.day.widget.recording} />}
           {data.day.widget?.kind === 'floes' && !solved && (
-            <Floes grid={data.day.widget.grid} start={data.day.widget.start} onArrive={(values) => void submit(values.join(','))} />
+            <Floes
+              grid={data.day.widget.grid}
+              start={data.day.widget.start}
+              onArrive={(values) => void submit(values.join(',')).then((response) => setWrong(response.correct ? '' : (response.message ?? '')))}
+            />
           )}
           {data.day.widget?.kind === 'final' && !solved && <Final accuse={submit} onFound={(result) => result.solved && finish(result.solved)} />}
         </div>
@@ -315,15 +342,13 @@ export function DayView({ code, player, day, door, nickname, finalMessage, onSol
               placeholder="Deine Lösung"
               aria-label="Deine Lösung"
               value={answer}
-              onChange={(event) => setAnswer(event.target.value)}
+              onChange={(event) => {
+                setAnswer(event.target.value)
+                setWrong('')
+              }}
             />
             <button type="submit">Prüfen</button>
           </form>
-        )}
-        {wrong && (
-          <p className="wrong" aria-live="polite">
-            {wrong}
-          </p>
         )}
         <Steps at="puzzle" solved={false} onGo={step} />
       </>
@@ -337,6 +362,7 @@ export function DayView({ code, player, day, door, nickname, finalMessage, onSol
       title={data?.day.title ?? door?.title ?? ''}
       line={spoken}
       stamp={solved && phase === 'reply' ? 'Gelöst!' : undefined}
+      quip={phase === 'puzzle' && wrong ? wrong : undefined}
       note={note}
       onBack={onBack}
       ground={
