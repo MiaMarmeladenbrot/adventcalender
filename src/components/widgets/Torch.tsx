@@ -23,7 +23,11 @@ export function Torch({ digits }: { digits: { digit: string; left: number; top: 
           <i key={`${left}-${top}`} className="tree" style={{ left: `${left}%`, top: `${top}%` }} />
         ))}
         {digits.map((spot) => (
-          <span key={`${spot.left}-${spot.top}`} className="t" style={{ left: `${spot.left}%`, top: `${spot.top}%` }}>
+          <span
+            key={`${spot.left}-${spot.top}`}
+            className="t"
+            style={{ left: `${spot.left}%`, top: `${spot.top}%` }}
+          >
             {spot.digit}
           </span>
         ))}

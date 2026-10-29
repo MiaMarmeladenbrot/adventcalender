@@ -7,12 +7,20 @@ export function Face({ who, size, mood }: { who: Who; size: number | string; moo
     <span
       className="face"
       style={{ width: size, aspectRatio: '5 / 6' }}
-      dangerouslySetInnerHTML={{ __html: who === 'rudolph' && mood ? rudolphSvg(mood) : faceSvg(who) }}
+      dangerouslySetInnerHTML={{
+        __html: who === 'rudolph' && mood ? rudolphSvg(mood) : faceSvg(who),
+      }}
     />
   )
 }
 
-export function Bubble({ line, tail = 'center' }: { line: Line; tail?: 'center' | 'left' | 'right' }) {
+export function Bubble({
+  line,
+  tail = 'center',
+}: {
+  line: Line
+  tail?: 'center' | 'left' | 'right'
+}) {
   const [who, text] = line
   return (
     <div className={`bubble tail-${tail}`} key={text}>
@@ -27,13 +35,38 @@ export function PaperDefs() {
     <svg width="0" height="0" style={{ position: 'absolute' }} aria-hidden="true">
       <defs>
         <filter id="pc" x="-15%" y="-15%" width="130%" height="130%">
-          <feTurbulence type="fractalNoise" baseFrequency=".035" numOctaves={2} seed={4} result="n" />
-          <feDisplacementMap in="SourceGraphic" in2="n" scale={2.2} xChannelSelector="R" yChannelSelector="G" result="d" />
-          <feDropShadow in="d" dx={1.2} dy={2.2} stdDeviation={1.1} floodColor="#1a0f08" floodOpacity={0.32} />
+          <feTurbulence
+            type="fractalNoise"
+            baseFrequency=".035"
+            numOctaves={2}
+            seed={4}
+            result="n"
+          />
+          <feDisplacementMap
+            in="SourceGraphic"
+            in2="n"
+            scale={2.2}
+            xChannelSelector="R"
+            yChannelSelector="G"
+            result="d"
+          />
+          <feDropShadow
+            in="d"
+            dx={1.2}
+            dy={2.2}
+            stdDeviation={1.1}
+            floodColor="#1a0f08"
+            floodOpacity={0.32}
+          />
         </filter>
         <filter id="pcGrain" x="-5%" y="-5%" width="110%" height="110%">
           <feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves={2} seed={7} result="g" />
-          <feColorMatrix in="g" type="matrix" values="0 0 0 0 .2  0 0 0 0 .12  0 0 0 0 .05  .35 0 0 0 -.12" result="ga" />
+          <feColorMatrix
+            in="g"
+            type="matrix"
+            values="0 0 0 0 .2  0 0 0 0 .12  0 0 0 0 .05  .35 0 0 0 -.12"
+            result="ga"
+          />
           <feComposite in="ga" in2="SourceGraphic" operator="in" result="gm" />
           <feMerge>
             <feMergeNode in="SourceGraphic" />

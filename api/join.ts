@@ -16,5 +16,8 @@ export default safely(async (request) => {
     { method: 'POST', body: JSON.stringify({ family_id: family.id, nickname: name }) },
     'resolution=merge-duplicates,return=representation',
   )
-  return json({ player: { id: player.id, nickname: player.nickname }, family: { name: family.name } })
+  return json({
+    player: { id: player.id, nickname: player.nickname },
+    family: { name: family.name },
+  })
 })

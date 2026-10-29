@@ -100,7 +100,8 @@ function groundAt(x: number) {
   let top = SNOW_TOP
   for (const left of BUMP_LEFTS) {
     const offset = (x - left - BUMP_WIDTH / 2) / (BUMP_WIDTH / 2)
-    if (Math.abs(offset) < 1) top = Math.max(top, BUMP_BOTTOM + (BUMP_HEIGHT / 2) * (1 + Math.sqrt(1 - offset * offset)))
+    if (Math.abs(offset) < 1)
+      top = Math.max(top, BUMP_BOTTOM + (BUMP_HEIGHT / 2) * (1 + Math.sqrt(1 - offset * offset)))
   }
   return top
 }
@@ -141,40 +142,89 @@ function Lake() {
       />
       <ellipse cx="260" cy="278" rx="80" ry="8" fill="#eef4f8" />
       <ellipse cx="480" cy="150" rx="50" ry="5" fill="#eef4f8" opacity=".75" />
-      <path d={SHORE_LINE} stroke="#8fb0c8" strokeWidth="1.5" fill="none" opacity=".7" strokeLinecap="round" />
+      <path
+        d={SHORE_LINE}
+        stroke="#8fb0c8"
+        strokeWidth="1.5"
+        fill="none"
+        opacity=".7"
+        strokeLinecap="round"
+      />
     </svg>
   )
 }
 
 function Scenery() {
   return useMemo(() => {
-    const bumps = BUMP_LEFTS.map((x) => <div key={`b${x}`} className="bump" style={{ left: x, bottom: BUMP_BOTTOM }} />)
+    const bumps = BUMP_LEFTS.map((x) => (
+      <div key={`b${x}`} className="bump" style={{ left: x, bottom: BUMP_BOTTOM }} />
+    ))
     const pines = []
     for (let x = 30, index = 0; x < SHORE_X - 20; x += 58, index++) {
-      if (PLACES.some((place) => place.art !== 'lake' && Math.abs(placeX(place) - x) < 75) || Math.abs(x - (START_X - 95)) < 40) continue
+      if (
+        PLACES.some((place) => place.art !== 'lake' && Math.abs(placeX(place) - x) < 75) ||
+        Math.abs(x - (START_X - 95)) < 40
+      )
+        continue
       const scale = 0.6 + ((index * 37) % 10) / 14
       pines.push(
         <i
           key={`p${x}`}
           className="pine"
-          style={{ left: x, bottom: groundAt(x + 12) - 5 - ((index * 13) % 8), transform: `scale(${scale.toFixed(2)})` }}
+          style={{
+            left: x,
+            bottom: groundAt(x + 12) - 5 - ((index * 13) % 8),
+            transform: `scale(${scale.toFixed(2)})`,
+          }}
         />,
       )
     }
     const fronts = []
     for (let x = -100; x + FRONT_WIDTH <= SHORE_X; x += 300)
-      fronts.push(<div key={`f${x}`} className="bump front" style={{ left: x, bottom: LIFT - 150 }} />)
-    const points = Array.from({ length: 24 }, (_, index) => `${lanternX(index + 1).toFixed(1)} ${(262 - lanternY(index + 1)).toFixed(1)}`)
+      fronts.push(
+        <div key={`f${x}`} className="bump front" style={{ left: x, bottom: LIFT - 150 }} />,
+      )
+    const points = Array.from(
+      { length: 24 },
+      (_, index) => `${lanternX(index + 1).toFixed(1)} ${(262 - lanternY(index + 1)).toFixed(1)}`,
+    )
     const path = `M0 ${(262 - 140).toFixed(1)} L${PROLOG_X} 122 L${points.join(' L')} L${PATH_END} ${(262 - lanternY(24)).toFixed(1)}`
     return (
       <>
         <div className="snowband" style={{ height: SNOW_TOP }} />
         {bumps}
         {pines}
-        <svg className="pathsvg" viewBox={`0 0 ${WORLD_WIDTH} 260`} style={{ bottom: LIFT, width: WORLD_WIDTH }} aria-hidden="true">
-          <path d={path} stroke="#b8946a" strokeWidth="9" fill="none" strokeLinejoin="round" strokeLinecap="round" />
-          <path d={path} stroke="#d4b68c" strokeWidth="5.5" fill="none" strokeLinejoin="round" strokeLinecap="round" />
-          <path d={path} stroke="#ffffff" strokeOpacity=".45" strokeWidth="2" strokeDasharray="1 23" fill="none" strokeLinecap="round" />
+        <svg
+          className="pathsvg"
+          viewBox={`0 0 ${WORLD_WIDTH} 260`}
+          style={{ bottom: LIFT, width: WORLD_WIDTH }}
+          aria-hidden="true"
+        >
+          <path
+            d={path}
+            stroke="#b8946a"
+            strokeWidth="9"
+            fill="none"
+            strokeLinejoin="round"
+            strokeLinecap="round"
+          />
+          <path
+            d={path}
+            stroke="#d4b68c"
+            strokeWidth="5.5"
+            fill="none"
+            strokeLinejoin="round"
+            strokeLinecap="round"
+          />
+          <path
+            d={path}
+            stroke="#ffffff"
+            strokeOpacity=".45"
+            strokeWidth="2"
+            strokeDasharray="1 23"
+            fill="none"
+            strokeLinecap="round"
+          />
         </svg>
         <Lake />
         {fronts}
@@ -216,7 +266,13 @@ export function Landscape({ state, selected, onSelect, onOpen, onNotebook }: Pro
     const down = (event: PointerEvent) => {
       if (event.pointerType !== 'mouse') return
       cancelAnimationFrame(glide)
-      drag = { x: event.clientX, left: element.scrollLeft, speed: 0, time: performance.now(), moved: false }
+      drag = {
+        x: event.clientX,
+        left: element.scrollLeft,
+        speed: 0,
+        time: performance.now(),
+        moved: false,
+      }
     }
     const move = (event: PointerEvent) => {
       if (!drag) return
@@ -232,7 +288,10 @@ export function Landscape({ state, selected, onSelect, onOpen, onNotebook }: Pro
       if (!drag) return
       let speed = -drag.speed
       if (drag.moved) {
-        element.addEventListener('click', (event) => event.stopPropagation(), { capture: true, once: true })
+        element.addEventListener('click', (event) => event.stopPropagation(), {
+          capture: true,
+          once: true,
+        })
         const step = () => {
           if (Math.abs(speed) < 0.4) return
           element.scrollLeft += speed
@@ -267,7 +326,10 @@ export function Landscape({ state, selected, onSelect, onOpen, onNotebook }: Pro
       const base = element.clientHeight - RIDGE_BOTTOM - RIDGE_HEIGHT
       const ridge = [...RIDGE]
         .reverse()
-        .map(([x, y]) => `${Math.round(shift + (x / 100) * width)}px ${Math.round(base + (y / 100) * RIDGE_HEIGHT)}px`)
+        .map(
+          ([x, y]) =>
+            `${Math.round(shift + (x / 100) * width)}px ${Math.round(base + (y / 100) * RIDGE_HEIGHT)}px`,
+        )
       stars.current.style.clipPath = `polygon(${Math.round(shift + width)}px 0, ${ridge.join(', ')}, ${Math.round(shift)}px 0)`
     }
   }
@@ -277,7 +339,12 @@ export function Landscape({ state, selected, onSelect, onOpen, onNotebook }: Pro
   return (
     <section className="scape">
       <div className="sky" ref={sky} style={{ width: WORLD_WIDTH }}>
-        <svg className="stars" ref={stars} style={{ left: STARS_FROM, width: WORLD_WIDTH - STARS_FROM }} aria-hidden="true">
+        <svg
+          className="stars"
+          ref={stars}
+          style={{ left: STARS_FROM, width: WORLD_WIDTH - STARS_FROM }}
+          aria-hidden="true"
+        >
           {STARS.map((star, index) => (
             <circle
               key={index}
@@ -293,22 +360,37 @@ export function Landscape({ state, selected, onSelect, onOpen, onNotebook }: Pro
         </svg>
         <div className="aurora" />
       </div>
-      <div className="far" ref={far} style={{ width: `calc(${Math.ceil(WORLD_WIDTH * PARALLAX)}px + 100vw)` }}>
+      <div
+        className="far"
+        ref={far}
+        style={{ width: `calc(${Math.ceil(WORLD_WIDTH * PARALLAX)}px + 100vw)` }}
+      >
         <i style={{ bottom: RIDGE_BOTTOM, height: RIDGE_HEIGHT, clipPath: RIDGE_CLIP }} />
       </div>
       <div className="track" ref={track} onScroll={follow}>
         <div className="world" style={{ width: WORLD_WIDTH }}>
           <Scenery />
           <div className="place" style={{ left: START_X - 95, bottom: PLACE_BOTTOM }}>
-            <svg viewBox="0 0 120 100" aria-hidden="true" dangerouslySetInnerHTML={{ __html: PLACE_ART.workshop }} />
+            <svg
+              viewBox="0 0 120 100"
+              aria-hidden="true"
+              dangerouslySetInnerHTML={{ __html: PLACE_ART.workshop }}
+            />
           </div>
           {PLACES.filter((entry) => entry.art !== 'lake').map((entry) => (
             <div
               key={entry.name}
               className={`place${entry.from <= state.unlocked ? '' : ' fog'}`}
-              style={{ left: placeX(entry), bottom: entry.art === 'bake' ? PLACE_BOTTOM - BAKERY_DROP : PLACE_BOTTOM }}
+              style={{
+                left: placeX(entry),
+                bottom: entry.art === 'bake' ? PLACE_BOTTOM - BAKERY_DROP : PLACE_BOTTOM,
+              }}
             >
-              <svg viewBox="0 0 120 100" aria-hidden="true" dangerouslySetInnerHTML={{ __html: PLACE_ART[entry.art] }} />
+              <svg
+                viewBox="0 0 120 100"
+                aria-hidden="true"
+                dangerouslySetInnerHTML={{ __html: PLACE_ART[entry.art] }}
+              />
             </div>
           ))}
           <button
@@ -337,14 +419,24 @@ export function Landscape({ state, selected, onSelect, onOpen, onNotebook }: Pro
             )
           })}
           {othersOnRoad(state).map((other) => (
-            <div key={other.nickname} className="sled other" style={{ left: other.left, bottom: other.bottom }}>
+            <div
+              key={other.nickname}
+              className="sled other"
+              style={{ left: other.left, bottom: other.bottom }}
+            >
               <span className="flag">{other.nickname}</span>
-              <span className="sled-body" dangerouslySetInnerHTML={{ __html: otherSledSvg(other.nickname) }} />
+              <span
+                className="sled-body"
+                dangerouslySetInnerHTML={{ __html: otherSledSvg(other.nickname) }}
+              />
             </div>
           ))}
           <div
             className="sled own"
-            style={{ left: xOf(sledDay) + 12, bottom: roadAt(xOf(sledDay) + 12 + OWN_WIDTH / 2) - 6 }}
+            style={{
+              left: xOf(sledDay) + 12,
+              bottom: roadAt(xOf(sledDay) + 12 + OWN_WIDTH / 2) - 6,
+            }}
           >
             <span className="sled-body" dangerouslySetInnerHTML={{ __html: SLED_SVG }} />
           </div>

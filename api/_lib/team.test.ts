@@ -11,7 +11,10 @@ const FAMILY = [
 describe('shareOut', () => {
   it('gives each player one half and names who holds the other', () => {
     expect(shareOut(HALVES, FAMILY, 'a', 4)).toEqual({ halves: ['Zimt'], partners: ['Ben'] })
-    expect(shareOut(HALVES, FAMILY, 'b', 4)).toEqual({ halves: ['Zucker'], partners: ['Anna', 'Cleo'] })
+    expect(shareOut(HALVES, FAMILY, 'b', 4)).toEqual({
+      halves: ['Zucker'],
+      partners: ['Anna', 'Cleo'],
+    })
     expect(shareOut(HALVES, FAMILY, 'c', 4)).toEqual({ halves: ['Zimt'], partners: ['Ben'] })
   })
 

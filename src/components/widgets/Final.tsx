@@ -34,7 +34,9 @@ export function Final({ accuse, onFound }: Props) {
       setMessage('')
       setResult(response)
     } else {
-      setMessage(response.message ?? 'Der Weihnachtsmann schüttelt den Kopf. Schau nochmal ins Notizbuch.')
+      setMessage(
+        response.message ?? 'Der Weihnachtsmann schüttelt den Kopf. Schau nochmal ins Notizbuch.',
+      )
       shake()
     }
   }
@@ -78,7 +80,9 @@ export function Final({ accuse, onFound }: Props) {
       </p>
       {result && (
         <div>
-          <p style={{ marginBottom: 8 }}>Richtig! Jetzt tipp ins Eis, genau dahin, wo der Schlitten steckt.</p>
+          <p style={{ marginBottom: 8 }}>
+            Richtig! Jetzt tipp ins Eis, genau dahin, wo der Schlitten steckt.
+          </p>
           <div className={`ice${shaking ? ' shake' : ''}`} onClick={tapIce}>
             <svg viewBox="0 0 400 200" preserveAspectRatio="none" aria-hidden="true">
               <path

@@ -26,6 +26,9 @@ export const BOARD = {
 } as const
 
 export const PROLOG: readonly (readonly [Who, string])[] = [
-  ['santa', 'Ho ho ho! Schön, dass du da bist. Ich hab ein Problem. Ein großes. Ein schlittengroßes.'],
+  [
+    'santa',
+    'Ho ho ho! Schön, dass du da bist. Ich hab ein Problem. Ein großes. Ein schlittengroßes.',
+  ],
   ['mrs', 'Mehr erfährst du morgen früh. Bis dahin nur eins: Wie dürfen wir dich nennen?'],
 ]

@@ -39,7 +39,10 @@ export interface Day {
   strike: string[]
 }
 
-export type PublicDay = Pick<Day, 'who' | 'title' | 'special' | 'intro' | 'puzzle' | 'halves' | 'widget'> & {
+export type PublicDay = Pick<
+  Day,
+  'who' | 'title' | 'special' | 'intro' | 'puzzle' | 'halves' | 'widget'
+> & {
   day: number
   partners?: string[]
 }

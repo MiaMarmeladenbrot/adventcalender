@@ -18,7 +18,10 @@ export const DAYS: Day[] = [
     who: 'santa',
     title: 'Der Stall',
     intro: [
-      ['santa', 'Guten Morgen! Komm mit, ich zeig dir meinen Schlitten. Frisch poliert für die große Nacht!'],
+      [
+        'santa',
+        'Guten Morgen! Komm mit, ich zeig dir meinen Schlitten. Frisch poliert für die große Nacht!',
+      ],
       [
         'santa',
         'Oh. Der Code vom Stalltor. Den hab ich … vergessen. Zum Glück hab ich mir eine Eselsbrücke ins Schloss geritzt.',
@@ -97,7 +100,10 @@ export const DAYS: Day[] = [
     title: 'Zwei halbe Zettel',
     intro: [
       ['twins', 'Wir haben im Stall was gefunden!'],
-      ['twins', 'Und dann haben wir uns gestritten, wer’s behalten darf. Jetzt hat jede ein Stück.'],
+      [
+        'twins',
+        'Und dann haben wir uns gestritten, wer’s behalten darf. Jetzt hat jede ein Stück.',
+      ],
     ],
     puzzle: 'Zimt hat das eine Stück, Zucker das andere. Was steht auf dem Zettel?',
     halves: [
@@ -138,7 +144,9 @@ export const DAYS: Day[] = [
       ['rudolph', 'Psst. Ich darf nichts sagen. Wirklich nicht.'],
       ['rudolph', 'Aber … meine Nase macht manchmal, was sie will.'],
     ],
-    puzzle: 'An der Stallwand hängt ein altes Plakat. Rudolph schielt immer wieder darauf.' + MORSE_POSTER,
+    puzzle:
+      'An der Stallwand hängt ein altes Plakat. Rudolph schielt immer wieder darauf.' +
+      MORSE_POSTER,
     widget: { kind: 'morse', signal: '-.- --- -- . -' },
     accept: ['komet'],
     solution: 'KOMET',
@@ -156,7 +164,10 @@ export const DAYS: Day[] = [
     title: '2. Advent: Komet ist beleidigt',
     special: true,
     intro: [
-      ['komet', 'Ich soll es gewesen sein? Unverschämt! Ich habe die ganze Nacht in meiner Box geschlafen.'],
+      [
+        'komet',
+        'Ich soll es gewesen sein? Unverschämt! Ich habe die ganze Nacht in meiner Box geschlafen.',
+      ],
       ['komet', 'Welche Box? Findet’s doch selbst raus, Herr und Frau Detektiv.'],
     ],
     puzzle:
@@ -232,11 +243,41 @@ export const DAYS: Day[] = [
         'ginger',
         'Skandal! Mein Blech mit Buchstabenkeksen stand zum Abkühlen auf dem Fensterbrett. Heute Morgen lag es im Schnee, und fünf Kekse fehlen.',
       ],
-      ['ginger', 'Von jedem Buchstaben hatte ich genau einen gebacken. Das ist ein Zeichen, ich spür’s in meinen Krümeln!'],
+      [
+        'ginger',
+        'Von jedem Buchstaben hatte ich genau einen gebacken. Das ist ein Zeichen, ich spür’s in meinen Krümeln!',
+      ],
     ],
     puzzle:
       'Das Blech, so wie es im Schnee lag:' +
-      cookieTray(['M', 'Q', '', 'A', 'T', 'Z', 'D', 'H', '', 'X', 'B', 'R', 'W', 'O', '', 'J', 'G', 'Y', 'C', '', 'S', 'L', 'V', 'I', '', 'P']) +
+      cookieTray([
+        'M',
+        'Q',
+        '',
+        'A',
+        'T',
+        'Z',
+        'D',
+        'H',
+        '',
+        'X',
+        'B',
+        'R',
+        'W',
+        'O',
+        '',
+        'J',
+        'G',
+        'Y',
+        'C',
+        '',
+        'S',
+        'L',
+        'V',
+        'I',
+        '',
+        'P',
+      ]) +
       'Was sagen dir die fehlenden Kekse?',
     accept: ['kufen', 'kufe'],
     solution: 'KUFEN',
@@ -311,7 +352,10 @@ export const DAYS: Day[] = [
         'Unerhört! An meinem Schlüsselbrett fehlt ein Schlüssel. Dabei ist alles ordentlich beschriftet. Geheim natürlich.',
       ],
     ],
-    puzzle: 'Am Schlüsselbrett hängt alles beschriftet. Ein Haken ist leer.' + KEY_HOOKS + 'Welcher Schlüssel fehlt?',
+    puzzle:
+      'Am Schlüsselbrett hängt alles beschriftet. Ein Haken ist leer.' +
+      KEY_HOOKS +
+      'Welcher Schlüssel fehlt?',
     accept: ['schlitten', 'schlittenschluessel'],
     solution: 'SCHLITTEN',
     hints: [
@@ -426,11 +470,17 @@ export const DAYS: Day[] = [
   {
     who: 'snowman',
     title: 'Flocke erinnert sich',
-    intro: [['snowman', 'Mir ist noch was eingefallen! Aber es ist irgendwie … verkehrt rausgekommen.']],
+    intro: [
+      ['snowman', 'Mir ist noch was eingefallen! Aber es ist irgendwie … verkehrt rausgekommen.'],
+    ],
     puzzle: "<div class='big mono'>EES SIEMU ZGE WNIE</div>Was wollte Flocke sagen?",
     contains: ['eissee'],
     solution: 'EIN WEG ZUM EISSEE',
-    hints: ['Die Leerzeichen stimmen nicht.', 'Lies alles von hinten nach vorn.', 'EIN WEG ZUM EISSEE'],
+    hints: [
+      'Die Leerzeichen stimmen nicht.',
+      'Lies alles von hinten nach vorn.',
+      'EIN WEG ZUM EISSEE',
+    ],
     reply: [
       'snowman',
       'Ein Weg zum Eissee! Und das Weiße an den Kufen? Das war Raureif. Kenn ich, hab ich selbst überall.',
@@ -442,7 +492,10 @@ export const DAYS: Day[] = [
     who: 'penguin',
     title: 'Polarlichter',
     intro: [
-      ['penguin', 'Ich hab Fotos gemacht! Von den Lichtern am Himmel. Bei uns gibt’s die nicht in Grün.'],
+      [
+        'penguin',
+        'Ich hab Fotos gemacht! Von den Lichtern am Himmel. Bei uns gibt’s die nicht in Grün.',
+      ],
     ],
     puzzle:
       'Pedro hat jedes Foto mit einer Zahl beschriftet. Nur beim letzten hat er’s vergessen.' +
@@ -451,7 +504,11 @@ export const DAYS: Day[] = [
       auroraRow([GREEN, GREEN, VIOLET, BLUE, GREEN], '?'),
     accept: ['11321'],
     solution: '11321',
-    hints: ['Vergleiche die ersten beiden Fotos.', 'Grün ist 1.', 'Grün 1, Blau 2, Violett 3: 11321.'],
+    hints: [
+      'Vergleiche die ersten beiden Fotos.',
+      'Grün ist 1.',
+      'Grün 1, Blau 2, Violett 3: 11321.',
+    ],
     reply: [
       'penguin',
       '11321! Und auf dem letzten Foto sieht man den Gipfel. Ganz glatter Schnee. Langweilig!',
@@ -544,7 +601,11 @@ export const DAYS: Day[] = [
     },
     accept: ['2112'],
     solution: '2112',
-    hints: ['Ganz links und ganz rechts steht dieselbe Ziffer.', 'Es ist ein Datum.', '2112, also der 21.12.'],
+    hints: [
+      'Ganz links und ganz rechts steht dieselbe Ziffer.',
+      'Es ist ein Datum.',
+      '2112, also der 21.12.',
+    ],
     reply: ['rudolph', 'Ihr habt den Weg gefunden. Ich … ich muss euch was sagen. Morgen. Am See.'],
     clue: 'Rudolph führt euch Richtung Eissee und sagt kaum ein Wort.',
     strike: [],
@@ -558,7 +619,8 @@ export const DAYS: Day[] = [
         'Der See ist gefroren, aber nicht überall fest. Ich bin schon vorgegangen. Spring, wie ich gesprungen bin, sonst wird’s nass.',
       ],
     ],
-    puzzle: 'Bertas Spuren siehst du auf den ersten drei Schollen. Spring weiter bis zur Mitte des Sees.',
+    puzzle:
+      'Bertas Spuren siehst du auf den ersten drei Schollen. Spring weiter bis zur Mitte des Sees.',
     widget: {
       kind: 'floes',
       grid: [

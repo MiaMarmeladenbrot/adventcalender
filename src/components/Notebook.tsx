@@ -1,4 +1,11 @@
-import { useEffect, useLayoutEffect, useRef, useState, type CSSProperties, type RefObject } from 'react'
+import {
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+  type CSSProperties,
+  type RefObject,
+} from 'react'
 import { flushSync } from 'react-dom'
 import { BOARD, NAMES } from '../../content/constants'
 import type { GameState } from '../lib/types'
@@ -59,16 +66,35 @@ function layoutFor(viewWidth: number, viewHeight: number): Layout {
       width = Math.floor((viewWidth - 64) / 2)
       height = Math.round(width / COVER_RATIO)
     }
-    return { narrow, width, height, left: Math.round(viewWidth / 2), top: Math.round((viewHeight - height) / 2), pan: 0 }
+    return {
+      narrow,
+      width,
+      height,
+      left: Math.round(viewWidth / 2),
+      top: Math.round((viewHeight - height) / 2),
+      pan: 0,
+    }
   }
   const width = viewWidth - 2 * PEEK
   const room = viewHeight - NARROW_TOP - NARROW_BOTTOM
   const height = Math.min(room, Math.round(width / COVER_RATIO))
-  return { narrow, width, height, left: PEEK + width, top: NARROW_TOP + Math.round((room - height) / 2), pan: width }
+  return {
+    narrow,
+    width,
+    height,
+    left: PEEK + width,
+    top: NARROW_TOP + Math.round((room - height) / 2),
+    pan: width,
+  }
 }
 
 function closedRect(layout: Layout): Rect {
-  return { left: layout.left - layout.pan, top: layout.top, width: layout.width, height: layout.height }
+  return {
+    left: layout.left - layout.pan,
+    top: layout.top,
+    width: layout.width,
+    height: layout.height,
+  }
 }
 
 function still() {
@@ -102,7 +128,9 @@ function aim(element: HTMLElement | null, camera: Camera, x: number, zoom = 1) {
 function glide(element: HTMLElement | null, camera: Camera, to: number, ms: number): Promise<void> {
   const fromX = camera.x
   const fromZoom = camera.zoom
-  return tween(ms, (t) => aim(element, camera, fromX + (to - fromX) * t, fromZoom + (1 - fromZoom) * t))
+  return tween(ms, (t) =>
+    aim(element, camera, fromX + (to - fromX) * t, fromZoom + (1 - fromZoom) * t),
+  )
 }
 
 function flipFrom(from: Rect, to: Rect) {
@@ -114,7 +142,11 @@ function flipFrom(from: Rect, to: Rect) {
   )
 }
 
-function play(element: Element | null, keyframes: Keyframe[], options: { duration: number; delay?: number; easing?: string }) {
+function play(
+  element: Element | null,
+  keyframes: Keyframe[],
+  options: { duration: number; delay?: number; easing?: string },
+) {
   if (!element) return Promise.resolve()
   return element
     .animate(keyframes, {
@@ -133,12 +165,23 @@ function play(element: Element | null, keyframes: Keyframe[], options: { duratio
 const FADE_IN: Keyframe[] = [{ opacity: 0 }, { opacity: 1 }]
 const FADE_OUT: Keyframe[] = [{ opacity: 1 }, { opacity: 0 }]
 
-function swingLid(lid: HTMLElement | null, shadeFront: HTMLElement | null, shadeBack: HTMLElement | null, open: boolean) {
+function swingLid(
+  lid: HTMLElement | null,
+  shadeFront: HTMLElement | null,
+  shadeBack: HTMLElement | null,
+  open: boolean,
+) {
   const duration = open ? LID_OPEN_MS : LID_CLOSE_MS
   const half = duration / 2
-  const turn: Keyframe[] = [{ transform: 'translateZ(1px) rotateY(0deg)' }, { transform: 'translateZ(1px) rotateY(-180deg)' }]
+  const turn: Keyframe[] = [
+    { transform: 'translateZ(1px) rotateY(0deg)' },
+    { transform: 'translateZ(1px) rotateY(-180deg)' },
+  ]
   return Promise.all([
-    play(lid, open ? turn : [...turn].reverse(), { duration, easing: 'cubic-bezier(.55,.05,.3,1)' }),
+    play(lid, open ? turn : [...turn].reverse(), {
+      duration,
+      easing: 'cubic-bezier(.55,.05,.3,1)',
+    }),
     play(shadeFront, [{ opacity: open ? 0 : 0.45 }, { opacity: open ? 0.45 : 0 }], {
       duration: half,
       delay: open ? 0 : half,
@@ -180,7 +223,13 @@ export function LeatherCover({ count }: { count?: number }) {
   )
 }
 
-function Board({ state, onMark }: { state: GameState; onMark: (item: string, crossed: boolean) => void }) {
+function Board({
+  state,
+  onMark,
+}: {
+  state: GameState
+  onMark: (item: string, crossed: boolean) => void
+}) {
   return (
     <div className="nb-board">
       <span className="nb-kicker">Die Tafel</span>
@@ -216,15 +265,25 @@ interface CluesProps {
 function Clues({ state, index, fresh, endRef }: CluesProps) {
   return (
     <div className="nb-text">
-      <div className="nb-flow" style={{ transform: `translateX(calc(${-index} * (100% + ${PAGE_GAP}px)))` }}>
+      <div
+        className="nb-flow"
+        style={{ transform: `translateX(calc(${-index} * (100% + ${PAGE_GAP}px)))` }}
+      >
         <h2 className="nb-heading" id={endRef ? 'notebook-title' : undefined}>
           Indizien
         </h2>
         {state.clues.length === 0 && (
-          <p className="empty">Noch keine Indizien. Löse das erste Rätsel, dann landet hier, was du herausgefunden hast.</p>
+          <p className="empty">
+            Noch keine Indizien. Löse das erste Rätsel, dann landet hier, was du herausgefunden
+            hast.
+          </p>
         )}
         {state.clues.map((entry) => (
-          <div className={`entry${entry.day === fresh ? ' fresh' : ''}`} key={entry.day} data-day={entry.day}>
+          <div
+            className={`entry${entry.day === fresh ? ' fresh' : ''}`}
+            key={entry.day}
+            data-day={entry.day}
+          >
             <Face who={entry.who} size={36} />
             <small>
               Tag {entry.day} · {NAMES[entry.who]}
@@ -268,7 +327,8 @@ function CluePages({ state, pager, backRef, fresh }: CluePagesProps) {
   }, [state.clues, fresh])
 
   useEffect(() => {
-    if (!turning.current && backRef.current) backRef.current.style.visibility = index > 0 ? 'visible' : 'hidden'
+    if (!turning.current && backRef.current)
+      backRef.current.style.visibility = index > 0 ? 'visible' : 'hidden'
   }, [index, backRef])
 
   useLayoutEffect(() => {
@@ -306,7 +366,10 @@ function CluePages({ state, pager, backRef, fresh }: CluePagesProps) {
           flushSync(() => setLeaf(next))
           await Promise.all([
             play(leafRef.current, [...away].reverse(), { duration: half, easing: 'ease-out' }),
-            play(leafShadeRef.current, [...shade].reverse(), { duration: half, easing: 'ease-out' }),
+            play(leafShadeRef.current, [...shade].reverse(), {
+              duration: half,
+              easing: 'ease-out',
+            }),
           ])
           flushSync(() => {
             setIndex(next)
@@ -331,13 +394,23 @@ function CluePages({ state, pager, backRef, fresh }: CluePagesProps) {
       )}
       {count > 1 && (
         <nav className="nb-pager">
-          <button type="button" onClick={() => pager.current.turn(-1)} disabled={index === 0} aria-label="Seite zurück">
+          <button
+            type="button"
+            onClick={() => pager.current.turn(-1)}
+            disabled={index === 0}
+            aria-label="Seite zurück"
+          >
             ‹
           </button>
           <span>
             {index + 1} / {count}
           </span>
-          <button type="button" onClick={() => pager.current.turn(1)} disabled={index === count - 1} aria-label="Seite weiter">
+          <button
+            type="button"
+            onClick={() => pager.current.turn(1)}
+            disabled={index === count - 1}
+            aria-label="Seite weiter"
+          >
             ›
           </button>
         </nav>
@@ -395,11 +468,26 @@ export function Notebook({ state, closing, onMark, onRequestClose, onClosed, fre
       await Promise.all([
         play(backdropRef.current, FADE_IN, { duration: 340, easing: 'ease-out' }),
         from
-          ? play(bookRef.current, [{ transform: flipFrom(from, closedRect(layout)) }, { transform: 'none' }], { duration: 640 })
-          : play(bookRef.current, [{ opacity: 0, transform: 'scale(0.94)' }, { opacity: 1, transform: 'none' }], { duration: 420 }),
+          ? play(
+              bookRef.current,
+              [{ transform: flipFrom(from, closedRect(layout)) }, { transform: 'none' }],
+              { duration: 640 },
+            )
+          : play(
+              bookRef.current,
+              [
+                { opacity: 0, transform: 'scale(0.94)' },
+                { opacity: 1, transform: 'none' },
+              ],
+              { duration: 420 },
+            ),
       ])
       if (cancelled || closingRef.current) return
-      void play(pageRef.current, FADE_IN, { duration: 450, delay: LID_OPEN_MS * 0.35, easing: 'ease-out' })
+      void play(pageRef.current, FADE_IN, {
+        duration: 450,
+        delay: LID_OPEN_MS * 0.35,
+        easing: 'ease-out',
+      })
       await Promise.all([
         swingLid(lid, shadeFrontRef.current, shadeBackRef.current, true),
         layout.pan ? glide(cameraElRef.current, camera, 0, LID_OPEN_MS) : null,
@@ -418,7 +506,9 @@ export function Notebook({ state, closing, onMark, onRequestClose, onClosed, fre
 
     return () => {
       cancelled = true
-      animated.forEach((element) => element?.getAnimations().forEach((animation) => animation.cancel()))
+      animated.forEach((element) =>
+        element?.getAnimations().forEach((animation) => animation.cancel()),
+      )
       if (icon) icon.style.visibility = ''
     }
   }, [layout, fresh])
@@ -444,11 +534,22 @@ export function Notebook({ state, closing, onMark, onRequestClose, onClosed, fre
       const to = onScreen(iconOf())
       await Promise.all([
         to
-          ? play(bookRef.current, [{ transform: 'none' }, { transform: flipFrom(to, closedRect(layout)) }], {
-              duration: 540,
-              easing: 'cubic-bezier(.5,0,.25,1)',
-            })
-          : play(bookRef.current, [{ opacity: 1, transform: 'none' }, { opacity: 0, transform: 'scale(0.94)' }], { duration: 320 }),
+          ? play(
+              bookRef.current,
+              [{ transform: 'none' }, { transform: flipFrom(to, closedRect(layout)) }],
+              {
+                duration: 540,
+                easing: 'cubic-bezier(.5,0,.25,1)',
+              },
+            )
+          : play(
+              bookRef.current,
+              [
+                { opacity: 1, transform: 'none' },
+                { opacity: 0, transform: 'scale(0.94)' },
+              ],
+              { duration: 320 },
+            ),
         play(backdropRef.current, FADE_OUT, { duration: 340, delay: 120, easing: 'ease-in' }),
       ])
       if (!cancelled) onClosed()
@@ -481,12 +582,26 @@ export function Notebook({ state, closing, onMark, onRequestClose, onClosed, fre
       camera.page = page
       return glide(cameraEl, camera, page === 1 ? 0 : -layout.width, PAGE_GLIDE_MS)
     }
-    let swipe: { id: number; x: number; y: number; from: number; moving: boolean; leaf: 0 | 1 | -1 } | null = null
+    let swipe: {
+      id: number
+      x: number
+      y: number
+      from: number
+      moving: boolean
+      leaf: 0 | 1 | -1
+    } | null = null
     let swallowClicksUntil = 0
 
     const onDown = (event: PointerEvent) => {
       if (!camera.ready || event.button !== 0) return
-      swipe = { id: event.pointerId, x: event.clientX, y: event.clientY, from: camera.x, moving: false, leaf: 0 }
+      swipe = {
+        id: event.pointerId,
+        x: event.clientX,
+        y: event.clientY,
+        from: camera.x,
+        moving: false,
+        leaf: 0,
+      }
     }
     const onMove = (event: PointerEvent) => {
       if (!swipe || event.pointerId !== swipe.id) return
@@ -524,7 +639,8 @@ export function Notebook({ state, closing, onMark, onRequestClose, onClosed, fre
       }
       if (!camera.ready || !(event.target instanceof Element)) return
       const onHiddenPage =
-        (camera.page === 1 && event.target.closest('.nb-page')) || (camera.page === 2 && event.target.closest('.nb-flat'))
+        (camera.page === 1 && event.target.closest('.nb-page')) ||
+        (camera.page === 2 && event.target.closest('.nb-flat'))
       if (!onHiddenPage) return
       event.preventDefault()
       event.stopPropagation()
@@ -557,12 +673,26 @@ export function Notebook({ state, closing, onMark, onRequestClose, onClosed, fre
     if (!closing) onRequestClose()
   }
 
-  const stage: CSSProperties = { left: layout.left, top: layout.top, width: layout.width, height: layout.height }
+  const stage: CSSProperties = {
+    left: layout.left,
+    top: layout.top,
+    width: layout.width,
+    height: layout.height,
+  }
 
   return (
-    <div className={`nb${layout.narrow ? ' is-narrow' : ''}`} role="dialog" aria-modal="true" aria-labelledby="notebook-title">
+    <div
+      className={`nb${layout.narrow ? ' is-narrow' : ''}`}
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="notebook-title"
+    >
       <div className="nb-backdrop" ref={backdropRef} onClick={requestClose} />
-      <div className="nb-camera" ref={cameraElRef} style={{ transform: `translateX(${-layout.pan}px)` }}>
+      <div
+        className="nb-camera"
+        ref={cameraElRef}
+        style={{ transform: `translateX(${-layout.pan}px)` }}
+      >
         <div className="nb-stage" style={stage} ref={stageRef}>
           <div className="nb-book" ref={bookRef}>
             <section className="nb-page nb-paper">
@@ -589,9 +719,20 @@ export function Notebook({ state, closing, onMark, onRequestClose, onClosed, fre
           </div>
         </div>
       </div>
-      <button type="button" className="nb-close" ref={closeRef} onClick={requestClose} aria-label="Schließen">
+      <button
+        type="button"
+        className="nb-close"
+        ref={closeRef}
+        onClick={requestClose}
+        aria-label="Schließen"
+      >
         <svg viewBox="0 0 16 16" aria-hidden="true">
-          <path d="M3 3l10 10M13 3L3 13" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+          <path
+            d="M3 3l10 10M13 3L3 13"
+            stroke="currentColor"
+            strokeWidth="1.8"
+            strokeLinecap="round"
+          />
         </svg>
       </button>
     </div>

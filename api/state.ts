@@ -15,7 +15,9 @@ export default safely(async (request) => {
 
   const [solved, hints, marks, team] = await Promise.all([
     solvedDays(player.id),
-    rest<{ day: number; level: number }[]>(`hints_taken?select=day,level&player_id=eq.${player.id}`),
+    rest<{ day: number; level: number }[]>(
+      `hints_taken?select=day,level&player_id=eq.${player.id}`,
+    ),
     rest<{ item: string; crossed: boolean }[]>(
       `board_marks?select=item,crossed&player_id=eq.${player.id}`,
     ),
@@ -33,7 +35,11 @@ export default safely(async (request) => {
       finalMediaUrl: solved.includes(24) ? family.final_media_url : null,
     },
     unlocked,
-    doors: DAYS.slice(0, unlocked).map((day, index) => ({ day: index + 1, who: day.who, title: day.title })),
+    doors: DAYS.slice(0, unlocked).map((day, index) => ({
+      day: index + 1,
+      who: day.who,
+      title: day.title,
+    })),
     solved,
     clues: [...solved]
       .sort((a, b) => a - b)

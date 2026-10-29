@@ -83,7 +83,9 @@ export function auroraRow(colours: string[], label: string) {
 export function timeCards(cards: [string, string][]) {
   return (
     '<div class="cards">' +
-    cards.map(([letter, text]) => `<div class="tcard"><b>${letter}</b><span>${text}</span></div>`).join('') +
+    cards
+      .map(([letter, text]) => `<div class="tcard"><b>${letter}</b><span>${text}</span></div>`)
+      .join('') +
     '</div>'
   )
 }

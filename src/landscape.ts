@@ -117,7 +117,9 @@ export const PLACE_ART = {
     paper('<path d="M18 50 H102 V95 H18Z" fill="#9e2b25"/>') +
     '<path d="M30 54 V95 M90 54 V95" stroke="#86221d" stroke-width="1.5"/>' +
     paper('<path d="M12 54 L26 30 L60 16 L94 30 L108 54Z" fill="#5a2a20"/>') +
-    paper(`<path d="M8 54 L24 27 L60 12 L96 27 L112 54 Q107 59 102 54 L92 34 L60 21 L28 34 L18 54 Q13 59 8 54Z" fill="${SNOW}"/>`) +
+    paper(
+      `<path d="M8 54 L24 27 L60 12 L96 27 L112 54 Q107 59 102 54 L92 34 L60 21 L28 34 L18 54 Q13 59 8 54Z" fill="${SNOW}"/>`,
+    ) +
     paper(`<path d="M52 30 H68 V46 H52Z" fill="${LIGHT}"/>`) +
     '<path d="M60 30 V46" stroke="#5a2a20" stroke-width="2"/>' +
     paper('<path d="M42 95 V62 H78 V95Z" fill="#5a1a16"/>') +
@@ -136,12 +138,16 @@ export const PLACE_ART = {
     `<path d="M8 51 L60 12 L112 51" stroke="${ICING}" stroke-width="4" fill="none" stroke-linejoin="round"/>` +
     '<circle cx="40" cy="38" r="3.5" fill="#e53935"/><circle cx="80" cy="38" r="3.5" fill="#e53935"/><circle cx="51" cy="28" r="3" fill="#2e7d4f"/><circle cx="69" cy="28" r="3" fill="#2e7d4f"/>' +
     paper(`<circle cx="60" cy="38" r="6" fill="${LIGHT}"/>`) +
-    paper(`<circle cx="38" cy="70" r="8" fill="${LIGHT}"/><circle cx="82" cy="70" r="8" fill="${LIGHT}"/>`) +
+    paper(
+      `<circle cx="38" cy="70" r="8" fill="${LIGHT}"/><circle cx="82" cy="70" r="8" fill="${LIGHT}"/>`,
+    ) +
     `<g stroke="${ICING}" stroke-width="2.5" fill="none"><circle cx="38" cy="70" r="8"/><circle cx="82" cy="70" r="8"/><path d="M38 62 V78 M30 70 H46 M82 62 V78 M74 70 H90"/></g>` +
     paper('<path d="M52 95 V79 Q60 70 68 79 V95Z" fill="#5a3418"/>') +
     `<path d="M52 95 V79 Q60 70 68 79 V95" stroke="${ICING}" stroke-width="2" fill="none"/>` +
     `<path d="M24 92 l4 -5 l4 5 l4 -5 l4 5 M80 92 l4 -5 l4 5 l4 -5 l4 5" stroke="${ICING}" stroke-width="2" fill="none" stroke-linejoin="round"/>` +
-    paper(`<path d="M107 95 V74 Q107 67 101 67 Q95 67 95 73" stroke="${ICING}" stroke-width="4.5" fill="none" stroke-linecap="round"/>`) +
+    paper(
+      `<path d="M107 95 V74 Q107 67 101 67 Q95 67 95 73" stroke="${ICING}" stroke-width="4.5" fill="none" stroke-linecap="round"/>`,
+    ) +
     '<path d="M107 95 V74 Q107 67 101 67 Q95 67 95 73" stroke="#c62828" stroke-width="4.5" stroke-dasharray="3 3" fill="none"/>' +
     drift,
   gate:
@@ -151,7 +157,9 @@ export const PLACE_ART = {
     '<path d="M12 72 H34 M86 72 H108 M12 50 H34 M86 50 H108 M16 28 L36 38 M104 28 L84 38 M60 8 V28 M38 13 L45 30 M82 13 L75 30" stroke="#8cc3dc" stroke-width="1.5"/>' +
     '<path d="M18 92 V46 Q18 18 50 13" stroke="#ffffff" stroke-width="3" fill="none" opacity=".75" stroke-linecap="round"/>' +
     '<path d="M38 40 L41 50 L44 40Z M48 32 L51 45 L54 32Z M58 29 L61 40 L64 29Z M68 31 L71 43 L74 31Z M78 37 L80 46 L82 37Z" fill="#e8f6fc" stroke="#8cc3dc" stroke-width=".8"/>' +
-    paper(`<path d="M12 42 Q12 4 60 4 Q108 4 108 42 Q103 34 98 38 Q92 13 60 11 Q28 13 22 38 Q17 34 12 42Z" fill="${SNOW}"/>`) +
+    paper(
+      `<path d="M12 42 Q12 4 60 4 Q108 4 108 42 Q103 34 98 38 Q92 13 60 11 Q28 13 22 38 Q17 34 12 42Z" fill="${SNOW}"/>`,
+    ) +
     '<path d="M100 54 l1.5 4 l4 1.5 l-4 1.5 l-1.5 4 l-1.5 -4 l-4 -1.5 l4 -1.5Z M22 60 l1.2 3 l3 1.2 l-3 1.2 l-1.2 3 l-1.2 -3 l-3 -1.2 l3 -1.2Z" fill="#ffffff"/>' +
     drift,
   peak:
@@ -162,10 +170,14 @@ export const PLACE_ART = {
     paper('<path d="M2 95 L40 28 L80 95Z" fill="#62789a"/>') +
     '<path d="M40 28 L80 95 H54Z" fill="#000000" opacity=".12"/>' +
     paper(`<path d="M40 28 L51 48 L45 45 L40 52 L35 45 L29 49Z" fill="${SNOW}"/>`) +
-    paper(`<path d="M10 95 L17 78 L24 95Z M90 95 L98 74 L106 95Z M102 95 L108 82 L114 95Z" fill="${PINE}"/>`) +
+    paper(
+      `<path d="M10 95 L17 78 L24 95Z M90 95 L98 74 L106 95Z M102 95 L108 82 L114 95Z" fill="${PINE}"/>`,
+    ) +
     drift,
   lake:
-    paper(`<path d="M42 74 L49 54 L56 74Z M52 74 L60 48 L68 74Z M64 74 L70 58 L76 74Z" fill="${PINE}"/>`) +
+    paper(
+      `<path d="M42 74 L49 54 L56 74Z M52 74 L60 48 L68 74Z M64 74 L70 58 L76 74Z" fill="${PINE}"/>`,
+    ) +
     paper('<ellipse cx="60" cy="84" rx="56" ry="13" fill="#cfe9f5"/>') +
     '<ellipse cx="62" cy="85" rx="44" ry="8" fill="#b9dff0"/>' +
     '<path d="M38 80 L48 84 L46 89 M68 79 L77 83 L90 82 M77 83 L79 89" stroke="#ffffff" stroke-width="1.4" fill="none" stroke-linecap="round"/>' +
@@ -177,15 +189,21 @@ export const PLACE_ART = {
     `<path d="M92 76 V86 M105 76 V86 M115 76 V84" stroke="#6b4428" stroke-width="2.5"/><path d="M88 72 H118" stroke="${SNOW}" stroke-width="2"/>` +
     drift,
   workshop:
-    paper(`<path d="M80 18 H92 V40 H80Z" fill="#5a2a20"/><path d="M78 18 H94 V15 Q86 11 78 15Z" fill="${SNOW}"/>`) +
+    paper(
+      `<path d="M80 18 H92 V40 H80Z" fill="#5a2a20"/><path d="M78 18 H94 V15 Q86 11 78 15Z" fill="${SNOW}"/>`,
+    ) +
     `<g fill="#ffffff" opacity=".6"><circle cx="88" cy="9" r="3.5"/><circle cx="93" cy="3" r="4"/></g>` +
     paper('<path d="M16 46 H104 V95 H16Z" fill="#8a3b2e"/>') +
     '<path d="M16 60 H104 M16 74 H104 M16 88 H104" stroke="#73301f" stroke-width="1.5"/>' +
     paper('<path d="M6 50 L60 14 L114 50Z" fill="#4a2a22"/>') +
-    paper(`<path d="M2 51 L60 10 L118 51 Q112 56 106 51 L60 19 L14 51 Q8 56 2 51Z" fill="${SNOW}"/>`) +
+    paper(
+      `<path d="M2 51 L60 10 L118 51 Q112 56 106 51 L60 19 L14 51 Q8 56 2 51Z" fill="${SNOW}"/>`,
+    ) +
     paper(`<circle cx="60" cy="34" r="6" fill="${LIGHT}"/>`) +
     '<path d="M60 28 V40 M54 34 H66" stroke="#4a2a22" stroke-width="1.6"/>' +
-    paper(`<rect x="26" y="58" width="18" height="16" rx="2" fill="${LIGHT}"/><rect x="76" y="58" width="18" height="16" rx="2" fill="${LIGHT}"/>`) +
+    paper(
+      `<rect x="26" y="58" width="18" height="16" rx="2" fill="${LIGHT}"/><rect x="76" y="58" width="18" height="16" rx="2" fill="${LIGHT}"/>`,
+    ) +
     `<path d="M35 58 V74 M26 66 H44 M85 58 V74 M76 66 H94" stroke="#5a2a20" stroke-width="2"/><path d="M24 74 H46 M74 74 H96" stroke="${SNOW}" stroke-width="3.5" stroke-linecap="round"/>` +
     paper('<path d="M51 95 V76 Q60 67 69 76 V95Z" fill="#3d1f18"/>') +
     '<circle cx="60" cy="81" r="4.5" fill="none" stroke="#2e7d4f" stroke-width="2.5"/><circle cx="60" cy="85.5" r="1.6" fill="#c62828"/>' +

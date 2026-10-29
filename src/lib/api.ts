@@ -43,7 +43,8 @@ async function call<T>(path: string, init: RequestInit = {}): Promise<T> {
     throw new ApiError(OFFLINE, 0)
   }
   const data = await response.json().catch(() => ({}))
-  if (!response.ok) throw new ApiError(response.status >= 500 ? BROKEN : (data.error ?? BROKEN), response.status)
+  if (!response.ok)
+    throw new ApiError(response.status >= 500 ? BROKEN : (data.error ?? BROKEN), response.status)
   return data as T
 }
 

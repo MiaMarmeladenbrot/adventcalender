@@ -98,9 +98,20 @@ export function Hill({ place, who, mood, small, onTap, figureRef }: HillProps) {
   return (
     <>
       <div className="hill" />
-      <svg className="hill-place" viewBox="0 0 120 100" aria-hidden="true" dangerouslySetInnerHTML={{ __html: PLACE_ART[place.art] }} />
+      <svg
+        className="hill-place"
+        viewBox="0 0 120 100"
+        aria-hidden="true"
+        dangerouslySetInnerHTML={{ __html: PLACE_ART[place.art] }}
+      />
       {onTap ? (
-        <button type="button" ref={figureRef} className="hill-figure tap" onClick={onTap} aria-label="Rudolphs Nase antippen">
+        <button
+          type="button"
+          ref={figureRef}
+          className="hill-figure tap"
+          onClick={onTap}
+          aria-label="Rudolphs Nase antippen"
+        >
           {face}
         </button>
       ) : (
@@ -119,10 +130,14 @@ const DRAPES =
 const paper = (inner: string) => `<g filter="url(#pc)">${inner}</g>`
 
 const GABLE =
-  paper('<path d="M80 18 H92 V40 H80Z" fill="#5a2a20"/><path d="M78 18 H94 V15 Q86 11 78 15Z" fill="#f5f8fb"/>') +
+  paper(
+    '<path d="M80 18 H92 V40 H80Z" fill="#5a2a20"/><path d="M78 18 H94 V15 Q86 11 78 15Z" fill="#f5f8fb"/>',
+  ) +
   '<g fill="#ffffff" opacity=".6"><circle cx="88" cy="9" r="3.5"/><circle cx="93" cy="3" r="4"/></g>' +
   paper('<path d="M6 50 L60 14 L114 50Z" fill="#4a2a22"/>') +
-  paper('<path d="M2 51 L60 10 L118 51 Q112 56 106 51 L60 19 L14 51 Q8 56 2 51Z" fill="#f5f8fb"/>') +
+  paper(
+    '<path d="M2 51 L60 10 L118 51 Q112 56 106 51 L60 19 L14 51 Q8 56 2 51Z" fill="#f5f8fb"/>',
+  ) +
   paper('<circle cx="60" cy="34" r="6" fill="#ffd27a"/>') +
   '<path d="M60 28 V40 M54 34 H66" stroke="#4a2a22" stroke-width="1.6"/>'
 
@@ -131,14 +146,25 @@ const RESIDENTS: Who[] = ['santa', 'mrs']
 export function House({ speaker }: { speaker: Who }) {
   return (
     <div className="house">
-      <svg className="house-gable" viewBox="0 -2 120 56" aria-hidden="true" dangerouslySetInnerHTML={{ __html: GABLE }} />
+      <svg
+        className="house-gable"
+        viewBox="0 -2 120 56"
+        aria-hidden="true"
+        dangerouslySetInnerHTML={{ __html: GABLE }}
+      />
       <div className="house-wreath" />
       <div className="house-windows">
         {RESIDENTS.map((who) => (
           <div key={who} className={`house-window${who === speaker ? ' lit' : ''}`}>
             <div className="pane">
               <Face who={who} size="112%" />
-              <svg className="drapes" viewBox="0 0 108 136" preserveAspectRatio="none" aria-hidden="true" dangerouslySetInnerHTML={{ __html: DRAPES }} />
+              <svg
+                className="drapes"
+                viewBox="0 0 108 136"
+                preserveAspectRatio="none"
+                aria-hidden="true"
+                dangerouslySetInnerHTML={{ __html: DRAPES }}
+              />
             </div>
             <div className="sill" />
           </div>

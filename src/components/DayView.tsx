@@ -52,7 +52,13 @@ function Steps({ at, progress = 1, solved, disabled, onGo }: StepsProps) {
   return (
     <nav className="steps" aria-label="Ablauf des Türchens">
       {STEPS.map(([step, label]) => {
-        const filled = step === at ? progress : STEPS.findIndex(([entry]) => entry === at) > STEPS.findIndex(([entry]) => entry === step) ? 1 : 0
+        const filled =
+          step === at
+            ? progress
+            : STEPS.findIndex(([entry]) => entry === at) >
+                STEPS.findIndex(([entry]) => entry === step)
+              ? 1
+              : 0
         return (
           <button
             key={step}
@@ -62,7 +68,11 @@ function Steps({ at, progress = 1, solved, disabled, onGo }: StepsProps) {
             aria-current={step === at ? 'step' : undefined}
             onClick={() => step !== at && onGo?.(step)}
           >
-            <i style={{ background: `linear-gradient(to right, #2a1f1a ${filled * 100}%, #d9cfbd ${filled * 100}%)` }} />
+            <i
+              style={{
+                background: `linear-gradient(to right, #2a1f1a ${filled * 100}%, #d9cfbd ${filled * 100}%)`,
+              }}
+            />
             {label}
           </button>
         )
@@ -71,7 +81,17 @@ function Steps({ at, progress = 1, solved, disabled, onGo }: StepsProps) {
   )
 }
 
-export function DayView({ code, player, day, door, nickname, finalMessage, onSolved, onBack, onNotebook }: Props) {
+export function DayView({
+  code,
+  player,
+  day,
+  door,
+  nickname,
+  finalMessage,
+  onSolved,
+  onBack,
+  onNotebook,
+}: Props) {
   const [data, setData] = useState<DayResponse | null>(null)
   const [error, setError] = useState<{ message: string; status: number } | null>(null)
   const [attempt, setAttempt] = useState(0)
@@ -98,7 +118,11 @@ export function DayView({ code, player, day, door, nickname, finalMessage, onSol
         })
       })
       .catch((failure: unknown) => {
-        if (current) setError({ message: messageOf(failure), status: failure instanceof ApiError ? failure.status : 0 })
+        if (current)
+          setError({
+            message: messageOf(failure),
+            status: failure instanceof ApiError ? failure.status : 0,
+          })
       })
     return () => {
       current = false
@@ -136,7 +160,8 @@ export function DayView({ code, player, day, door, nickname, finalMessage, onSol
   async function submit(raw: string): Promise<AnswerResponse> {
     try {
       const response = await api.answer(code, player, day, raw)
-      if (response.correct && response.solved && data?.day.widget?.kind !== 'final') finish(response.solved)
+      if (response.correct && response.solved && data?.day.widget?.kind !== 'final')
+        finish(response.solved)
       return response
     } catch (failure) {
       return { correct: false, message: messageOf(failure) }
@@ -168,7 +193,8 @@ export function DayView({ code, player, day, door, nickname, finalMessage, onSol
   }
 
   useEffect(() => {
-    if (shownHints > 0) hintsRef.current?.lastElementChild?.scrollIntoView({ behavior: 'smooth', block: 'center' })
+    if (shownHints > 0)
+      hintsRef.current?.lastElementChild?.scrollIntoView({ behavior: 'smooth', block: 'center' })
   }, [shownHints])
 
   const place = placeOf(day)
@@ -182,7 +208,12 @@ export function DayView({ code, player, day, door, nickname, finalMessage, onSol
 
   if (error) {
     const final = error.status === 403 || error.status === 404
-    spoken = [who, error.status === 403 ? `Diese Tür ist noch verschlossen. Komm am ${day}. Dezember wieder!` : error.message]
+    spoken = [
+      who,
+      error.status === 403
+        ? `Diese Tür ist noch verschlossen. Komm am ${day}. Dezember wieder!`
+        : error.message,
+    ]
     foot = final ? (
       <button type="button" className="go" onClick={onBack}>
         Zurück zur Landschaft
@@ -208,10 +239,19 @@ export function DayView({ code, player, day, door, nickname, finalMessage, onSol
     spoken = intro[line]
     foot = (
       <>
-        <button type="button" className="go" onClick={() => (lastLine ? go('puzzle') : withTransition(() => setLine(line + 1)))}>
+        <button
+          type="button"
+          className="go"
+          onClick={() => (lastLine ? go('puzzle') : withTransition(() => setLine(line + 1)))}
+        >
           {lastLine ? 'Zum Rätsel' : 'Weiter'}
         </button>
-        <Steps at="talk" progress={(line + 1) / intro.length} solved={Boolean(solved)} onGo={step} />
+        <Steps
+          at="talk"
+          progress={(line + 1) / intro.length}
+          solved={Boolean(solved)}
+          onGo={step}
+        />
       </>
     )
   } else if (solved && phase === 'reply') {
@@ -245,8 +285,8 @@ export function DayView({ code, player, day, door, nickname, finalMessage, onSol
           <div style={{ width: 120 }} dangerouslySetInnerHTML={{ __html: rudolphSvg('h') }} />
           <h2>Fall gelöst!</h2>
           <p>
-            Der Schlitten bricht aus dem Eis, der Weihnachtsmann fliegt einmal über den ganzen Nordpol, und alle Schlitten der Soko
-            hängen sich hinten dran.
+            Der Schlitten bricht aus dem Eis, der Weihnachtsmann fliegt einmal über den ganzen
+            Nordpol, und alle Schlitten der Soko hängen sich hinten dran.
           </p>
           {finalMessage && <p className="final-message">{finalMessage}</p>}
           <p className="credits">Abspann · Gelöst von: {nickname}</p>
@@ -275,7 +315,9 @@ export function DayView({ code, player, day, door, nickname, finalMessage, onSol
               {data.day.halves.map((piece) => (
                 <div className="scrap" key={piece.name}>
                   <span className="scrap-label">
-                    {data.day.halves?.length === 1 ? `Dein Stück, von ${piece.name}` : `Von ${piece.name}`}
+                    {data.day.halves?.length === 1
+                      ? `Dein Stück, von ${piece.name}`
+                      : `Von ${piece.name}`}
                   </span>
                   <div dangerouslySetInnerHTML={{ __html: piece.html }} />
                 </div>
@@ -290,15 +332,23 @@ export function DayView({ code, player, day, door, nickname, finalMessage, onSol
           {data.day.widget?.kind === 'morse' && <MorseTape shown={morse.shown} />}
           {data.day.widget?.kind === 'memory' && <Memory items={data.day.widget.items} />}
           {data.day.widget?.kind === 'torch' && <Torch digits={data.day.widget.digits} />}
-          {data.day.widget?.kind === 'bells' && <Bells bells={data.day.widget.bells} recording={data.day.widget.recording} />}
+          {data.day.widget?.kind === 'bells' && (
+            <Bells bells={data.day.widget.bells} recording={data.day.widget.recording} />
+          )}
           {data.day.widget?.kind === 'floes' && !solved && (
             <Floes
               grid={data.day.widget.grid}
               start={data.day.widget.start}
-              onArrive={(values) => void submit(values.join(',')).then((response) => setWrong(response.correct ? '' : (response.message ?? '')))}
+              onArrive={(values) =>
+                void submit(values.join(',')).then((response) =>
+                  setWrong(response.correct ? '' : (response.message ?? '')),
+                )
+              }
             />
           )}
-          {data.day.widget?.kind === 'final' && !solved && <Final accuse={submit} onFound={(result) => result.solved && finish(result.solved)} />}
+          {data.day.widget?.kind === 'final' && !solved && (
+            <Final accuse={submit} onFound={(result) => result.solved && finish(result.solved)} />
+          )}
         </div>
         {!solved && shownHints > 0 && (
           <div className="scribbles" ref={hintsRef}>
@@ -315,7 +365,9 @@ export function DayView({ code, player, day, door, nickname, finalMessage, onSol
             className="hint-button"
             onClick={nextHint}
             disabled={shownHints >= 3}
-            aria-label={shownHints >= 3 ? 'Alle Hinweise aufgedeckt' : `Hinweis ${shownHints + 1} von 3`}
+            aria-label={
+              shownHints >= 3 ? 'Alle Hinweise aufgedeckt' : `Hinweis ${shownHints + 1} von 3`
+            }
           >
             ?
           </button>

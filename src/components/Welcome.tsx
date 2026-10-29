@@ -16,7 +16,9 @@ export function Welcome() {
       ]}
       ground={<Hill place={WORKSHOP} who="snowman" />}
     >
-      <p className="welcome-note">Du hast den Link schon? Dann öffne ihn direkt, und es geht los.</p>
+      <p className="welcome-note">
+        Du hast den Link schon? Dann öffne ihn direkt, und es geht los.
+      </p>
     </Stage>
   )
 }
