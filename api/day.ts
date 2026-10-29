@@ -3,6 +3,7 @@ import type { PublicDay } from '../content/types'
 import { findPlayer } from './_lib/db'
 import { dayNumber, json, refuse, safely } from './_lib/http'
 import { hintLevel, solvedDays } from './_lib/progress'
+import { familyInJoinOrder, shareOut } from './_lib/team'
 import { isPreview, unlockedThrough } from './_lib/unlock'
 
 export const config = { runtime: 'edge' }
@@ -18,7 +19,11 @@ export default safely(async (request) => {
   }
 
   const day = DAYS[number - 1]
-  const [solved, level] = await Promise.all([solvedDays(player.id), hintLevel(player.id, number)])
+  const [solved, level, members] = await Promise.all([
+    solvedDays(player.id),
+    hintLevel(player.id, number),
+    day.halves ? familyInJoinOrder(player.family_id) : [],
+  ])
   const view: PublicDay = {
     day: number,
     who: day.who,
@@ -26,7 +31,7 @@ export default safely(async (request) => {
     special: day.special,
     intro: day.intro,
     puzzle: day.puzzle,
-    halves: day.halves,
+    ...(day.halves ? shareOut(day.halves, members, player.id, number) : {}),
     widget: day.widget,
   }
   return json({

@@ -41,6 +41,7 @@ export interface Day {
 
 export type PublicDay = Pick<Day, 'who' | 'title' | 'special' | 'intro' | 'puzzle' | 'halves' | 'widget'> & {
   day: number
+  partners?: string[]
 }
 
 export interface Solved {
