@@ -1,25 +1,27 @@
-import type { ReactNode } from 'react'
+import type { ReactNode, Ref } from 'react'
 import type { Mood } from '../characters'
 import { PLACE_ART, type Place } from '../landscape'
 import type { Line, Who } from '../lib/types'
 import { Bubble, Face } from './Face'
 
 const FIGURE_SIZE = 'min(230px, 56vw, 30dvh)'
+const FIGURE_COMPACT = 'min(165px, 40vw, 19dvh)'
 
 interface Props {
   sky: string
   eyebrow: string
   title: string
-  line: Line
+  line?: Line | null
   tail?: 'center' | 'left' | 'right'
   ground: ReactNode
+  compact?: boolean
   onBack?: () => void
-  children: ReactNode
+  children?: ReactNode
 }
 
-export function Stage({ sky, eyebrow, title, line, tail, ground, onBack, children }: Props) {
+export function Stage({ sky, eyebrow, title, line, tail, ground, compact, onBack, children }: Props) {
   return (
-    <section className="stage" style={{ background: sky }}>
+    <section className={`stage${compact ? ' compact' : ''}`} style={{ backgroundImage: sky }}>
       <header className="stage-head">
         {onBack && (
           <button type="button" className="back" onClick={onBack}>
@@ -29,23 +31,47 @@ export function Stage({ sky, eyebrow, title, line, tail, ground, onBack, childre
         <small>{eyebrow}</small>
         <h2>{title}</h2>
       </header>
-      <div className="stage-bubble">
-        <Bubble line={line} tail={tail} />
-      </div>
+      {!compact && (
+        <div className="stage-bubble">
+          {line ? (
+            <Bubble line={line} tail={tail} />
+          ) : (
+            <div className="bubble waiting" aria-label="Lädt">
+              <i />
+              <i />
+              <i />
+            </div>
+          )}
+        </div>
+      )}
       <div className="stage-ground">{ground}</div>
-      <div className="stage-foot">{children}</div>
+      <div className={compact ? 'stage-paper paper' : 'stage-foot'}>{children}</div>
     </section>
   )
 }
 
-export function Hill({ place, who, mood }: { place: Place; who: Who; mood?: Mood }) {
+interface HillProps {
+  place: Place
+  who: Who
+  mood?: Mood
+  compact?: boolean
+  onTap?: () => void
+  figureRef?: Ref<HTMLButtonElement>
+}
+
+export function Hill({ place, who, mood, compact, onTap, figureRef }: HillProps) {
+  const face = <Face who={who} size={compact ? FIGURE_COMPACT : FIGURE_SIZE} mood={mood} />
   return (
     <>
-      <svg className="hill-place" viewBox="0 0 120 100" aria-hidden="true" dangerouslySetInnerHTML={{ __html: PLACE_ART[place.art] }} />
       <div className="hill" />
-      <div key={who} className="hill-figure">
-        <Face who={who} size={FIGURE_SIZE} mood={mood} />
-      </div>
+      <svg className="hill-place" viewBox="0 0 120 100" aria-hidden="true" dangerouslySetInnerHTML={{ __html: PLACE_ART[place.art] }} />
+      {onTap ? (
+        <button type="button" ref={figureRef} className="hill-figure tap" onClick={onTap} aria-label="Rudolphs Nase antippen">
+          {face}
+        </button>
+      ) : (
+        <div className="hill-figure">{face}</div>
+      )}
     </>
   )
 }

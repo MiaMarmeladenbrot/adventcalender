@@ -209,7 +209,14 @@ function Board({ state, onMark }: { state: GameState; onMark: (item: string, cro
   )
 }
 
-function Clues({ state, index, endRef }: { state: GameState; index: number; endRef?: RefObject<HTMLSpanElement | null> }) {
+interface CluesProps {
+  state: GameState
+  index: number
+  fresh?: number | null
+  endRef?: RefObject<HTMLSpanElement | null>
+}
+
+function Clues({ state, index, fresh, endRef }: CluesProps) {
   return (
     <div className="nb-text">
       <div className="nb-flow" style={{ transform: `translateX(calc(${-index} * (100% + ${PAGE_GAP}px)))` }}>
@@ -220,12 +227,14 @@ function Clues({ state, index, endRef }: { state: GameState; index: number; endR
           <p className="empty">Noch keine Indizien. Löse das erste Rätsel, dann landet hier, was du herausgefunden hast.</p>
         )}
         {state.clues.map((entry) => (
-          <div className="entry" key={entry.day}>
+          <div className={`entry${entry.day === fresh ? ' fresh' : ''}`} key={entry.day} data-day={entry.day}>
             <Face who={entry.who} size={36} />
             <small>
               Tag {entry.day} · {NAMES[entry.who]}
             </small>
-            <p>{entry.clue}</p>
+            <p>
+              <span>{entry.clue}</span>
+            </p>
           </div>
         ))}
         <span className="nb-end" ref={endRef} />
@@ -238,9 +247,10 @@ interface CluePagesProps {
   state: GameState
   pager: RefObject<Pager>
   backRef: RefObject<HTMLDivElement | null>
+  fresh?: number | null
 }
 
-function CluePages({ state, pager, backRef }: CluePagesProps) {
+function CluePages({ state, pager, backRef, fresh }: CluePagesProps) {
   const endRef = useRef<HTMLSpanElement>(null)
   const leafRef = useRef<HTMLDivElement>(null)
   const leafShadeRef = useRef<HTMLDivElement>(null)
@@ -253,8 +263,16 @@ function CluePages({ state, pager, backRef }: CluePagesProps) {
     const end = endRef.current
     const flow = end?.parentElement
     if (!end || !flow) return
-    setCount(Math.floor(end.offsetLeft / (flow.clientWidth + PAGE_GAP)) + 1)
-  }, [state.clues])
+    const step = flow.clientWidth + PAGE_GAP
+    setCount(Math.floor(end.offsetLeft / step) + 1)
+    const entry = fresh ? flow.querySelector<HTMLElement>(`[data-day="${fresh}"]`) : null
+    if (!entry) return
+    setIndex(Math.floor(entry.offsetLeft / step))
+  }, [state.clues, fresh])
+
+  useEffect(() => {
+    if (!turning.current && backRef.current) backRef.current.style.visibility = index > 0 ? 'visible' : 'hidden'
+  }, [index, backRef])
 
   useLayoutEffect(() => {
     const turn = (step: 1 | -1) => {
@@ -307,10 +325,10 @@ function CluePages({ state, pager, backRef }: CluePagesProps) {
 
   return (
     <>
-      <Clues state={state} index={index} endRef={endRef} />
+      <Clues state={state} index={index} fresh={fresh} endRef={endRef} />
       {leaf !== null && (
         <div className="nb-leaf nb-paper" ref={leafRef}>
-          <Clues state={state} index={leaf} />
+          <Clues state={state} index={leaf} fresh={fresh} />
           <div className="nb-shade" ref={leafShadeRef} />
         </div>
       )}
@@ -337,9 +355,10 @@ interface Props {
   onMark: (item: string, crossed: boolean) => void
   onRequestClose: () => void
   onClosed: () => void
+  fresh?: number | null
 }
 
-export function Notebook({ state, closing, onMark, onRequestClose, onClosed }: Props) {
+export function Notebook({ state, closing, onMark, onRequestClose, onClosed, fresh }: Props) {
   const [layout] = useState(() => layoutFor(window.innerWidth, window.innerHeight))
   const backdropRef = useRef<HTMLDivElement>(null)
   const bookRef = useRef<HTMLDivElement>(null)
@@ -394,6 +413,10 @@ export function Notebook({ state, closing, onMark, onRequestClose, onClosed }: P
       camera.page = 1
       camera.ready = true
       closeRef.current?.focus({ preventScroll: true })
+      if (fresh && layout.narrow) {
+        camera.page = 2
+        await glide(cameraElRef.current, camera, -layout.width, PAGE_GLIDE_MS)
+      }
     })()
 
     return () => {
@@ -401,7 +424,7 @@ export function Notebook({ state, closing, onMark, onRequestClose, onClosed }: P
       animated.forEach((element) => element?.getAnimations().forEach((animation) => animation.cancel()))
       if (icon) icon.style.visibility = ''
     }
-  }, [layout])
+  }, [layout, fresh])
 
   useEffect(() => {
     if (!closing) return
@@ -547,7 +570,7 @@ export function Notebook({ state, closing, onMark, onRequestClose, onClosed }: P
           <div className="nb-book" ref={bookRef}>
             <section className="nb-page nb-paper">
               <div className="nb-scroll" ref={pageRef}>
-                <CluePages state={state} pager={pagerRef} backRef={backSheetRef} />
+                <CluePages state={state} pager={pagerRef} backRef={backSheetRef} fresh={fresh} />
               </div>
             </section>
             <div className="nb-lid" ref={lidRef}>

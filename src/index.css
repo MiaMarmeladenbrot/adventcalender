@@ -24,7 +24,6 @@
     --fg: #eaf0ec;
     --muted: #9baba3;
     --line: #2a3832;
-    --red: #f08a8a;
     --green: #7cc8a2;
     --gold: #e2b85a;
     color-scheme: dark;
@@ -441,74 +440,6 @@ input:focus-visible {
   min-height: 100dvh;
   background: var(--paper);
 }
-.page {
-  max-width: 760px;
-  margin: 0 auto;
-}
-.scene {
-  position: relative;
-  height: clamp(300px, 46dvh, 430px);
-  overflow: hidden;
-  color: #f4ecdc;
-}
-.scene .back {
-  position: absolute;
-  top: max(12px, env(safe-area-inset-top));
-  left: max(14px, env(safe-area-inset-left));
-  z-index: 3;
-  color: #f4ecdc;
-  background: rgba(10, 18, 48, 0.4);
-  border-radius: 999px;
-  padding: 5px 12px;
-  font-size: 0.9rem;
-}
-.scene-title {
-  position: absolute;
-  top: calc(max(12px, env(safe-area-inset-top)) + 40px);
-  left: max(18px, env(safe-area-inset-left));
-  right: 40%;
-  z-index: 2;
-}
-.scene-title small {
-  font-size: 0.72rem;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  opacity: 0.85;
-}
-.scene-title h2 {
-  color: #f4ecdc;
-  font-size: clamp(1.4rem, 5vw, 1.9rem);
-}
-.scene-place {
-  position: absolute;
-  right: 6%;
-  bottom: 22%;
-  width: min(42%, 220px);
-  height: auto;
-  opacity: 0.95;
-}
-.scene-hill {
-  position: absolute;
-  left: -15%;
-  right: -15%;
-  bottom: -46%;
-  height: 72%;
-  border-radius: 50%;
-  background: #f4ecdc;
-  box-shadow: 0 -4px 14px rgba(0, 0, 0, 0.25);
-}
-.scene-figure {
-  position: absolute;
-  left: 50%;
-  bottom: -8%;
-  transform: translateX(-50%);
-  z-index: 2;
-  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.25));
-}
-.scene-figure.tap {
-  cursor: pointer;
-  -webkit-tap-highlight-color: transparent;
-}
 .paper {
   background: var(--paper);
   color: var(--paper-ink);
@@ -519,9 +450,6 @@ input:focus-visible {
 .paper .puzzle {
   background: #ffffff;
   box-shadow: 0 2px 10px rgba(42, 31, 26, 0.08);
-}
-.paper .say .bub {
-  background: #ffffff;
 }
 .paper .answer input,
 .paper .pill {
@@ -570,6 +498,9 @@ input:focus-visible {
   flex-direction: column;
   overflow: hidden;
   color: #f4ecdc;
+  background-color: var(--paper);
+  background-size: 100% 100dvh;
+  background-repeat: no-repeat;
 }
 .stage-head {
   display: grid;
@@ -670,6 +601,7 @@ input:focus-visible {
   flex: none;
   height: clamp(220px, 38dvh, 340px);
   margin-top: 8px;
+  overflow: hidden;
 }
 .stage-ground .hill {
   position: absolute;
@@ -683,20 +615,71 @@ input:focus-visible {
 }
 .hill-place {
   position: absolute;
-  right: 3%;
-  bottom: 30%;
-  width: min(40%, 200px);
+  right: 10%;
+  bottom: 31%;
+  width: min(36%, 190px);
   height: auto;
-  opacity: 0.95;
 }
 .hill-figure {
   position: absolute;
   left: 50%;
-  bottom: -2px;
+  bottom: 0;
   z-index: 2;
   transform: translateX(-50%);
-  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.25));
-  animation: bubble-in 0.3s ease-out;
+  view-transition-name: stage-figure;
+}
+.hill-figure.tap {
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.stage.compact .stage-ground {
+  height: clamp(170px, 25dvh, 240px);
+  margin-top: -6px;
+}
+.stage.compact .hill-place {
+  width: min(31%, 160px);
+}
+.stage-paper {
+  position: relative;
+  z-index: 3;
+  flex: 1;
+  align-content: start;
+}
+.bubble.waiting {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  width: 92px;
+  padding: 16px 0;
+}
+.bubble.waiting i {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #b5a58c;
+  animation: waiting 1s ease-in-out infinite alternate;
+}
+.bubble.waiting i:nth-child(2) {
+  animation-delay: 0.2s;
+}
+.bubble.waiting i:nth-child(3) {
+  animation-delay: 0.4s;
+}
+@keyframes waiting {
+  to {
+    opacity: 0.3;
+    transform: translateY(-3px);
+  }
+}
+.stage-head {
+  view-transition-name: stage-head;
+}
+.stage-ground {
+  view-transition-name: stage-ground;
+}
+::view-transition-group(*) {
+  animation-duration: 0.45s;
+  animation-timing-function: cubic-bezier(0.3, 0.7, 0.2, 1);
 }
 .stage-foot {
   position: relative;
@@ -850,7 +833,7 @@ input:focus-visible {
 }
 @media (prefers-reduced-motion: reduce) {
   .bubble,
-  .hill-figure {
+  .bubble.waiting i {
     animation: none;
   }
 }
@@ -1605,6 +1588,25 @@ input:focus-visible {
   font-family: var(--f-hand);
   font-size: 1.15rem;
   line-height: 1.25;
+}
+.nb-page .entry.fresh p span {
+  background-image: linear-gradient(transparent 52%, rgba(255, 205, 80, 0.65) 52%, rgba(255, 205, 80, 0.65) 92%, transparent 92%);
+  background-repeat: no-repeat;
+  background-size: 0% 100%;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+  animation: highlight 0.8s 1.7s ease-out forwards;
+}
+@keyframes highlight {
+  to {
+    background-size: 100% 100%;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .nb-page .entry.fresh p span {
+    animation: none;
+    background-size: 100% 100%;
+  }
 }
 .nb-page .empty {
   font-family: var(--f-hand);

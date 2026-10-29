@@ -35,6 +35,7 @@ export default function App() {
   const [view, setView] = useState<View>({ kind: 'map' })
   const [selected, setSelected] = useState<number | null>(null)
   const [book, setBook] = useState<'closed' | 'open' | 'closing'>('closed')
+  const [fresh, setFresh] = useState<number | null>(null)
   const [error, setError] = useState('')
   useBlinking()
 
@@ -63,7 +64,10 @@ export default function App() {
     window.scrollTo(0, 0)
   }, [view])
 
-  const closeBook = useCallback(() => setBook('closed'), [])
+  const closeBook = useCallback(() => {
+    setBook('closed')
+    setFresh(null)
+  }, [])
 
   async function mark(item: string, crossed: boolean) {
     if (!code || !player || !state) return
@@ -132,6 +136,7 @@ export default function App() {
             onMark={mark}
             onRequestClose={() => setBook('closing')}
             onClosed={closeBook}
+            fresh={fresh}
           />
         )}
       </main>
@@ -147,10 +152,16 @@ export default function App() {
           code={code}
           player={player}
           day={view.day}
+          door={state.doors.find((entry) => entry.day === view.day)}
           nickname={state.me.nickname}
           finalMessage={state.family.finalMessage}
           onSolved={() => void refresh()}
           onBack={() => backToMap(view.day)}
+          onNotebook={() => {
+            backToMap(view.day)
+            setFresh(view.day)
+            setBook('open')
+          }}
         />
       </main>
     )
