@@ -26,4 +26,4 @@ export interface AnswerResponse {
   solved?: Solved
 }
 
-export type View = { kind: 'map' } | { kind: 'prolog' } | { kind: 'day'; day: number } | { kind: 'book' }
+export type View = { kind: 'map' } | { kind: 'prolog' } | { kind: 'day'; day: number }

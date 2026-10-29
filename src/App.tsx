@@ -34,6 +34,7 @@ export default function App() {
   const [state, setState] = useState<GameState | null>(null)
   const [view, setView] = useState<View>({ kind: 'map' })
   const [selected, setSelected] = useState<number | null>(null)
+  const [book, setBook] = useState<'closed' | 'open' | 'closing'>('closed')
   const [error, setError] = useState('')
   useBlinking()
 
@@ -61,6 +62,8 @@ export default function App() {
   useEffect(() => {
     window.scrollTo(0, 0)
   }, [view])
+
+  const closeBook = useCallback(() => setBook('closed'), [])
 
   async function mark(item: string, crossed: boolean) {
     if (!code || !player || !state) return
@@ -119,8 +122,17 @@ export default function App() {
           selected={selected ?? 0}
           onSelect={setSelected}
           onOpen={(day) => setView(day === 0 ? { kind: 'prolog' } : { kind: 'day', day })}
-          onNotebook={() => setView({ kind: 'book' })}
+          onNotebook={() => setBook('open')}
         />
+        {book !== 'closed' && (
+          <Notebook
+            state={state}
+            closing={book === 'closing'}
+            onMark={mark}
+            onRequestClose={() => setBook('closing')}
+            onClosed={closeBook}
+          />
+        )}
       </main>
     )
   }
@@ -149,10 +161,7 @@ export default function App() {
       <button type="button" className="back" onClick={() => backToMap()}>
         ‹ Zur Landschaft
       </button>
-      {view.kind === 'prolog' && (
-        <Prolog code={code} nickname={state.me.nickname} onJoined={() => undefined} onContinue={() => backToMap()} />
-      )}
-      {view.kind === 'book' && <Notebook state={state} onMark={mark} />}
+      <Prolog code={code} nickname={state.me.nickname} onJoined={() => undefined} onContinue={() => backToMap()} />
     </main>
   )
 }

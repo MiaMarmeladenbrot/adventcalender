@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef } from 'react'
 import {
   LANTERN_SVG,
   lanternX,
@@ -14,6 +14,7 @@ import {
   WORLD_WIDTH,
 } from '../landscape'
 import type { GameState } from '../lib/types'
+import { ICON_TILT, LeatherCover } from './Notebook'
 import { Sheet } from './Sheet'
 
 const LIFT = 120
@@ -153,7 +154,6 @@ export function Landscape({ state, selected, onSelect, onOpen, onNotebook }: Pro
   const sky = useRef<HTMLDivElement>(null)
   const far = useRef<HTMLDivElement>(null)
   const stars = useRef<SVGSVGElement>(null)
-  const [here, setHere] = useState(0)
   const solved = new Set(state.solved)
   const sledDay = ownSledDay(state)
 
@@ -236,21 +236,8 @@ export function Landscape({ state, selected, onSelect, onOpen, onNotebook }: Pro
         .map(([x, y]) => `${Math.round(shift + (x / 100) * width)}px ${Math.round(base + (y / 100) * RIDGE_HEIGHT)}px`)
       stars.current.style.clipPath = `polygon(${Math.round(shift + width)}px 0, ${ridge.join(', ')}, ${Math.round(shift)}px 0)`
     }
-    const centre = left + element.clientWidth / 2
-    let nearest = 0
-    PLACES.forEach((place, index) => {
-      if (Math.abs(placeX(place) - centre) < Math.abs(placeX(PLACES[nearest]) - centre)) nearest = index
-    })
-    setHere(nearest)
   }
 
-  function goTo(x: number) {
-    const element = track.current
-    if (element) element.scrollTo({ left: x - element.clientWidth / 2, behavior: 'smooth' })
-  }
-
-  const place = PLACES[here]
-  const reached = place.from <= state.unlocked
   const door = state.doors.find((entry) => entry.day === selected)
 
   return (
@@ -333,27 +320,15 @@ export function Landscape({ state, selected, onSelect, onOpen, onNotebook }: Pro
         </div>
       </div>
 
-      <header className="sbar">
-        <div>
-          <strong>{reached ? place.name : 'Unbekanntes Land'}</strong>
-          <small>{reached ? `Tag ${place.from} bis ${place.to}` : `Ab dem ${place.from}. Dezember`}</small>
-        </div>
-        <div className="dots">
-          {PLACES.map((entry, index) => (
-            <button
-              key={entry.name}
-              type="button"
-              aria-label={entry.from <= state.unlocked ? entry.name : 'Unbekannter Ort'}
-              className={`${entry.from <= state.unlocked ? 'reached' : ''}${index === here ? ' here' : ''}`}
-              onClick={() => goTo(placeX(entry))}
-            />
-          ))}
-        </div>
-        <button type="button" className="bookbtn" onClick={onNotebook}>
-          Notizbuch
-          <span>{state.clues.length}</span>
-        </button>
-      </header>
+      <button
+        type="button"
+        className="bookbtn"
+        style={{ transform: `rotate(${ICON_TILT}deg)` }}
+        onClick={onNotebook}
+        aria-label={`Notizbuch, ${state.clues.length} Indizien`}
+      >
+        <LeatherCover count={state.clues.length} />
+      </button>
 
       <Sheet day={selected} door={door} solved={solved.has(selected)} onOpen={onOpen} />
     </section>
