@@ -17,7 +17,7 @@ import type { GameState } from '../lib/types'
 import { ICON_TILT, LeatherCover } from './Notebook'
 import { Sheet } from './Sheet'
 
-const LIFT = 120
+const LIFT = 180
 const PROLOG_X = 180
 const SNOW_TOP = LIFT + 172
 const BUMP_STEP = 380
