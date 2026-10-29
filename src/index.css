@@ -558,13 +558,10 @@ input:focus-visible {
 .scene-figure {
   position: absolute;
   left: 50%;
-  bottom: 6%;
+  bottom: -8%;
   transform: translateX(-50%);
   z-index: 2;
   filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.25));
-}
-.scene-figure.tall {
-  bottom: -8%;
 }
 .paper {
   background: var(--paper);
@@ -1266,24 +1263,27 @@ input:focus-visible {
   color: var(--muted);
 }
 
-.rud {
+.fig {
   display: block;
   width: 100%;
   height: auto;
+  overflow: hidden;
+}
+.rud {
   overflow: visible;
 }
-.rud .x {
+.fig .x {
   display: none;
 }
-.rud[data-e='n'] .on-n,
-.rud[data-e='v'] .on-v,
-.rud[data-e='h'] .on-h {
+.fig[data-e='n'] .on-n,
+.fig[data-e='v'] .on-v,
+.fig[data-e='h'] .on-h {
   display: inline;
 }
-.rud.blink .eyes.x.x {
+.fig.blink .eyes.x.x {
   display: none;
 }
-.rud.blink:not([data-e='h']) .bl {
+.fig.blink:not([data-e='h']) .bl {
   display: inline;
 }
 .rud .nose-glow {

@@ -13,10 +13,10 @@ const BLINK_EVERY = 3600
 function useBlinking() {
   useEffect(() => {
     const timer = setInterval(() => {
-      document.querySelectorAll('.rud').forEach((rudolph) => {
+      document.querySelectorAll('.fig').forEach((figure) => {
         setTimeout(() => {
-          rudolph.classList.add('blink')
-          setTimeout(() => rudolph.classList.remove('blink'), 140)
+          figure.classList.add('blink')
+          setTimeout(() => figure.classList.remove('blink'), 140)
         }, Math.random() * 1200)
       })
     }, BLINK_EVERY)

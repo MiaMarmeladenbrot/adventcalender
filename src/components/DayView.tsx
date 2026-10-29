@@ -102,8 +102,8 @@ export function DayView({ code, player, day, nickname, finalMessage, onSolved, o
         <svg className="scene-place" viewBox="0 0 120 100" aria-hidden="true" dangerouslySetInnerHTML={{ __html: PLACE_ART[place.art] }} />
         <div className="scene-hill" />
         {speaker && (
-          <div key={speaker} className={`scene-figure${speaker === 'rudolph' ? ' tall' : ''}`}>
-            <Face who={speaker} size={speaker === 'rudolph' ? 120 : 96} />
+          <div key={speaker} className="scene-figure">
+            <Face who={speaker} size={120} />
           </div>
         )}
       </div>

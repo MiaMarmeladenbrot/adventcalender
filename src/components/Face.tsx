@@ -6,7 +6,7 @@ export function Face({ who, size }: { who: Who; size: number }) {
   return (
     <span
       className="face"
-      style={{ width: size, height: who === 'rudolph' ? size * 1.2 : size }}
+      style={{ width: size, height: size * 1.2 }}
       dangerouslySetInnerHTML={{ __html: faceSvg(who) }}
     />
   )
