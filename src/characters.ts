@@ -42,16 +42,18 @@ function eyes(y: number, left: number, right: number, { size = 7, iris = INK, wh
 const SANTA = figure(
   cut('<path d="M38 240 C 42 200, 66 178, 100 176 C 134 178, 158 200, 162 240 Z" fill="' + RED + '"/>') +
     cut('<path d="M91 186 H109 V240 H91 Z" fill="' + CREAM + '"/><circle cx="100" cy="206" r="3.5" fill="' + INK + '"/><circle cx="100" cy="226" r="3.5" fill="' + INK + '"/>') +
-    cut(`<ellipse cx="100" cy="118" rx="40" ry="38" fill="${SKIN}"/>`) +
-    cut('<path d="M60 96 C 66 56, 100 36, 132 50 C 150 58, 160 74, 166 94 L156 98 C 148 82, 136 74, 124 76 C 134 84, 140 94, 140 98 Z" fill="' + RED + '"/>') +
-    cut(`<path d="M54 92 C 80 82, 120 82, 146 92 L146 108 C 120 100, 80 100, 54 108 Z" fill="${CREAM}"/><circle cx="162" cy="102" r="10" fill="${CREAM}"/>`) +
-    cheeks(128, 74, 126) +
-    eyes(116, 84, 116) +
-    '<g fill="none" stroke="#fffaf0" stroke-width="5" stroke-linecap="round"><path d="M74 106 Q84 100 93 104"/><path d="M107 104 Q116 100 126 106"/></g>' +
-    cut(`<path d="M56 124 C 52 164, 72 202, 100 208 C 128 202, 148 164, 144 124 C 136 138, 120 146, 100 146 C 80 146, 64 138, 56 124 Z" fill="${CREAM}"/>`) +
-    '<path d="M93 162 Q100 167 107 162" fill="none" stroke="#5a2620" stroke-width="3" stroke-linecap="round"/>' +
-    cut('<path d="M100 142 C 90 132, 74 134, 66 146 C 80 152, 94 150, 100 145 C 106 150, 120 152, 134 146 C 126 134, 110 132, 100 142 Z" fill="#fffaf0"/>') +
-    cut('<circle cx="100" cy="132" r="8" fill="#de8a75"/>'),
+    cut(`<ellipse cx="100" cy="122" rx="37" ry="41" fill="${SKIN}"/>`) +
+    cut('<path d="M64 98 C 70 58, 100 38, 130 52 C 148 60, 156 76, 160 94 L150 98 C 144 82, 134 74, 122 76 C 132 84, 136 94, 136 98 Z" fill="' + RED + '"/>') +
+    cut(`<path d="M60 94 C 82 85, 118 85, 140 94 L140 108 C 118 100, 82 100, 60 108 Z" fill="${CREAM}"/><circle cx="156" cy="102" r="10" fill="${CREAM}"/>`) +
+    cheeks(130, 77, 123) +
+    eyes(118, 86, 114) +
+    '<g fill="none" stroke="#fffaf0" stroke-width="5" stroke-linecap="round"><path d="M77 108 Q86 102 94 106"/><path d="M106 106 Q114 102 123 108"/></g>' +
+    cut(
+      `<path d="M62.7 130 A 38 42 0 0 0 65.7 140 C 64 166, 79 190, 100 195 C 121 190, 136 166, 134.3 140 A 38 42 0 0 0 137.3 130 C 128 141, 116 148, 100 148 C 84 148, 72 141, 62.7 130 Z" fill="${CREAM}"/>`,
+    ) +
+    '<path d="M94 161 Q100 166 106 161" fill="none" stroke="#5a2620" stroke-width="3" stroke-linecap="round"/>' +
+    cut('<path d="M100 143 C 92 134, 79 136, 71 147 C 83 152, 94 151, 100 146 C 106 151, 117 152, 129 147 C 121 136, 108 134, 100 143 Z" fill="#fffaf0"/>') +
+    cut('<circle cx="100" cy="134" r="7.5" fill="#de8a75"/>'),
 )
 
 const MRS = figure(
