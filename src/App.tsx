@@ -4,6 +4,7 @@ import { PaperDefs } from './components/Face'
 import { Landscape } from './components/Landscape'
 import { Notebook } from './components/Notebook'
 import { Prolog } from './components/Prolog'
+import { Welcome } from './components/Welcome'
 import { api, rememberPreviewToken } from './lib/api'
 import { familyCode, storedPlayer, storePlayer } from './lib/session'
 import type { GameState, View } from './lib/types'
@@ -82,9 +83,9 @@ export default function App() {
 
   if (!code) {
     return (
-      <main className="wrap">
-        <h1>Wo ist der Schlitten?</h1>
-        <p className="lede">Dieser Kalender öffnet sich nur über den Link, den du von deiner Familie bekommen hast.</p>
+      <main className="stageview">
+        <PaperDefs />
+        <Welcome />
       </main>
     )
   }

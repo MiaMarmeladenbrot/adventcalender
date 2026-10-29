@@ -730,6 +730,13 @@ input:focus-visible {
 .stage-foot .answer button {
   height: 100%;
 }
+.welcome-note {
+  align-self: center;
+  text-align: center;
+  font-size: 0.9rem;
+  color: #6a5a48;
+  text-wrap: balance;
+}
 .steps {
   height: 22px;
   display: flex;
