@@ -17,7 +17,7 @@ export function useMorse(signal: string | undefined, figure: RefObject<HTMLEleme
     let at = 0
     signal.split(' ').forEach((letter, index) => {
       if (index > 0) {
-        setTimeout(() => setShown((text) => text + ' / '), at)
+        setTimeout(() => setShown((text) => text + ' / '), at)
         at += LETTER_GAP
       }
       letter.split('').forEach((symbol) => {
