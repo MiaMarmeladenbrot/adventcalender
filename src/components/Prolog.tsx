@@ -25,11 +25,11 @@ function welcome(name: string): Line {
 export function Prolog({ code, nickname, notice, onJoined, onContinue, onBack }: Props) {
   const [step, setStep] = useState(0)
   const [name, setName] = useState('')
-  const [joined, setJoined] = useState<{ id: string; name: string } | null>(null)
+  const [joined, setJoined] = useState<string | null>(null)
   const [error, setError] = useState('')
   const [busy, setBusy] = useState(false)
 
-  const known = nickname ?? joined?.name ?? null
+  const known = nickname ?? joined
   const lines: Line[] = known ? [...PROLOG, welcome(known)] : [...PROLOG]
   const line = lines[Math.min(step, lines.length - 1)]
   const asking = !known && step >= PROLOG.length - 1
@@ -42,18 +42,14 @@ export function Prolog({ code, nickname, notice, onJoined, onContinue, onBack }:
     setError('')
     try {
       const { player } = await api.join(code, name)
-      setJoined({ id: player.id, name: name.trim() })
+      setJoined(name.trim())
       setStep(PROLOG.length)
+      onJoined(player.id)
     } catch (failure) {
       setError(messageOf(failure))
     } finally {
       setBusy(false)
     }
-  }
-
-  function finish() {
-    if (joined) onJoined(joined.id)
-    else onContinue()
   }
 
   return (
@@ -96,7 +92,11 @@ export function Prolog({ code, nickname, notice, onJoined, onContinue, onBack }:
           <small>Schon mal dabei? Gleicher Name, gleicher Stand.</small>
         </form>
       ) : (
-        <button type="button" className="go" onClick={() => (last ? finish() : setStep(step + 1))}>
+        <button
+          type="button"
+          className="go"
+          onClick={() => (last ? onContinue() : setStep(step + 1))}
+        >
           {last ? 'Zur Landschaft' : 'Weiter'}
         </button>
       )}

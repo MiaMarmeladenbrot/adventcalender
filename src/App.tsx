@@ -39,6 +39,7 @@ export default function App() {
   const [fresh, setFresh] = useState<number | null>(null)
   const [error, setError] = useState('')
   const [trouble, setTrouble] = useState('')
+  const [welcoming, setWelcoming] = useState(false)
   useBlinking()
 
   useEffect(rememberPreviewToken, [])
@@ -93,7 +94,8 @@ export default function App() {
   }
 
   function backToMap(day?: number) {
-    if (day !== undefined && state) setSelected(state.solved.includes(day) ? firstOpenDay(state) : day)
+    if (day !== undefined && state)
+      setSelected(state.solved.includes(day) ? firstOpenDay(state) : day)
     setView({ kind: 'map' })
   }
 
@@ -106,7 +108,7 @@ export default function App() {
     )
   }
 
-  if (!player) {
+  if (!player || welcoming) {
     return (
       <main className="stageview">
         <PaperDefs />
@@ -118,9 +120,10 @@ export default function App() {
             storePlayer(code, id)
             setError('')
             setView({ kind: 'map' })
+            setWelcoming(true)
             setPlayer(id)
           }}
-          onContinue={() => undefined}
+          onContinue={() => setWelcoming(false)}
         />
       </main>
     )
