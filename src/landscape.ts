@@ -195,5 +195,32 @@ export const PLACE_ART = {
 export const LANTERN_SVG =
   '<svg viewBox="0 0 22 46" aria-hidden="true"><rect x="10" y="14" width="2" height="32" fill="#3a2a22"/><path d="M5 4 H17 L15 15 H7Z" fill="#5a6474" stroke="#3a2a22" stroke-width="1.4"/><rect x="6" y="1" width="10" height="3" fill="#3a2a22"/></svg>'
 
-export const SLED_SVG =
-  '<svg viewBox="0 0 40 26" aria-hidden="true"><path d="M3 21 H33 Q38 21 38 15" stroke="#7a4a2a" stroke-width="2.5" fill="none" stroke-linecap="round"/><path d="M9 21 V16 M27 21 V16" stroke="#7a4a2a" stroke-width="2"/><rect x="6" y="9" width="26" height="8" rx="2" fill="#c62828"/><circle cx="13" cy="5" r="4" fill="#f2c9a5"/><path d="M9 4 L13 -3 L17 4Z" fill="#2e7d4f"/><circle cx="24" cy="5" r="4" fill="#f2c9a5"/><path d="M20 4 L24 -3 L28 4Z" fill="#c62828"/></svg>'
+export function sledSvg(body: string, hatA: string, hatB: string) {
+  return (
+    '<svg viewBox="0 0 40 26" aria-hidden="true">' +
+    '<path d="M3 21 H33 Q38 21 38 15" stroke="#7a4a2a" stroke-width="2.5" fill="none" stroke-linecap="round"/>' +
+    '<path d="M9 21 V16 M27 21 V16" stroke="#7a4a2a" stroke-width="2"/>' +
+    `<rect x="6" y="9" width="26" height="8" rx="2" fill="${body}"/>` +
+    `<circle cx="13" cy="5" r="4" fill="#f2c9a5"/><path d="M9 4 L13 -3 L17 4Z" fill="${hatA}"/>` +
+    `<circle cx="24" cy="5" r="4" fill="#f2c9a5"/><path d="M20 4 L24 -3 L28 4Z" fill="${hatB}"/>` +
+    '</svg>'
+  )
+}
+
+export const SLED_SVG = sledSvg('#c62828', '#2e7d4f', '#c62828')
+
+const SLED_COLOURS: [string, string, string][] = [
+  ['#2e7d4f', '#e3b23c', '#c9d6e3'],
+  ['#2f6fb0', '#e3b23c', '#2e7d4f'],
+  ['#7b4fa8', '#e3b23c', '#2e7d4f'],
+  ['#d08a1e', '#2e7d4f', '#2f6fb0'],
+  ['#1f8a8a', '#e3b23c', '#7b4fa8'],
+  ['#b0567a', '#2e7d4f', '#e3b23c'],
+]
+
+export function otherSledSvg(nickname: string) {
+  let hash = 0
+  for (const letter of nickname) hash = (hash * 31 + letter.charCodeAt(0)) >>> 0
+  const [body, hatA, hatB] = SLED_COLOURS[hash % SLED_COLOURS.length]
+  return sledSvg(body, hatA, hatB)
+}

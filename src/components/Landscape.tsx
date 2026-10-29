@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef } from 'react'
 import {
   LANTERN_SVG,
+  otherSledSvg,
   lanternX,
   lanternY,
   PLACE_ART,
@@ -60,6 +61,39 @@ function xOf(day: number) {
 
 function bottomOf(day: number) {
   return (day === 0 ? 140 : lanternY(day)) + LIFT
+}
+
+const ROAD: [number, number][] = [
+  [0, LIFT + 138],
+  [PROLOG_X, LIFT + 138],
+  ...Array.from({ length: 24 }, (_, index): [number, number] => [
+    lanternX(index + 1),
+    LIFT + lanternY(index + 1) - 2,
+  ]),
+  [PATH_END, LIFT + lanternY(24) - 2],
+]
+
+function roadAt(x: number) {
+  const next = ROAD.findIndex(([pointX]) => pointX >= x)
+  if (next <= 0) return ROAD[Math.max(next, 0)][1]
+  const [x1, y1] = ROAD[next - 1]
+  const [x2, y2] = ROAD[next]
+  return y1 + ((y2 - y1) * (x - x1)) / (x2 - x1)
+}
+
+const OTHER_WIDTH = 40
+const OWN_WIDTH = 52
+
+function othersOnRoad(state: GameState) {
+  const perDay = new Map<number, number>()
+  return state.team
+    .filter((member) => member.nickname !== state.me.nickname)
+    .map((member) => {
+      const place = perDay.get(member.furthest) ?? 0
+      perDay.set(member.furthest, place + 1)
+      const left = xOf(member.furthest) - 18 - OTHER_WIDTH - place * (OTHER_WIDTH + 6)
+      return { nickname: member.nickname, left, bottom: roadAt(left + OTHER_WIDTH / 2) - 4 }
+    })
 }
 
 function groundAt(x: number) {
@@ -302,20 +336,17 @@ export function Landscape({ state, selected, onSelect, onOpen, onNotebook }: Pro
               </button>
             )
           })}
-          {state.team
-            .filter((member) => member.nickname !== state.me.nickname)
-            .map((member, index) => (
-              <div
-                key={member.nickname}
-                className="sled other"
-                style={{ left: xOf(member.furthest) - 30, bottom: bottomOf(member.furthest) + 8 + index * 6 }}
-              >
-                <span className="flag">{member.nickname}</span>
-                <span dangerouslySetInnerHTML={{ __html: SLED_SVG }} />
-              </div>
-            ))}
-          <div className="sled" style={{ left: xOf(sledDay) + 12, bottom: bottomOf(sledDay) - 4 }}>
-            <span dangerouslySetInnerHTML={{ __html: SLED_SVG }} />
+          {othersOnRoad(state).map((other) => (
+            <div key={other.nickname} className="sled other" style={{ left: other.left, bottom: other.bottom }}>
+              <span className="flag">{other.nickname}</span>
+              <span className="sled-body" dangerouslySetInnerHTML={{ __html: otherSledSvg(other.nickname) }} />
+            </div>
+          ))}
+          <div
+            className="sled own"
+            style={{ left: xOf(sledDay) + 12, bottom: roadAt(xOf(sledDay) + 12 + OWN_WIDTH / 2) - 6 }}
+          >
+            <span className="sled-body" dangerouslySetInnerHTML={{ __html: SLED_SVG }} />
           </div>
         </div>
       </div>
