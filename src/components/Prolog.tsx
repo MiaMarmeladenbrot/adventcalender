@@ -65,25 +65,35 @@ export function Prolog({ code, nickname, notice, onJoined, onContinue, onBack }:
       tail={line[0] === 'santa' ? 'left' : 'right'}
       ground={<House speaker={line[0]} />}
       onBack={onBack}
+      reply={
+        asking || error || notice ? (
+          <>
+            {asking && (
+              <label className="bubble-answer" htmlFor="nickname">
+                <span>Ich heiße</span>
+                <input
+                  id="nickname"
+                  form="join"
+                  type="text"
+                  autoComplete="nickname"
+                  maxLength={30}
+                  placeholder="dein Name"
+                  value={name}
+                  onChange={(event) => setName(event.target.value)}
+                />
+              </label>
+            )}
+            {(error || notice) && <span className="bubble-error">{error || notice}</span>}
+          </>
+        ) : undefined
+      }
     >
-      {notice && <p className="wrong">{notice}</p>}
       {asking ? (
-        <form className="name-form" onSubmit={join}>
-          <label htmlFor="nickname">Dein Name</label>
-          <input
-            id="nickname"
-            type="text"
-            autoComplete="nickname"
-            maxLength={30}
-            placeholder="z. B. Mia"
-            value={name}
-            onChange={(event) => setName(event.target.value)}
-          />
-          <small>Schon mal mitgespielt, zum Beispiel auf einem anderen Handy? Dann denselben Namen eingeben, und dein Stand ist wieder da.</small>
-          {error && <p className="wrong">{error}</p>}
+        <form id="join" className="name-form" onSubmit={join}>
           <button className="go" type="submit" disabled={busy}>
             Ich bin dabei
           </button>
+          <small>Schon mal dabei? Gleicher Name, gleicher Stand.</small>
         </form>
       ) : (
         <button type="button" className="go" onClick={() => (last ? finish() : setStep(step + 1))}>
