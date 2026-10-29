@@ -5,7 +5,7 @@ import type { Line, Who } from '../lib/types'
 import { Bubble, Face } from './Face'
 
 const FIGURE_SIZE = 'min(230px, 56vw, 30dvh)'
-const FIGURE_COMPACT = 'min(165px, 40vw, 19dvh)'
+const FIGURE_SMALL = 'min(125px, 30vw, 15dvh)'
 
 interface Props {
   sky: string
@@ -13,15 +13,17 @@ interface Props {
   title: string
   line?: Line | null
   tail?: 'center' | 'left' | 'right'
+  note?: ReactNode
   ground: ReactNode
-  compact?: boolean
   onBack?: () => void
   children?: ReactNode
 }
 
-export function Stage({ sky, eyebrow, title, line, tail, ground, compact, onBack, children }: Props) {
+export function Stage({ sky, eyebrow, title, line, tail, note, ground, onBack, children }: Props) {
+  const sheet = note !== undefined
   return (
-    <section className={`stage${compact ? ' compact' : ''}`} style={{ backgroundImage: sky }}>
+    <section className={`stage${sheet ? ' sheet' : ''}`}>
+      <div className="stage-sky" style={{ backgroundImage: sky }} />
       <header className="stage-head">
         {onBack && (
           <button type="button" className="back" onClick={onBack}>
@@ -31,21 +33,21 @@ export function Stage({ sky, eyebrow, title, line, tail, ground, compact, onBack
         <small>{eyebrow}</small>
         <h2>{title}</h2>
       </header>
-      {!compact && (
-        <div className="stage-bubble">
-          {line ? (
-            <Bubble line={line} tail={tail} />
-          ) : (
-            <div className="bubble waiting" aria-label="Lädt">
-              <i />
-              <i />
-              <i />
-            </div>
-          )}
-        </div>
-      )}
-      <div className="stage-ground">{ground}</div>
-      <div className={compact ? 'stage-paper paper' : 'stage-foot'}>{children}</div>
+      <div className="stage-speech">
+        {sheet && <div className="stage-note paper">{note}</div>}
+        {!sheet && line && <Bubble line={line} tail={tail} />}
+        {!sheet && !line && (
+          <div className="bubble waiting" aria-label="Lädt">
+            <i />
+            <i />
+            <i />
+          </div>
+        )}
+      </div>
+      <div className="stage-bottom">
+        <div className="stage-ground">{ground}</div>
+        <div className="stage-foot">{children}</div>
+      </div>
     </section>
   )
 }
@@ -54,13 +56,13 @@ interface HillProps {
   place: Place
   who: Who
   mood?: Mood
-  compact?: boolean
+  small?: boolean
   onTap?: () => void
   figureRef?: Ref<HTMLButtonElement>
 }
 
-export function Hill({ place, who, mood, compact, onTap, figureRef }: HillProps) {
-  const face = <Face who={who} size={compact ? FIGURE_COMPACT : FIGURE_SIZE} mood={mood} />
+export function Hill({ place, who, mood, small, onTap, figureRef }: HillProps) {
+  const face = <Face who={who} size={small ? FIGURE_SMALL : FIGURE_SIZE} mood={mood} />
   return (
     <>
       <div className="hill" />

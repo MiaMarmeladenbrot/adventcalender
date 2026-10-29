@@ -50,7 +50,9 @@ export function DayView({ code, player, day, door, nickname, finalMessage, onSol
   const [answer, setAnswer] = useState('')
   const [wrong, setWrong] = useState('')
   const [shaking, setShaking] = useState(false)
+  const [shownHints, setShownHints] = useState(0)
   const figure = useRef<HTMLButtonElement>(null)
+  const hintsRef = useRef<HTMLDivElement>(null)
   const signal = data?.day.widget?.kind === 'morse' ? data.day.widget.signal : undefined
   const morse = useMorse(signal, figure)
 
@@ -107,21 +109,35 @@ export function DayView({ code, player, day, door, nickname, finalMessage, onSol
   }
 
   async function nextHint() {
-    const { hints } = await api.hint(code, player, day)
-    setData((previous) => (previous ? { ...previous, hints } : previous))
+    if (data && data.hints.length <= shownHints) {
+      const { hints } = await api.hint(code, player, day)
+      setData((previous) => (previous ? { ...previous, hints } : previous))
+    }
+    setShownHints(shownHints + 1)
   }
+
+  useEffect(() => {
+    if (shownHints > 0) hintsRef.current?.lastElementChild?.scrollIntoView({ behavior: 'smooth', block: 'center' })
+  }, [shownHints])
 
   const place = placeOf(day)
   const solved = data?.solved ?? null
   let who: Who = door?.who ?? 'santa'
   let spoken: Line | null = null
+  let note: ReactNode = undefined
   let mood: Mood | undefined
-  let compact = false
   let tappable = false
-  let body: ReactNode = null
+  let foot: ReactNode = null
 
-  if (!data && !error) {
-    body = (
+  if (error) {
+    note = <p className="wrong">{error}</p>
+    foot = (
+      <button type="button" className="go" onClick={onBack}>
+        Zurück zur Landschaft
+      </button>
+    )
+  } else if (!data) {
+    foot = (
       <>
         <Pips count={2} at={-1} />
         <button type="button" className="go" disabled>
@@ -129,22 +145,12 @@ export function DayView({ code, player, day, door, nickname, finalMessage, onSol
         </button>
       </>
     )
-  } else if (error) {
-    compact = true
-    body = (
-      <>
-        <p className="wrong">{error}</p>
-        <button type="button" className="go" onClick={onBack}>
-          Zurück zur Landschaft
-        </button>
-      </>
-    )
-  } else if (data && phase === 'talk') {
+  } else if (phase === 'talk') {
     const intro = data.day.intro
     const lastLine = line >= intro.length - 1
     who = intro[line][0]
     spoken = intro[line]
-    body = (
+    foot = (
       <>
         <Pips count={intro.length} at={line} />
         <button type="button" className="go" onClick={() => (lastLine ? go('puzzle') : withTransition(() => setLine(line + 1)))}>
@@ -152,11 +158,11 @@ export function DayView({ code, player, day, door, nickname, finalMessage, onSol
         </button>
       </>
     )
-  } else if (data && solved && phase === 'reply') {
+  } else if (solved && phase === 'reply') {
     who = solved.reply[0]
     spoken = solved.reply
     mood = who === 'rudolph' ? 'h' : undefined
-    body = (
+    foot = (
       <>
         <p className="right">Gelöst!</p>
         {day === 24 ? (
@@ -173,48 +179,44 @@ export function DayView({ code, player, day, door, nickname, finalMessage, onSol
         </button>
       </>
     )
-  } else if (data && solved && phase === 'clue') {
-    compact = true
+  } else if (solved && phase === 'clue') {
     who = solved.reply[0]
     mood = who === 'rudolph' ? 'h' : undefined
-    body = (
+    note = (
       <div className="solved">
         <div className="clue">
           <span className="eyebrow">Neues Indiz im Notizbuch</span>
           <p>{solved.clue}</p>
-          {solved.strike.length > 0 && <p className="strike">Auf der Tafel gestrichen: {solved.strike.join(', ')}</p>}
         </div>
-        {day === 24 && (
-          <div className="finale">
-            <div style={{ width: 120 }} dangerouslySetInnerHTML={{ __html: rudolphSvg('h') }} />
-            <h2>Fall gelöst!</h2>
-            <p>
-              Der Schlitten bricht aus dem Eis, der Weihnachtsmann fliegt einmal über den ganzen Nordpol, und alle Schlitten der
-              Soko hängen sich hinten dran.
-            </p>
-            {finalMessage && <p className="final-message">{finalMessage}</p>}
-            <p className="credits">Abspann · Gelöst von: {nickname}</p>
-          </div>
-        )}
+        <div className="finale">
+          <div style={{ width: 120 }} dangerouslySetInnerHTML={{ __html: rudolphSvg('h') }} />
+          <h2>Fall gelöst!</h2>
+          <p>
+            Der Schlitten bricht aus dem Eis, der Weihnachtsmann fliegt einmal über den ganzen Nordpol, und alle Schlitten der Soko
+            hängen sich hinten dran.
+          </p>
+          {finalMessage && <p className="final-message">{finalMessage}</p>}
+          <p className="credits">Abspann · Gelöst von: {nickname}</p>
+        </div>
+      </div>
+    )
+    foot = (
+      <>
         <button type="button" className="go" onClick={onBack}>
           Zurück zur Landschaft
         </button>
         <button type="button" className="talk-toggle" onClick={() => go('reply')}>
           Antwort nochmal ansehen
         </button>
-      </div>
+      </>
     )
-  } else if (data) {
-    compact = true
+  } else {
     who = data.day.who
     tappable = Boolean(signal) && who === 'rudolph'
     mood = tappable ? 'v' : undefined
-    body = (
+    const typed = data.day.widget?.kind !== 'floes' && data.day.widget?.kind !== 'final'
+    note = (
       <>
-        <button type="button" className="talk-toggle" onClick={replayTalk}>
-          Gespräch nochmal ansehen
-        </button>
-
         <div className="puzzle">
           <div dangerouslySetInnerHTML={{ __html: data.day.puzzle }} />
           {data.day.halves && (
@@ -243,50 +245,63 @@ export function DayView({ code, player, day, door, nickname, finalMessage, onSol
           )}
           {data.day.widget?.kind === 'final' && !solved && <Final accuse={submit} onFound={(result) => result.solved && finish(result.solved)} />}
         </div>
-
-        {solved ? (
-          <button type="button" className="go" onClick={() => go('reply')}>
-            Zur Antwort
-          </button>
-        ) : (
-          <>
-            {data.day.widget?.kind !== 'floes' && data.day.widget?.kind !== 'final' && (
-              <>
-                <form className="answer" onSubmit={check}>
-                  <input
-                    id={`answer-${day}`}
-                    className={shaking ? 'shake' : ''}
-                    type="text"
-                    autoComplete="off"
-                    autoCapitalize="off"
-                    placeholder="Deine Lösung"
-                    aria-label="Deine Lösung"
-                    value={answer}
-                    onChange={(event) => setAnswer(event.target.value)}
-                  />
-                  <button type="submit">Prüfen</button>
-                </form>
-                <p className="wrong" aria-live="polite">
-                  {wrong}
-                </p>
-              </>
-            )}
-            <div className="hints">
-              {data.hints.map((hint, index) => (
-                <p className="hint" key={index}>
-                  <b>Hinweis {index + 1}:</b> {hint}
-                </p>
-              ))}
-              {data.hints.length < 3 && (
-                <div className="row">
-                  <button type="button" onClick={nextHint}>
-                    Hinweis {data.hints.length + 1} von 3
-                  </button>
-                </div>
-              )}
-            </div>
-          </>
+        {!solved && shownHints > 0 && (
+          <div className="scribbles" ref={hintsRef}>
+            {data.hints.slice(0, shownHints).map((hint, index) => (
+              <p className="scribble" key={index}>
+                <b>{index + 1}.</b> {hint}
+              </p>
+            ))}
+          </div>
         )}
+        {!solved && (
+          <button
+            type="button"
+            className="hint-button"
+            onClick={nextHint}
+            disabled={shownHints >= 3}
+            aria-label={shownHints >= 3 ? 'Alle Hinweise aufgedeckt' : `Hinweis ${shownHints + 1} von 3`}
+          >
+            ?
+          </button>
+        )}
+      </>
+    )
+    foot = solved ? (
+      <>
+        <button type="button" className="go" onClick={() => go('reply')}>
+          Zur Antwort
+        </button>
+        <button type="button" className="talk-toggle" onClick={replayTalk}>
+          Gespräch nochmal ansehen
+        </button>
+      </>
+    ) : (
+      <>
+        {typed && (
+          <form className="answer" onSubmit={check}>
+            <input
+              id={`answer-${day}`}
+              className={shaking ? 'shake' : ''}
+              type="text"
+              autoComplete="off"
+              autoCapitalize="off"
+              placeholder="Deine Lösung"
+              aria-label="Deine Lösung"
+              value={answer}
+              onChange={(event) => setAnswer(event.target.value)}
+            />
+            <button type="submit">Prüfen</button>
+          </form>
+        )}
+        {wrong && (
+          <p className="wrong" aria-live="polite">
+            {wrong}
+          </p>
+        )}
+        <button type="button" className="talk-toggle" onClick={replayTalk}>
+          Gespräch nochmal ansehen
+        </button>
       </>
     )
   }
@@ -297,20 +312,20 @@ export function DayView({ code, player, day, door, nickname, finalMessage, onSol
       eyebrow={`Tag ${day} · ${place.name}${solved ? ' · gelöst' : ''}`}
       title={data?.day.title ?? door?.title ?? ''}
       line={spoken}
-      compact={compact}
+      note={note}
       onBack={onBack}
       ground={
         <Hill
           place={place}
           who={who}
           mood={mood}
-          compact={compact}
+          small={note !== undefined}
           onTap={tappable ? morse.play : undefined}
           figureRef={tappable ? figure : undefined}
         />
       }
     >
-      {body}
+      {foot}
     </Stage>
   )
 }
