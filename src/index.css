@@ -1722,10 +1722,9 @@ input:focus-visible {
   position: absolute;
   left: 14%;
   right: 22%;
-  top: 26%;
+  top: 30%;
   display: grid;
   justify-items: center;
-  gap: 4cqw;
   font-family: var(--f-display);
   font-size: 13.5cqw;
   line-height: 1;
@@ -1733,13 +1732,6 @@ input:focus-visible {
   text-shadow:
     0 -1px 0 rgba(0, 0, 0, 0.5),
     0 1px 0 rgba(255, 230, 180, 0.2);
-}
-.leather-title small {
-  font-family: var(--f-mono);
-  font-size: 6.5cqw;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  white-space: nowrap;
 }
 .leather-strap {
   position: absolute;

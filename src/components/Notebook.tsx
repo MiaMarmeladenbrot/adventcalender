@@ -173,10 +173,7 @@ function onScreen(element: HTMLElement | null): Rect | null {
 export function LeatherCover({ count }: { count?: number }) {
   return (
     <span className="leather">
-      <span className="leather-title">
-        <small>Soko Schlitten</small>
-        Notizbuch
-      </span>
+      <span className="leather-title">Notizbuch</span>
       <span className="leather-strap" />
       {count !== undefined && <span className="leather-count">{count}</span>}
     </span>
