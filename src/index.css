@@ -167,23 +167,23 @@ input:focus-visible {
 }
 .scape .stars {
   position: absolute;
-  left: 1000px;
-  right: 0;
   top: 0;
   height: 55%;
-  background-image:
-    radial-gradient(1.2px 1.2px at 20% 30%, #fff 50%, transparent 51%),
-    radial-gradient(1px 1px at 60% 12%, #fff 50%, transparent 51%),
-    radial-gradient(1.5px 1.5px at 85% 60%, #fff 50%, transparent 51%),
-    radial-gradient(1px 1px at 40% 75%, #fff 50%, transparent 51%);
-  background-size: 110px 90px;
   mask-image: linear-gradient(90deg, transparent, #000 30%);
+}
+.scape .stars .tw {
+  animation: twinkle 3.2s ease-in-out infinite alternate;
+}
+@keyframes twinkle {
+  to {
+    opacity: 0.25;
+  }
 }
 .scape .aurora {
   position: absolute;
-  left: 1720px;
+  left: 1880px;
   top: 12%;
-  width: 640px;
+  width: 1100px;
   height: 140px;
   border-radius: 50%;
   background: linear-gradient(
@@ -209,7 +209,6 @@ input:focus-visible {
   top: 0;
   left: 0;
   bottom: 0;
-  width: 1300px;
   pointer-events: none;
   will-change: transform;
 }
@@ -217,10 +216,8 @@ input:focus-visible {
   position: absolute;
   left: 0;
   right: 0;
-  height: 150px;
   background: linear-gradient(#e6edf7, #9fb0cc);
   opacity: 0.5;
-  clip-path: polygon(0 100%, 0 60%, 6% 30%, 12% 55%, 20% 8%, 28% 50%, 35% 35%, 42% 62%, 50% 14%, 58% 48%, 66% 26%, 74% 58%, 82% 18%, 90% 52%, 100% 30%, 100% 100%);
 }
 .scape .track {
   position: absolute;
@@ -228,7 +225,7 @@ input:focus-visible {
   overflow-x: auto;
   overflow-y: hidden;
   scrollbar-width: none;
-  overscroll-behavior-x: contain;
+  overscroll-behavior-x: none;
   cursor: grab;
 }
 .scape .track::-webkit-scrollbar {
@@ -237,6 +234,11 @@ input:focus-visible {
 .scape .world {
   position: relative;
   height: 100%;
+  overflow: hidden;
+}
+.scape .icelake {
+  position: absolute;
+  bottom: 0;
 }
 .scape .snowband {
   position: absolute;
@@ -280,21 +282,10 @@ input:focus-visible {
   filter: grayscale(0.7) blur(1.5px);
   opacity: 0.55;
 }
-.scape .sign {
-  margin-top: -4px;
-  background: #f4ecdc;
-  color: #2a1f1a;
-  font-size: 11px;
-  font-weight: 600;
-  padding: 1px 7px;
-  border-radius: 3px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-}
 .scape .pathsvg {
   position: absolute;
   left: 0;
   height: 260px;
-  width: 2400px;
   pointer-events: none;
 }
 .scape .startsign {
