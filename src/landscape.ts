@@ -33,6 +33,30 @@ export function placeOf(day: number) {
   return PLACES.find((place) => day >= place.from && day <= place.to) ?? PLACES[0]
 }
 
+const SKY_STOPS: [number, string][] = [
+  [0, '#f1b48f'],
+  [0.14, '#c49bb0'],
+  [0.3, '#8394c4'],
+  [0.52, '#3a4c86'],
+  [0.76, '#16224a'],
+  [1, '#0a1230'],
+]
+
+function channels(hex: string) {
+  return [1, 3, 5].map((start) => parseInt(hex.slice(start, start + 2), 16))
+}
+
+export function skyAt(day: number) {
+  const position = lanternX(day) / WORLD_WIDTH
+  const upper = SKY_STOPS.findIndex(([stop]) => stop >= position)
+  const [toStop, toColour] = SKY_STOPS[Math.max(upper, 1)]
+  const [fromStop, fromColour] = SKY_STOPS[Math.max(upper, 1) - 1]
+  const share = Math.min(1, Math.max(0, (position - fromStop) / (toStop - fromStop)))
+  const from = channels(fromColour)
+  const to = channels(toColour)
+  return `rgb(${from.map((value, index) => Math.round(value + (to[index] - value) * share)).join(',')})`
+}
+
 export const PLACE_ART = {
   stall:
     '<rect x="18" y="42" width="84" height="53" fill="#9e2b25"/><path d="M10 46 L30 20 H90 L110 46Z" fill="#f4f7fa"/><path d="M44 95 V60 H76 V95Z" fill="#5a1a16"/><path d="M44 60 L76 95 M76 60 L44 95" stroke="#f4f7fa" stroke-width="3"/><circle cx="60" cy="34" r="6" fill="#ffd27a"/>',

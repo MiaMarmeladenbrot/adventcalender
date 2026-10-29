@@ -488,6 +488,166 @@ input:focus-visible {
 .scape .ssheet button:disabled {
   background: #b9ad9c;
 }
+.scape .ssheet button.quiet {
+  background: transparent;
+  color: #6a5a48;
+  text-decoration: underline;
+  padding: 4px;
+}
+
+.pageview {
+  min-height: 100dvh;
+  background: var(--paper);
+}
+.page {
+  max-width: 760px;
+  margin: 0 auto;
+}
+.scene {
+  position: relative;
+  height: clamp(250px, 38dvh, 340px);
+  overflow: hidden;
+  color: #f4ecdc;
+}
+.scene .back {
+  position: absolute;
+  top: max(12px, env(safe-area-inset-top));
+  left: max(14px, env(safe-area-inset-left));
+  z-index: 3;
+  color: #f4ecdc;
+  background: rgba(10, 18, 48, 0.4);
+  border-radius: 999px;
+  padding: 5px 12px;
+  font-size: 0.9rem;
+}
+.scene-title {
+  position: absolute;
+  top: calc(max(12px, env(safe-area-inset-top)) + 40px);
+  left: max(18px, env(safe-area-inset-left));
+  right: 40%;
+  z-index: 2;
+}
+.scene-title small {
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  opacity: 0.85;
+}
+.scene-title h2 {
+  color: #f4ecdc;
+  font-size: clamp(1.4rem, 5vw, 1.9rem);
+}
+.scene-place {
+  position: absolute;
+  right: 6%;
+  bottom: 22%;
+  width: min(42%, 220px);
+  height: auto;
+  opacity: 0.95;
+}
+.scene-hill {
+  position: absolute;
+  left: -15%;
+  right: -15%;
+  bottom: -46%;
+  height: 72%;
+  border-radius: 50%;
+  background: #f4ecdc;
+  box-shadow: 0 -4px 14px rgba(0, 0, 0, 0.25);
+}
+.scene-figure {
+  position: absolute;
+  left: 50%;
+  bottom: 6%;
+  transform: translateX(-50%);
+  z-index: 2;
+  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.25));
+}
+.scene-figure.tall {
+  bottom: -8%;
+}
+.paper {
+  background: var(--paper);
+  color: var(--paper-ink);
+  padding: 8px max(16px, env(safe-area-inset-left)) 80px;
+  display: grid;
+  gap: 16px;
+}
+.paper .puzzle {
+  background: #ffffff;
+  box-shadow: 0 2px 10px rgba(42, 31, 26, 0.08);
+}
+.paper .say .bub {
+  background: #ffffff;
+}
+.paper .answer input,
+.paper .pill {
+  background: #ffffff;
+  color: var(--paper-ink);
+  border-color: #d9cfbd;
+}
+.paper .pill[aria-pressed='true'] {
+  background: var(--paper-ink);
+  color: #ffffff;
+}
+.paper .wnote,
+.paper .hints .row button {
+  color: #6a5a48;
+}
+.paper .hint,
+.paper .puzzle table.grid td {
+  background: #ffffff;
+}
+.paper .puzzle table.grid td,
+.paper .puzzle table.grid th {
+  border-color: #d9cfbd;
+}
+.paper .puzzle table.grid th {
+  color: #6a5a48;
+}
+.paper .wrong {
+  color: #b3262d;
+}
+.paper .clue {
+  border-color: #1f5c43;
+}
+.paper .clue .eyebrow {
+  color: #1f5c43;
+}
+.dialogue {
+  display: grid;
+  gap: 18px;
+  padding-top: 8px;
+}
+.dialogue .say {
+  max-width: 100%;
+}
+.dialogue .say .bub {
+  font-size: 1.25rem;
+  padding: 12px 16px;
+}
+.dialogue-actions {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+.solved .go {
+  justify-self: stretch;
+  text-align: center;
+}
+.talk-toggle {
+  justify-self: center;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #6a5a48;
+  text-decoration: underline;
+}
+.right {
+  text-align: center;
+  font-family: var(--f-hand);
+  font-size: 1.4rem;
+  color: #1f5c43;
+}
 
 .day {
   background: var(--surface);

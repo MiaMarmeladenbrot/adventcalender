@@ -69,7 +69,7 @@ export default function App() {
   }
 
   function backToMap(day?: number) {
-    if (day !== undefined) setSelected(day)
+    if (day !== undefined && state) setSelected(state.solved.includes(day) ? firstOpenDay(state) : day)
     setView({ kind: 'map' })
   }
 
@@ -125,29 +125,34 @@ export default function App() {
     )
   }
 
+  if (view.kind === 'day') {
+    return (
+      <main className="pageview">
+        <PaperDefs />
+        <DayView
+          key={view.day}
+          code={code}
+          player={player}
+          day={view.day}
+          nickname={state.me.nickname}
+          finalMessage={state.family.finalMessage}
+          onSolved={() => void refresh()}
+          onBack={() => backToMap(view.day)}
+        />
+      </main>
+    )
+  }
+
   return (
     <main className="wrap">
       <PaperDefs />
-      <button type="button" className="back" onClick={() => backToMap(view.kind === 'day' ? view.day : undefined)}>
+      <button type="button" className="back" onClick={() => backToMap()}>
         ‹ Zur Landschaft
       </button>
       {view.kind === 'prolog' && (
         <Prolog code={code} nickname={state.me.nickname} onJoined={() => undefined} onContinue={() => backToMap()} />
       )}
       {view.kind === 'book' && <Notebook state={state} onMark={mark} />}
-      {view.kind === 'day' && (
-        <DayView
-          key={view.day}
-          code={code}
-          player={player}
-          day={view.day}
-          unlocked={state.unlocked}
-          nickname={state.me.nickname}
-          finalMessage={state.family.finalMessage}
-          onSolved={() => void refresh()}
-          onNavigate={(day) => setView({ kind: 'day', day })}
-        />
-      )}
     </main>
   )
 }

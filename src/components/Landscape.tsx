@@ -5,14 +5,13 @@ import {
   lanternY,
   PLACE_ART,
   PLACES,
-  placeOf,
   placeX,
   SLED_SVG,
   START_X,
   WORLD_WIDTH,
 } from '../landscape'
 import type { GameState } from '../lib/types'
-import { Face } from './Face'
+import { Sheet } from './Sheet'
 
 const LIFT = 120
 const PROLOG_X = 60
@@ -256,38 +255,7 @@ export function Landscape({ state, selected, onSelect, onOpen, onNotebook }: Pro
         </button>
       </header>
 
-      <div className="ssheet">
-        {selected === 0 ? (
-          <>
-            <Face who="santa" size={44} />
-            <small>Prolog · 30. November</small>
-            <strong>Willkommen am Nordpol</strong>
-            <button type="button" onClick={() => onOpen(0)}>
-              Nochmal ansehen
-            </button>
-          </>
-        ) : door ? (
-          <>
-            <Face who={door.who} size={44} />
-            <small>
-              Tag {door.day} · {placeOf(door.day).name}
-            </small>
-            <strong>{door.title}</strong>
-            <button type="button" onClick={() => onOpen(door.day)}>
-              {solved.has(door.day) ? 'Gelöst · nochmal ansehen' : 'Rätsel öffnen'}
-            </button>
-          </>
-        ) : (
-          <>
-            <Face who="snowman" size={44} />
-            <small>Tag {selected} · ???</small>
-            <strong>Noch im Nebel</strong>
-            <button type="button" disabled>
-              Öffnet am {selected}. Dezember
-            </button>
-          </>
-        )}
-      </div>
+      <Sheet day={selected} door={door} solved={solved.has(selected)} onOpen={onOpen} />
     </section>
   )
 }
