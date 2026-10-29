@@ -692,13 +692,19 @@ input:focus-visible {
   filter: drop-shadow(0 6px 12px rgba(10, 18, 48, 0.28));
 }
 .stage-bottom {
-  position: relative;
-  z-index: 4;
-}
-.stage.sheet .stage-bottom {
   position: sticky;
   bottom: 0;
-  margin-top: 6px;
+  z-index: 4;
+}
+.stage.sheet .stage-speech {
+  margin-top: 0;
+  padding-bottom: 6px;
+}
+.stage.sheet .stage-bottom {
+  margin-top: auto;
+}
+.stage-bottom .stage-ground {
+  margin-bottom: -2px;
 }
 .stage.sheet .stage-ground {
   height: clamp(130px, 19dvh, 190px);
@@ -711,6 +717,72 @@ input:focus-visible {
   background: #ffffff;
   color: var(--paper-ink);
   border-color: #d9cfbd;
+}
+.stage-foot {
+  min-height: calc(44px + 10px + 22px + 14px + max(18px, env(safe-area-inset-bottom)));
+  align-content: start;
+}
+.stage-foot .go,
+.stage-foot .answer {
+  height: 44px;
+}
+.stage-foot .answer input,
+.stage-foot .answer button {
+  height: 100%;
+}
+.steps {
+  height: 22px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 18px;
+}
+.step {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 22px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: #8a7a68;
+}
+.step i {
+  width: 18px;
+  height: 5px;
+  border-radius: 3px;
+  transition: background 0.3s ease;
+}
+.step.on {
+  color: var(--paper-ink);
+}
+.step:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+.step:not(:disabled):not(.on):hover {
+  color: var(--paper-ink);
+}
+.stamp {
+  position: absolute;
+  z-index: 4;
+  top: 4px;
+  right: max(22px, env(safe-area-inset-right));
+  padding: 3px 12px;
+  border: 2.5px solid #2e7d4f;
+  border-radius: 6px;
+  color: #2e7d4f;
+  background: #ffffff;
+  font-family: var(--f-display);
+  font-size: 1.1rem;
+  transform: rotate(8deg);
+  animation: stamp-in 0.35s 0.2s cubic-bezier(0.3, 1.6, 0.5, 1) both;
+}
+@keyframes stamp-in {
+  from {
+    opacity: 0;
+    transform: rotate(8deg) scale(1.6);
+  }
 }
 .stage-foot .wrong {
   min-height: 0;
@@ -805,6 +877,35 @@ input:focus-visible {
   animation-duration: 0.45s;
   animation-timing-function: cubic-bezier(0.3, 0.7, 0.2, 1);
 }
+::view-transition-old(stage-ground),
+::view-transition-new(stage-ground) {
+  height: 100%;
+  object-fit: none;
+  object-position: 50% 100%;
+}
+::view-transition-image-pair(stage-ground) {
+  overflow: hidden;
+}
+::view-transition-old(stage-speech),
+::view-transition-new(stage-speech) {
+  mix-blend-mode: normal;
+}
+::view-transition-old(stage-speech) {
+  animation: 0.16s ease-in both speech-out;
+}
+::view-transition-new(stage-speech) {
+  animation: 0.3s 0.14s ease-out both speech-in;
+}
+@keyframes speech-out {
+  to {
+    opacity: 0;
+  }
+}
+@keyframes speech-in {
+  from {
+    opacity: 0;
+  }
+}
 .stage-foot {
   position: relative;
   z-index: 3;
@@ -817,20 +918,6 @@ input:focus-visible {
 .stage-foot .go {
   justify-self: stretch;
   text-align: center;
-}
-.pips {
-  display: flex;
-  justify-content: center;
-  gap: 5px;
-}
-.pips i {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: #d9cfbd;
-}
-.pips i.on {
-  background: var(--paper-ink);
 }
 .house {
   position: absolute;
@@ -965,20 +1052,6 @@ input:focus-visible {
   justify-self: stretch;
   text-align: center;
 }
-.talk-toggle {
-  justify-self: center;
-  font-size: 0.85rem;
-  font-weight: 600;
-  color: #6a5a48;
-  text-decoration: underline;
-}
-.right {
-  text-align: center;
-  font-family: var(--f-hand);
-  font-size: 1.4rem;
-  color: #1f5c43;
-}
-
 .face {
   display: block;
   flex: none;

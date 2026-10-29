@@ -13,13 +13,14 @@ interface Props {
   title: string
   line?: Line | null
   tail?: 'center' | 'left' | 'right'
+  stamp?: string
   note?: ReactNode
   ground: ReactNode
   onBack?: () => void
   children?: ReactNode
 }
 
-export function Stage({ sky, eyebrow, title, line, tail, note, ground, onBack, children }: Props) {
+export function Stage({ sky, eyebrow, title, line, tail, stamp, note, ground, onBack, children }: Props) {
   const sheet = note !== undefined
   return (
     <section className={`stage${sheet ? ' sheet' : ''}`}>
@@ -34,6 +35,7 @@ export function Stage({ sky, eyebrow, title, line, tail, note, ground, onBack, c
         <h2>{title}</h2>
       </header>
       <div className="stage-speech">
+        {stamp && <span className="stamp">{stamp}</span>}
         {sheet && <div className="stage-note paper">{note}</div>}
         {!sheet && line && <Bubble line={line} tail={tail} />}
         {!sheet && !line && (

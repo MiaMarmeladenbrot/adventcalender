@@ -32,13 +32,42 @@ function listOf(names: string[]) {
   return `${names.slice(0, -1).join(', ')} oder ${names[names.length - 1]}`
 }
 
-function Pips({ count, at }: { count: number; at: number }) {
+type Step = 'talk' | 'puzzle' | 'reply'
+
+const STEPS: [Step, string][] = [
+  ['talk', 'Gespräch'],
+  ['puzzle', 'Rätsel'],
+  ['reply', 'Antwort'],
+]
+
+interface StepsProps {
+  at: Step
+  progress?: number
+  solved: boolean
+  disabled?: boolean
+  onGo?: (step: Step) => void
+}
+
+function Steps({ at, progress = 1, solved, disabled, onGo }: StepsProps) {
   return (
-    <div className="pips" aria-hidden="true">
-      {Array.from({ length: count }, (_, index) => (
-        <i key={index} className={index === at ? 'on' : ''} />
-      ))}
-    </div>
+    <nav className="steps" aria-label="Ablauf des Türchens">
+      {STEPS.map(([step, label]) => {
+        const filled = step === at ? progress : STEPS.findIndex(([entry]) => entry === at) > STEPS.findIndex(([entry]) => entry === step) ? 1 : 0
+        return (
+          <button
+            key={step}
+            type="button"
+            className={`step${step === at ? ' on' : ''}`}
+            disabled={disabled || (step === 'reply' && !solved)}
+            aria-current={step === at ? 'step' : undefined}
+            onClick={() => step !== at && onGo?.(step)}
+          >
+            <i style={{ background: `linear-gradient(to right, #2a1f1a ${filled * 100}%, #d9cfbd ${filled * 100}%)` }} />
+            {label}
+          </button>
+        )
+      })}
+    </nav>
   )
 }
 
@@ -85,7 +114,11 @@ export function DayView({ code, player, day, door, nickname, finalMessage, onSol
     onSolved()
   }
 
-  function replayTalk() {
+  function step(next: Step) {
+    if (next !== 'talk') {
+      go(next)
+      return
+    }
     withTransition(() => {
       setLine(0)
       setPhase('talk')
@@ -139,10 +172,10 @@ export function DayView({ code, player, day, door, nickname, finalMessage, onSol
   } else if (!data) {
     foot = (
       <>
-        <Pips count={2} at={-1} />
         <button type="button" className="go" disabled>
           Weiter
         </button>
+        <Steps at="talk" progress={0} solved={false} disabled />
       </>
     )
   } else if (phase === 'talk') {
@@ -152,10 +185,10 @@ export function DayView({ code, player, day, door, nickname, finalMessage, onSol
     spoken = intro[line]
     foot = (
       <>
-        <Pips count={intro.length} at={line} />
         <button type="button" className="go" onClick={() => (lastLine ? go('puzzle') : withTransition(() => setLine(line + 1)))}>
           {lastLine ? 'Zum Rätsel' : 'Weiter'}
         </button>
+        <Steps at="talk" progress={(line + 1) / intro.length} solved={Boolean(solved)} onGo={step} />
       </>
     )
   } else if (solved && phase === 'reply') {
@@ -164,19 +197,16 @@ export function DayView({ code, player, day, door, nickname, finalMessage, onSol
     mood = who === 'rudolph' ? 'h' : undefined
     foot = (
       <>
-        <p className="right">Gelöst!</p>
         {day === 24 ? (
           <button type="button" className="go" onClick={() => go('clue')}>
             Weiter
           </button>
         ) : (
           <button type="button" className="go" onClick={onNotebook}>
-            Ins Notizbuch
+            Indiz ins Notizbuch schreiben
           </button>
         )}
-        <button type="button" className="talk-toggle" onClick={() => go('puzzle')}>
-          Rätsel nochmal ansehen
-        </button>
+        <Steps at="reply" solved onGo={step} />
       </>
     )
   } else if (solved && phase === 'clue') {
@@ -205,9 +235,7 @@ export function DayView({ code, player, day, door, nickname, finalMessage, onSol
         <button type="button" className="go" onClick={onBack}>
           Zurück zur Landschaft
         </button>
-        <button type="button" className="talk-toggle" onClick={() => go('reply')}>
-          Antwort nochmal ansehen
-        </button>
+        <Steps at="reply" solved onGo={step} />
       </>
     )
   } else {
@@ -272,9 +300,7 @@ export function DayView({ code, player, day, door, nickname, finalMessage, onSol
         <button type="button" className="go" onClick={() => go('reply')}>
           Zur Antwort
         </button>
-        <button type="button" className="talk-toggle" onClick={replayTalk}>
-          Gespräch nochmal ansehen
-        </button>
+        <Steps at="puzzle" solved onGo={step} />
       </>
     ) : (
       <>
@@ -299,9 +325,7 @@ export function DayView({ code, player, day, door, nickname, finalMessage, onSol
             {wrong}
           </p>
         )}
-        <button type="button" className="talk-toggle" onClick={replayTalk}>
-          Gespräch nochmal ansehen
-        </button>
+        <Steps at="puzzle" solved={false} onGo={step} />
       </>
     )
   }
@@ -312,6 +336,7 @@ export function DayView({ code, player, day, door, nickname, finalMessage, onSol
       eyebrow={`Tag ${day} · ${place.name}${solved ? ' · gelöst' : ''}`}
       title={data?.day.title ?? door?.title ?? ''}
       line={spoken}
+      stamp={solved && phase === 'reply' ? 'Gelöst!' : undefined}
       note={note}
       onBack={onBack}
       ground={
