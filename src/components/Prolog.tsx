@@ -55,7 +55,7 @@ export function Prolog({ code, nickname, notice, onJoined, onContinue, onBack }:
   return (
     <Stage
       sky={SKY}
-      eyebrow="Prolog · 30. November"
+      calendar={{ day: 30, month: 'November' }}
       title="Willkommen am Nordpol"
       line={line}
       tail={line[0] === 'santa' ? 'left' : 'right'}

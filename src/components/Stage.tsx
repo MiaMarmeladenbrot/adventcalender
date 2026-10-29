@@ -9,7 +9,8 @@ const FIGURE_SMALL = 'min(125px, 30vw, 15dvh)'
 
 interface Props {
   sky: string
-  eyebrow: string
+  eyebrow?: string
+  calendar?: { day: number; month: string }
   title: string
   line?: Line | null
   tail?: 'center' | 'left' | 'right'
@@ -22,19 +23,40 @@ interface Props {
   children?: ReactNode
 }
 
-export function Stage({ sky, eyebrow, title, line, tail, stamp, quip, reply, note, ground, onBack, children }: Props) {
+export function Stage({
+  sky,
+  eyebrow,
+  calendar,
+  title,
+  line,
+  tail,
+  stamp,
+  quip,
+  reply,
+  note,
+  ground,
+  onBack,
+  children,
+}: Props) {
   const sheet = note !== undefined
   return (
     <section className={`stage${sheet ? ' sheet' : ''}`}>
       <div className="stage-sky" style={{ backgroundImage: sky }} />
-      <header className="stage-head">
+      <header className={`stage-head${calendar ? ' dated' : ''}`}>
         {onBack && (
           <button type="button" className="back" onClick={onBack}>
             ‹ Zur Landschaft
           </button>
         )}
-        <small>{eyebrow}</small>
+        {eyebrow && <small>{eyebrow}</small>}
         <h2>{title}</h2>
+        {calendar && (
+          <span className="calendar" aria-label={`${calendar.day}. ${calendar.month}`}>
+            <span className="calendar-month">{calendar.month.slice(0, 3)}</span>
+            <span className="calendar-torn" />
+            <span className="calendar-day">{calendar.day}</span>
+          </span>
+        )}
       </header>
       <div className="stage-speech">
         {stamp && <span className="stamp">{stamp}</span>}

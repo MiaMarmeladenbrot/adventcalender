@@ -358,7 +358,7 @@ export function DayView({ code, player, day, door, nickname, finalMessage, onSol
   return (
     <Stage
       sky={`linear-gradient(${skyAt(day)}, #0a1230 140%)`}
-      eyebrow={`Tag ${day} · ${place.name}${solved ? ' · gelöst' : ''}`}
+      calendar={{ day, month: 'Dezember' }}
       title={data?.day.title ?? door?.title ?? ''}
       line={spoken}
       stamp={solved && phase === 'reply' ? 'Gelöst!' : undefined}
