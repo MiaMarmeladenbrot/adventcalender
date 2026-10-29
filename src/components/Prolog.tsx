@@ -1,19 +1,39 @@
 import { useState, type FormEvent } from 'react'
 import { PROLOG } from '../../content/constants'
 import { api } from '../lib/api'
-import { Face, Reply, Say } from './Face'
+import type { Line } from '../lib/types'
+import { House, Stage } from './Stage'
+
+const SKY = 'linear-gradient(#f1b48f, #c49bb0 45%, #6f78a8)'
 
 interface Props {
   code: string
   nickname: string | null
+  notice?: string
   onJoined: (playerId: string) => void
   onContinue: () => void
+  onBack?: () => void
 }
 
-export function Prolog({ code, nickname, onJoined, onContinue }: Props) {
+function welcome(name: string): Line {
+  return [
+    'mrs',
+    `Schön, dich kennenzulernen, ${name}! Ab dem 1. Dezember leuchtet jeden Morgen eine neue Laterne. Alles, was du herausfindest, kommt in dein Notizbuch.`,
+  ]
+}
+
+export function Prolog({ code, nickname, notice, onJoined, onContinue, onBack }: Props) {
+  const [step, setStep] = useState(0)
   const [name, setName] = useState('')
+  const [joined, setJoined] = useState<{ id: string; name: string } | null>(null)
   const [error, setError] = useState('')
   const [busy, setBusy] = useState(false)
+
+  const known = nickname ?? joined?.name ?? null
+  const lines: Line[] = known ? [...PROLOG, welcome(known)] : [...PROLOG]
+  const line = lines[Math.min(step, lines.length - 1)]
+  const asking = !known && step >= PROLOG.length - 1
+  const last = step >= lines.length - 1
 
   async function join(event: FormEvent) {
     event.preventDefault()
@@ -22,7 +42,8 @@ export function Prolog({ code, nickname, onJoined, onContinue }: Props) {
     setError('')
     try {
       const { player } = await api.join(code, name)
-      onJoined(player.id)
+      setJoined({ id: player.id, name: name.trim() })
+      setStep(PROLOG.length)
     } catch (failure) {
       setError(failure instanceof Error ? failure.message : 'Das hat nicht geklappt.')
     } finally {
@@ -30,57 +51,45 @@ export function Prolog({ code, nickname, onJoined, onContinue }: Props) {
     }
   }
 
+  function finish() {
+    if (joined) onJoined(joined.id)
+    else onContinue()
+  }
+
   return (
-    <article className="day">
-      <div className="dhead">
-        <Face who="santa" size={54} />
-        <div>
-          <span className="eyebrow">Prolog · 30. November</span>
-          <h2>Willkommen am Nordpol</h2>
-        </div>
-      </div>
-      <div className="talk">
-        {PROLOG.map((line, index) => (
-          <Say key={index} line={line} />
-        ))}
-        {nickname && <Reply text={nickname} />}
-        {nickname && (
-          <Say
-            line={[
-              'mrs',
-              `Willkommen in der Soko Schlitten, ${nickname}! Ab dem 1. Dezember öffnet sich jeden Morgen eine Tür. Alles, was du herausfindest, landet in deinem Notizbuch.`,
-            ]}
+    <Stage
+      sky={SKY}
+      eyebrow="Prolog · 30. November"
+      title="Willkommen am Nordpol"
+      line={line}
+      tail={line[0] === 'santa' ? 'left' : 'right'}
+      ground={<House speaker={line[0]} />}
+      onBack={onBack}
+    >
+      {notice && <p className="wrong">{notice}</p>}
+      {asking ? (
+        <form className="name-form" onSubmit={join}>
+          <label htmlFor="nickname">Dein Name</label>
+          <input
+            id="nickname"
+            type="text"
+            autoComplete="nickname"
+            maxLength={30}
+            placeholder="z. B. Mia"
+            value={name}
+            onChange={(event) => setName(event.target.value)}
           />
-        )}
-      </div>
-      {nickname ? (
-        <button className="go" type="button" onClick={onContinue}>
-          Los geht’s
-        </button>
+          <small>Schon mal mitgespielt, zum Beispiel auf einem anderen Handy? Dann denselben Namen eingeben, und dein Stand ist wieder da.</small>
+          {error && <p className="wrong">{error}</p>}
+          <button className="go" type="submit" disabled={busy}>
+            Ich bin dabei
+          </button>
+        </form>
       ) : (
-        <>
-          <form className="answer" onSubmit={join}>
-            <input
-              id="nickname"
-              type="text"
-              autoComplete="nickname"
-              maxLength={30}
-              placeholder="Dein Spitzname"
-              aria-label="Dein Spitzname"
-              value={name}
-              onChange={(event) => setName(event.target.value)}
-            />
-            <button type="submit" disabled={busy}>
-              Ich bin dabei
-            </button>
-          </form>
-          <p className="wnote">
-            Hast du schon mitgespielt, zum Beispiel auf einem anderen Handy? Dann gib genau denselben
-            Spitznamen ein, und dein Stand ist wieder da.
-          </p>
-          <p className="wrong">{error}</p>
-        </>
+        <button type="button" className="go" onClick={() => (last ? finish() : setStep(step + 1))}>
+          {last ? 'Zur Landschaft' : 'Weiter'}
+        </button>
       )}
-    </article>
+    </Stage>
   )
 }

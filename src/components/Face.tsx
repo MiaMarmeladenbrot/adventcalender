@@ -1,34 +1,23 @@
 import { NAMES } from '../../content/constants'
-import { faceSvg } from '../characters'
+import { faceSvg, rudolphSvg, type Mood } from '../characters'
 import type { Line, Who } from '../lib/types'
 
-export function Face({ who, size }: { who: Who; size: number }) {
+export function Face({ who, size, mood }: { who: Who; size: number | string; mood?: Mood }) {
   return (
     <span
       className="face"
-      style={{ width: size, height: size * 1.2 }}
-      dangerouslySetInnerHTML={{ __html: faceSvg(who) }}
+      style={{ width: size, aspectRatio: '5 / 6' }}
+      dangerouslySetInnerHTML={{ __html: who === 'rudolph' && mood ? rudolphSvg(mood) : faceSvg(who) }}
     />
   )
 }
 
-export function Say({ line }: { line: Line }) {
+export function Bubble({ line, tail = 'center' }: { line: Line; tail?: 'center' | 'left' | 'right' }) {
   const [who, text] = line
   return (
-    <div className="say">
-      <Face who={who} size={32} />
-      <div className="bub">
-        <b>{NAMES[who]}</b>
-        {text}
-      </div>
-    </div>
-  )
-}
-
-export function Reply({ text }: { text: string }) {
-  return (
-    <div className="say me">
-      <div className="bub">{text}</div>
+    <div className={`bubble tail-${tail}`} key={text}>
+      <span className="who">{NAMES[who]}</span>
+      {text}
     </div>
   )
 }

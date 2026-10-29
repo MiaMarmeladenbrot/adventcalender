@@ -85,30 +85,31 @@ export default function App() {
     )
   }
 
-  if (!player || !state) {
+  if (!player) {
+    return (
+      <main className="stageview">
+        <PaperDefs />
+        <Prolog
+          code={code}
+          nickname={null}
+          notice={error}
+          onJoined={(id) => {
+            storePlayer(code, id)
+            setError('')
+            setView({ kind: 'map' })
+            setPlayer(id)
+          }}
+          onContinue={() => undefined}
+        />
+      </main>
+    )
+  }
+
+  if (!state) {
     return (
       <main className="wrap">
-        <PaperDefs />
-        <header className="top">
-          <span className="eyebrow">Soko Schlitten</span>
-          <h1>Wo ist der Schlitten?</h1>
-        </header>
-        {error && <p className="wrong">{error}</p>}
-        {player ? (
-          <p className="wnote">Einen Moment …</p>
-        ) : (
-          <Prolog
-            code={code}
-            nickname={null}
-            onJoined={(id) => {
-              storePlayer(code, id)
-              setError('')
-              setView({ kind: 'map' })
-              setPlayer(id)
-            }}
-            onContinue={() => undefined}
-          />
-        )}
+        <h1>Wo ist der Schlitten?</h1>
+        <p className="wnote">Einen Moment …</p>
       </main>
     )
   }
@@ -156,12 +157,15 @@ export default function App() {
   }
 
   return (
-    <main className="wrap">
+    <main className="stageview">
       <PaperDefs />
-      <button type="button" className="back" onClick={() => backToMap()}>
-        ‹ Zur Landschaft
-      </button>
-      <Prolog code={code} nickname={state.me.nickname} onJoined={() => undefined} onContinue={() => backToMap()} />
+      <Prolog
+        code={code}
+        nickname={state.me.nickname}
+        onJoined={() => undefined}
+        onContinue={() => backToMap()}
+        onBack={() => backToMap()}
+      />
     </main>
   )
 }
