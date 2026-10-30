@@ -35,7 +35,7 @@ describe('answer matching', () => {
   it('ignores case, umlauts, spaces and a leading article', () => {
     expect(isCorrect(DAYS[6], 'Ein Tannenbaum')).toBe(true)
     expect(isCorrect(DAYS[22], 'Ich wollte üben')).toBe(true)
-    expect(isCorrect(DAYS[2], 'der Zug')).toBe(true)
+    expect(isCorrect(DAYS[2], 'das Geschirr')).toBe(true)
   })
 
   it('reads the mirrored clock only the right way round', () => {

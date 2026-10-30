@@ -35,7 +35,7 @@ export const MORSE_POSTER =
   '</div>'
 
 export const MIRRORED_CLOCK =
-  '<div class="clock"><svg viewBox="0 0 100 100" aria-label="Foto der Stalluhr">' +
+  '<div class="clock"><svg viewBox="0 0 100 100" aria-label="Foto der Küchenuhr">' +
   '<circle cx="50" cy="50" r="46" fill="#fbf6ea" stroke="#2a1f1a" stroke-width="3"/>' +
   '<g transform="translate(100 0) scale(-1 1)" font-family="Georgia, serif" font-size="12" fill="#2a1f1a" text-anchor="middle">' +
   '<text x="50" y="19">12</text><text x="85" y="54">3</text><text x="50" y="90">6</text><text x="15" y="54">9</text>' +
@@ -47,7 +47,10 @@ export const KEY_HOOKS =
   '<div class="hooks"><div><svg viewBox="0 0 60 40" aria-label="Hammer">' +
   '<rect x="10" y="6" width="28" height="12" rx="2" fill="#5a6474"/><rect x="21" y="16" width="6" height="22" rx="2" fill="#a0703f"/>' +
   '</svg><span class="mono">KDPPHU</span></div>' +
-  '<div><span class="empty">leer</span><span class="mono">VFKOLWWHQ</span></div></div>'
+  '<div><svg viewBox="0 0 60 40" aria-label="Gefundener Schlüssel">' +
+  '<circle cx="16" cy="20" r="9" fill="none" stroke="#c9a14a" stroke-width="5"/>' +
+  '<path d="M25 20 H52 M44 20 V28 M50 20 V26" stroke="#c9a14a" stroke-width="5" stroke-linecap="round"/>' +
+  '</svg><span class="mono">VFKOLWWHQ</span></div></div>'
 
 export function shelves(rows: [number, string[]][]) {
   return (

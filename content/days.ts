@@ -68,32 +68,32 @@ export const DAYS: Day[] = [
     intro: [
       [
         'elf',
-        'In meiner Werkstatt war niemand. Ausgeschlossen! Bei mir hat alles seinen festen Platz. Wenn jemand hier war, würde ich das sofort merken.',
+        'In meiner Sattelkammer war niemand. Ausgeschlossen! Bei mir hat alles seinen festen Platz. Wenn jemand hier war, würde ich das sofort merken.',
       ],
       ['elf', 'Seht ihr? Alles ordentlich. Alles … Moment.'],
     ],
     puzzle:
-      'Knöpfchens Spielzeugregal:' +
+      'Knöpfchens Regal in der Sattelkammer:' +
       shelves([
-        [3, ['Bär', 'Bus', 'Hut']],
-        [4, ['Ball', 'Buch', 'Kran']],
-        [5, ['Puppe', 'Zug', 'Teddy', 'Flöte']],
-        [6, ['Roller', 'Drache', 'Puzzle']],
+        [4, ['Zaum', 'Sack', 'Fell']],
+        [5, ['Decke', 'Zügel', 'Leine']],
+        [6, ['Glocke', 'Sattel', 'Geschirr', 'Bürste']],
+        [7, ['Halfter', 'Laterne', 'Kandare']],
       ]) +
       'Was steht nicht an seinem Platz?',
-    accept: ['zug', 'spielzeugzug'],
-    solution: 'Der Zug',
+    accept: ['geschirr', 'zuggeschirr'],
+    solution: 'Das Geschirr',
     hints: [
       'Die Fächer sind nummeriert. Was könnte die Zahl bedeuten?',
       'Zähl die Buchstaben.',
-      'Der Zug hat 3 Buchstaben und gehört in Fach 3.',
+      'Das Geschirr hat 8 Buchstaben. Für 8 gibt es gar kein Fach.',
     ],
     reply: [
       'elf',
-      'Der Zug! Den hab ich gestern Abend selbst falsch eingeräumt. Sonst ist alles unberührt. Hier war niemand außer mir.',
+      'Das Zuggeschirr! Das liegt nie im Regal, es hängt am Haken neben dem Schlitten. Jemand hat es heute Nacht benutzt und hastig zurückgelegt.',
     ],
-    clue: 'Die Werkstatt war die ganze Nacht verschlossen, nichts wurde angerührt.',
-    strike: ['Werkstatt'],
+    clue: 'In der Nacht hat jemand das Zuggeschirr benutzt. Der Schlitten wurde von einem Rentier gezogen.',
+    strike: [],
   },
   {
     who: 'twins',
@@ -288,10 +288,10 @@ export const DAYS: Day[] = [
     ],
     reply: [
       'ginger',
-      'Kufen! Da ist heute Nacht ein Schlitten an meinem Fenster vorbeigerauscht und hat das Blech runtergefegt! Und schaut mal, an den Spuren …',
+      'Kufen! Da ist heute Nacht ein Schlitten an meinem Fenster vorbeigerauscht und hat das Blech runtergefegt!',
     ],
-    clue: 'An den Kufenspuren glitzert etwas Weißes. Zuckerguss aus der Bäckerei?',
-    strike: [],
+    clue: 'In der Nacht ist ein Schlitten an der Bäckerei vorbeigerauscht. Im Stall steht er also nicht mehr.',
+    strike: ['Rentierstall'],
   },
   {
     who: 'penguin',
@@ -316,12 +316,16 @@ export const DAYS: Day[] = [
     strike: ['Pinguin Pedro'],
   },
   {
-    who: 'mrs',
-    title: 'Die Stalluhr',
+    who: 'ginger',
+    title: 'Die Küchenuhr',
     intro: [
       [
-        'mrs',
-        'Die Stalluhr ist umgefallen und stehen geblieben. Ich habe sofort ein Foto gemacht, bevor jemand sie anfasst.',
+        'ginger',
+        'Noch ein Skandal! Meine Küchenuhr ist heute Nacht vom Haken gefallen und stehen geblieben.',
+      ],
+      [
+        'ginger',
+        'Ich hab sofort ein Foto gemacht, bevor jemand sie anfasst. Leider nur durch den Spiegel über dem Ofen.',
       ],
     ],
     puzzle: MIRRORED_CLOCK + 'Um wie viel Uhr ist die Uhr stehen geblieben?',
@@ -333,42 +337,46 @@ export const DAYS: Day[] = [
     solution: '2:10 Uhr',
     hints: [
       'Schau dir die Zahlen auf dem Ziffernblatt genau an.',
-      'Die Weihnachtsfrau hat das Foto durch den Spiegel an der Stallwand gemacht.',
+      'Der Lebkuchenmann hat das Foto durch einen Spiegel gemacht.',
       'Gespiegelt zeigt sie 9:50, wirklich ist es 2:10 Uhr.',
     ],
     reply: [
-      'mrs',
-      'Zehn nach zwei. Da ist jemand gegen die Uhr gestoßen, als er den Schlitten hinausgezogen hat.',
+      'ginger',
+      'Zehn nach zwei! Genau da hat der Schlitten die ganze Bäckerei wackeln lassen. Angehalten hat er aber nicht, nur vorbeigerast.',
     ],
-    clue: 'Um 2:10 Uhr wurde der Schlitten aus dem Stall gezogen. Schleifspuren führen nach Norden hinaus.',
-    strike: ['Rentierstall'],
+    clue: 'Um 2:10 Uhr raste der Schlitten an der Bäckerei vorbei, ohne anzuhalten. Die Spuren führen weiter nach Norden.',
+    strike: ['Bäckerei'],
   },
   {
     who: 'elf',
-    title: 'Der Schlüsselkasten',
+    title: 'Der Schlüssel im Schnee',
     intro: [
       [
         'elf',
-        'Unerhört! An meinem Schlüsselbrett fehlt ein Schlüssel. Dabei ist alles ordentlich beschriftet. Geheim natürlich.',
+        'Der Lebkuchenmann hat vor seiner Tür einen Schlüssel im Schnee gefunden. Der Anhänger ist von mir, ich beschrifte alles. Geheim natürlich.',
+      ],
+      [
+        'elf',
+        'Ich war übrigens die ganze Nacht in meiner Werkstatt und hab durchgearbeitet. Da kam niemand mit einem Schlitten vorbei.',
       ],
     ],
     puzzle:
-      'Am Schlüsselbrett hängt alles beschriftet. Ein Haken ist leer.' +
+      'Knöpfchen legt einen seiner Anhänger zum Vergleich neben den gefundenen Schlüssel.' +
       KEY_HOOKS +
-      'Welcher Schlüssel fehlt?',
+      'Wofür ist der gefundene Schlüssel?',
     accept: ['schlitten', 'schlittenschluessel'],
     solution: 'SCHLITTEN',
     hints: [
-      'Das Etikett am Hammer kennst du eigentlich schon.',
+      'Den Anhänger am Hammer kannst du eigentlich schon lesen.',
       'Aus H wurde K. Wie weit liegen die beiden im Alphabet auseinander?',
       'Jeder Buchstabe 3 zurück: SCHLITTEN.',
     ],
     reply: [
       'elf',
-      'Der Schlittenschlüssel! Und nur wer im Stall wohnt, weiß, an welchem Haken er hängt.',
+      'Der Schlittenschlüssel! Der hängt sonst im Stall, und nur wer dort wohnt, weiß, an welchem Haken.',
     ],
-    clue: 'Es fehlt der Schlittenschlüssel. Wer ihn genommen hat, kannte sich im Stall gut aus.',
-    strike: [],
+    clue: 'Vor der Bäckerei lag der Schlittenschlüssel im Schnee. Wer ihn genommen hat, kannte sich im Stall gut aus. In der Werkstatt war niemand.',
+    strike: ['Werkstatt'],
   },
   {
     who: 'santa',
@@ -462,9 +470,9 @@ export const DAYS: Day[] = [
     hints: ['Zuckers Notiz sind Koordinaten.', 'B4 heißt Zeile B, Spalte 4.', 'L, A, C, K: LACK'],
     reply: [
       'twins',
-      'Lack! Wir haben die Rodel der Elfen glitzerlackiert. Als Überraschung für die Elfen, nicht für den Weihnachtsmann!',
+      'Lack! Wir haben im Rodelschuppen die Rodel der Elfen glitzerlackiert und sie heimlich in den Stall gestellt, da holen die Elfen sie morgens ab. Eine Überraschung für die Elfen, nicht für den Weihnachtsmann!',
     ],
-    clue: 'Die Zwillinge haben die ganze Nacht Rodel lackiert, in der Werkstatt-Garage, vor Zeugen. Ihre Überraschung galt den Elfen.',
+    clue: 'Die Zwillinge haben nachts im Rodelschuppen am Eistor Rodel glitzerlackiert und sie in den Stall gebracht. Daher der Glitzer. Ihre Überraschung galt den Elfen.',
     strike: ['Zimt & Zucker', 'Überraschung'],
   },
   {
@@ -483,10 +491,10 @@ export const DAYS: Day[] = [
     ],
     reply: [
       'snowman',
-      'Ein Weg zum Eissee! Und das Weiße an den Kufen? Das war Raureif. Kenn ich, hab ich selbst überall.',
+      'Ein Weg zum Eissee! Die Kufenspuren sind am Eistor vorbei weitergegangen, immer Richtung See.',
     ],
-    clue: 'Das Weiße an den Kufen war Raureif, kein Zuckerguss. Raureif bildet sich nur am offenen Wasser des Eissees.',
-    strike: ['Bäckerei'],
+    clue: 'Die Kufenspuren führen am Eistor vorbei weiter zum Eissee.',
+    strike: [],
   },
   {
     who: 'penguin',
@@ -545,9 +553,9 @@ export const DAYS: Day[] = [
     ],
     reply: [
       'elf',
-      'Komet! Das Gerät stand im Krankenstall. Komet lag dort die ganze Nacht mit Fieber und hat sich hin und her gewälzt.',
+      'Komet! Das Gerät stand im Krankenstall. Er hat geflunkert: Er war gar nicht in seiner Box, er lag die ganze Nacht mit Fieber hier. Zugeben wollte er das nicht. Wer vorne fliegen will, darf doch nicht krank sein.',
     ],
-    clue: 'Komet lag die ganze Nacht mit Fieber im Krankenstall, sein Glöckchen ist aufgezeichnet. Ohne Komet bleibt auch der Neid ohne Täter.',
+    clue: 'Komet hat geflunkert: Er lag die ganze Nacht mit Fieber im Krankenstall, nicht in seiner Box am Tor. Ohne Komet bleibt auch der Neid ohne Täter.',
     strike: ['Komet', 'Neid'],
   },
   {
@@ -563,7 +571,7 @@ export const DAYS: Day[] = [
     puzzle:
       timeCards([
         ['S', 'Berta: „Es war halb drei, als ich jemanden durchs Eistor gelassen habe.“'],
-        ['G', 'Die Stalluhr blieb um zehn nach zwei stehen.'],
+        ['G', 'Die Küchenuhr der Bäckerei fiel um zehn nach zwei vom Haken.'],
         ['T', 'Flocke: „Eine Viertelstunde vor drei waren die Hufspuren schon da.“'],
         ['A', 'Mila: „Punkt zwei bin ich eingenickt.“'],
         ['N', 'Die Stalltür ging fünf Minuten nach Milas Einnicken auf.'],
@@ -662,17 +670,22 @@ export const DAYS: Day[] = [
     solution: 'ICH WOLLTE UEBEN',
     hints: ['Jede Zahl steht für einen Buchstaben.', '9 ist I, 3 ist C.', 'ICH WOLLTE UEBEN'],
     reply: [
-      'rudolph',
-      'Das ist meins. Ich fliege dieses Jahr zum ersten Mal ganz vorn und hatte solche Angst, es zu vermasseln. Ich wollte heimlich üben … und dann bin ich eingebrochen. Es tut mir so leid.',
+      'mrs',
+      '„Ich wollte üben.“ Da hatte jemand große Angst vor etwas, das er bald zum ersten Mal machen muss, und wollte heimlich üben. Mit unserem Schlitten. Wer das wohl war? Morgen ist Heiligabend, da brauchen wir den Schlitten unbedingt wieder!',
     ],
-    clue: 'Rudolph hatte Angst vor seinem ersten Flug ganz vorn und wollte heimlich üben. Am Eissee ist er mit dem Schlitten eingebrochen.',
+    clue: 'Wer den Schlitten genommen hat, hatte Angst und wollte heimlich üben. Er hat Hufe und ein Tagebuch.',
     strike: [],
   },
   {
     who: 'santa',
     title: 'Heiligabend',
     special: true,
-    intro: [['santa', 'Heiligabend! Habt ihr den Fall gelöst? Dann sagt es mir, ganz offiziell.']],
+    intro: [
+      [
+        'santa',
+        'Heiligabend! Habt ihr den Fall gelöst? Dann sagt mir doch bitte, wo ich meinen treuen Schlitten finde.',
+      ],
+    ],
     puzzle: 'Erhebe Anklage. Danach zeig mir, wo genau der Schlitten steckt.',
     widget: { kind: 'final' },
     accept: ['rudolpheisseeangst'],
@@ -683,8 +696,8 @@ export const DAYS: Day[] = [
       'Rechts im Eis ragen zwei Kufenspitzen heraus. Tipp darauf.',
     ],
     reply: [
-      'santa',
-      'Der Schlitten ist frei! Und Rudolph fliegt trotzdem ganz vorn. Angst haben ist erlaubt.',
+      'rudolph',
+      'Ja, ich war’s. Ich fliege heute zum ersten Mal ganz vorn und hatte solche Angst, es zu vermasseln. Ich wollte heimlich üben … und dann bin ich auf dem See eingebrochen. Es tut mir so leid.',
     ],
     clue: 'Fall gelöst: Rudolph hat den Schlitten aus Angst vor seinem ersten Flug zum Eissee gezogen, um heimlich zu üben.',
     strike: [],

@@ -285,8 +285,9 @@ export function DayView({
           <div style={{ width: 120 }} dangerouslySetInnerHTML={{ __html: rudolphSvg('h') }} />
           <h2>Fall gelöst!</h2>
           <p>
-            Der Schlitten bricht aus dem Eis, der Weihnachtsmann fliegt einmal über den ganzen
-            Nordpol, und alle Schlitten der Soko hängen sich hinten dran.
+            Der Weihnachtsmann nimmt Rudolph in den Arm: „Angst haben ist erlaubt. Du fliegst
+            trotzdem ganz vorn.“ Dann bricht der Schlitten aus dem Eis, und alle Schlitten der
+            Familie hängen sich hinten dran.
           </p>
           {finalMessage && <p className="final-message">{finalMessage}</p>}
           <p className="credits">Abspann · Gelöst von: {nickname}</p>
