@@ -245,17 +245,7 @@ export const DAYS: Day[] = [
     puzzle: 'Spiel Flockes Erinnerung ab. Welches Tier hat er <b>zweimal</b> gesehen?',
     widget: {
       kind: 'memory',
-      items: [
-        'ein Mond',
-        'eine Eule',
-        'eine Sternschnuppe',
-        'ein Hase',
-        'eine Laterne',
-        'ein Fuchs',
-        'Hufspuren nach Norden',
-        'eine Eule',
-        'Schneeflocken',
-      ],
+      items: ['moon', 'owl', 'star', 'hare', 'lantern', 'fox', 'hooves', 'owl', 'snow'],
     },
     accept: ['eule', 'eulen'],
     solution: 'Die Eule',

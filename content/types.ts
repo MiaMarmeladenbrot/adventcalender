@@ -13,9 +13,11 @@ export type Who =
 
 export type Line = readonly [Who, string]
 
+export type MemoryMotif = 'moon' | 'owl' | 'star' | 'hare' | 'lantern' | 'fox' | 'hooves' | 'snow'
+
 export type Widget =
   | { kind: 'morse'; signal: string }
-  | { kind: 'memory'; items: string[] }
+  | { kind: 'memory'; items: MemoryMotif[] }
   | { kind: 'torch'; digits: { digit: string; left: number; top: number }[] }
   | { kind: 'bells'; bells: { name: string; notes: number[] }[]; recording: number[] }
   | { kind: 'floes'; grid: number[][]; start: [number, number][] }
