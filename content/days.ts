@@ -258,7 +258,7 @@ export const DAYS: Day[] = [
       'snowman',
       'Genau, die Eule! Und dazwischen habe ich Hufspuren nach Norden gesehen. Ich wär hinterher, aber das ist schwierig ohne Beine.',
     ],
-    clue: 'Flocke sah Hufspuren nach Norden Da er sich selbst nicht bewegen kann, können wir ihn von der Verdächtigenliste streichen.',
+    clue: 'Flocke sah Hufspuren nach Norden. Da er sich selbst nicht bewegen kann, können wir ihn von der Verdächtigenliste streichen.',
     strike: ['Schneemann'],
   },
   {
