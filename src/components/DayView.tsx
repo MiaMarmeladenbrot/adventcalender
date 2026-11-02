@@ -336,10 +336,11 @@ export function DayView({
           {data.day.widget?.kind === 'bells' && (
             <Bells bells={data.day.widget.bells} recording={data.day.widget.recording} />
           )}
-          {data.day.widget?.kind === 'floes' && !solved && (
+          {data.day.widget?.kind === 'floes' && (
             <Floes
               grid={data.day.widget.grid}
               start={data.day.widget.start}
+              solved={Boolean(solved)}
               onArrive={(values) =>
                 void submit(values.join(',')).then((response) =>
                   setWrong(response.correct ? '' : (response.message ?? '')),
