@@ -1,4 +1,6 @@
-import type { Who } from './lib/types'
+import type { Mood, Who } from './lib/types'
+
+export type { Mood }
 
 const INK = '#2a1f1a'
 const SKIN = '#eec3a0'
@@ -70,11 +72,14 @@ const SANTA = figure(
     ) +
     cheeks(130, 77, 123) +
     eyes(118, 86, 114) +
-    '<g fill="none" stroke="#fffaf0" stroke-width="5" stroke-linecap="round"><path d="M77 108 Q86 102 94 106"/><path d="M106 106 Q114 102 123 108"/></g>' +
+    `<g class="x eyes on-s"><ellipse cx="86" cy="118" rx="7.5" ry="8.5" fill="#fff8ec"/><ellipse cx="114" cy="118" rx="7.5" ry="8.5" fill="#fff8ec"/><circle cx="86" cy="118" r="2.8" fill="${INK}"/><circle cx="114" cy="118" r="2.8" fill="${INK}"/></g>` +
+    '<g class="x on-n" fill="none" stroke="#fffaf0" stroke-width="5" stroke-linecap="round"><path d="M77 108 Q86 102 94 106"/><path d="M106 106 Q114 102 123 108"/></g>' +
+    '<g class="x on-s" fill="none" stroke="#fffaf0" stroke-width="5" stroke-linecap="round"><path d="M77 106 Q86 97 94 103"/><path d="M106 103 Q114 97 123 106"/></g>' +
     cut(
       `<path d="M62.7 130 A 38 42 0 0 0 65.7 140 C 64 166, 79 190, 100 195 C 121 190, 136 166, 134.3 140 A 38 42 0 0 0 137.3 130 C 128 141, 116 148, 100 148 C 84 148, 72 141, 62.7 130 Z" fill="${CREAM}"/>`,
     ) +
-    '<path d="M94 161 Q100 166 106 161" fill="none" stroke="#5a2620" stroke-width="3" stroke-linecap="round"/>' +
+    '<path class="x on-n" d="M94 161 Q100 166 106 161" fill="none" stroke="#5a2620" stroke-width="3" stroke-linecap="round"/>' +
+    '<ellipse class="x on-s" cx="100" cy="163" rx="5.5" ry="7" fill="#5a2620"/>' +
     cut(
       '<path d="M100 143 C 92 134, 79 136, 71 147 C 83 152, 94 151, 100 146 C 106 151, 117 152, 129 147 C 121 136, 108 134, 100 143 Z" fill="#fffaf0"/>',
     ) +
@@ -268,8 +273,6 @@ const ART: Record<Exclude<Who, 'rudolph'>, string> = {
   bear: BEAR,
 }
 
-export type Mood = 'n' | 'v' | 'h'
-
 export function rudolphSvg(mood: Mood = 'n') {
   return (
     `<svg class="fig rud" data-e="${mood}" viewBox="0 0 200 240" aria-hidden="true"><g filter="url(#pcGrain)">` +
@@ -304,7 +307,7 @@ export function rudolphSvg(mood: Mood = 'n') {
   )
 }
 
-export function faceSvg(who: Who) {
-  if (who === 'rudolph') return rudolphSvg('n')
-  return ART[who]
+export function faceSvg(who: Who, mood: Mood = 'n') {
+  if (who === 'rudolph') return rudolphSvg(mood)
+  return ART[who].replace('data-e="n"', `data-e="${mood}"`)
 }

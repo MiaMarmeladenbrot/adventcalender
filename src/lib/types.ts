@@ -1,6 +1,6 @@
-import type { Line, PublicDay, Solved, Who } from '../../content/types'
+import type { Line, Mood, PublicDay, Solved, Who } from '../../content/types'
 
-export type { Line, PublicDay, Solved, Who }
+export type { Line, Mood, PublicDay, Solved, Who }
 
 export interface GameState {
   me: { id: string; nickname: string }

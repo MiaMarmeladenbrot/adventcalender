@@ -2283,7 +2283,8 @@ input:focus-visible {
 }
 .fig[data-e='n'] .on-n,
 .fig[data-e='v'] .on-v,
-.fig[data-e='h'] .on-h {
+.fig[data-e='h'] .on-h,
+.fig[data-e='s'] .on-s {
   display: inline;
 }
 .fig.blink .eyes.x.x {

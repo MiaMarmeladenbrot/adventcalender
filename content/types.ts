@@ -11,7 +11,9 @@ export type Who =
   | 'penguin'
   | 'bear'
 
-export type Line = readonly [Who, string]
+export type Mood = 'n' | 'v' | 'h' | 's'
+
+export type Line = readonly [Who, string, Mood?]
 
 export type MemoryMotif = 'moon' | 'owl' | 'star' | 'hare' | 'lantern' | 'fox' | 'hooves' | 'snow'
 

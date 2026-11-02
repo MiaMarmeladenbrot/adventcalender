@@ -39,6 +39,7 @@ export const DAYS: Day[] = [
     reply: [
       'santa',
       'Hereinspaziert! Und hier steht er, der wunderschöne … Moment. Wo ist er? MEIN SCHLITTEN IST WEG!',
+      's',
     ],
     clue: 'Der Schlitten verschwand in der Nacht zum 1. Dezember aus dem Rentierstall.',
     strike: ['Rentierstall'],
@@ -170,6 +171,7 @@ export const DAYS: Day[] = [
     reply: [
       'rudolph',
       'Ich hab nichts gesagt! Aber jetzt, wo du es ansprichst: Komet war heute Nacht sehr unruhig.',
+      'v',
     ],
     clue: 'Komet war in der Tatnacht sehr unruhig, er wollte ja schon immer ganz vorn am Schlitten fliegen.',
     strike: [],
@@ -640,7 +642,7 @@ export const DAYS: Day[] = [
       'Es ist ein Datum.',
       '2112, also der 21.12.',
     ],
-    reply: ['rudolph', 'Ihr habt den Weg gefunden, in der Ferne glitzert schon der Eissee.'],
+    reply: ['rudolph', 'Ihr habt den Weg gefunden, in der Ferne glitzert schon der Eissee.', 'v'],
     clue: 'Rudolph führt uns Richtung Eissee und sagt kaum ein Wort.',
     strike: [],
   },
@@ -733,6 +735,7 @@ export const DAYS: Day[] = [
     reply: [
       'rudolph',
       'Ja, ich war’s. Ich fliege heute zum ersten Mal ganz vorn und hatte solche Angst, es zu vermasseln. Ich wollte heimlich üben - und dann bin ich auf dem See eingebrochen. Komet hat übrigens nichts damit zu tun: Der lag mit Fieber im Krankenstall und wollte nicht, dass jemand das weiß. Es tut mir so leid.',
+      'v',
     ],
     clue: 'Fall gelöst: Rudolph hat den Schlitten aus Angst vor seinem ersten Flug zum Eissee gezogen, um heimlich zu üben.',
     strike: [],

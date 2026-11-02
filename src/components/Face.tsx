@@ -1,5 +1,5 @@
 import { NAMES } from '../../content/constants'
-import { faceSvg, rudolphSvg, type Mood } from '../characters'
+import { faceSvg, type Mood } from '../characters'
 import type { Line, Who } from '../lib/types'
 
 export function Face({ who, size, mood }: { who: Who; size: number | string; mood?: Mood }) {
@@ -8,7 +8,7 @@ export function Face({ who, size, mood }: { who: Who; size: number | string; moo
       className="face"
       style={{ width: size, aspectRatio: '5 / 6' }}
       dangerouslySetInnerHTML={{
-        __html: who === 'rudolph' && mood ? rudolphSvg(mood) : faceSvg(who),
+        __html: faceSvg(who, mood),
       }}
     />
   )

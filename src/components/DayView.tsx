@@ -237,6 +237,7 @@ export function DayView({
     const lastLine = line >= intro.length - 1
     who = intro[line][0]
     spoken = intro[line]
+    mood = intro[line][2]
     foot = (
       <>
         <button
@@ -257,7 +258,7 @@ export function DayView({
   } else if (solved && phase === 'reply') {
     who = solved.reply[0]
     spoken = solved.reply
-    mood = who === 'rudolph' ? 'h' : undefined
+    mood = solved.reply[2] ?? (who === 'rudolph' ? 'h' : undefined)
     foot = (
       <>
         {day === 24 ? (
@@ -274,7 +275,7 @@ export function DayView({
     )
   } else if (solved && phase === 'clue') {
     who = solved.reply[0]
-    mood = who === 'rudolph' ? 'h' : undefined
+    mood = solved.reply[2] ?? (who === 'rudolph' ? 'h' : undefined)
     note = (
       <div className="solved">
         <div className="clue">
