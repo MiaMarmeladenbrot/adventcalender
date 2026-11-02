@@ -23,9 +23,9 @@ describe('the 24 days', () => {
     DAYS.flatMap((day) => day.strike).forEach((item) => expect(items.has(item)).toBe(true))
   })
 
-  it('leaves exactly Rudolph, the Eissee and Angst after all clues', () => {
+  it('leaves Rudolph and Komet, the Eissee and Angst for the final accusation', () => {
     const struck = new Set(DAYS.flatMap((day) => day.strike))
-    expect(BOARD.wer.filter((item) => !struck.has(item))).toEqual(['Rudolph'])
+    expect(BOARD.wer.filter((item) => !struck.has(item))).toEqual(['Rudolph', 'Komet'])
     expect(BOARD.wo.filter((item) => !struck.has(item))).toEqual(['Eissee'])
     expect(BOARD.warum.filter((item) => !struck.has(item))).toEqual(['Angst'])
   })
@@ -45,8 +45,9 @@ describe('answer matching', () => {
   })
 
   it('accepts the floe path and the final accusation in the form the widgets send', () => {
-    expect(isCorrect(DAYS[21], '9,13,18')).toBe(true)
+    expect(isCorrect(DAYS[21], '9,13,18,24,31,39')).toBe(true)
     expect(isCorrect(DAYS[23], 'Rudolph Eissee Angst')).toBe(true)
     expect(isCorrect(DAYS[23], 'Komet Eissee Angst')).toBe(false)
+    expect(trapFor(DAYS[23], 'Komet Eissee Angst')).toContain('zum ersten Mal')
   })
 })

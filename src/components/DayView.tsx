@@ -355,7 +355,7 @@ export function DayView({
           <div className="scribbles" ref={hintsRef}>
             {data.hints.slice(0, shownHints).map((hint, index) => (
               <p className="scribble" key={index}>
-                <b>{index + 1}.</b> {hint}
+                <b>{index + 1}.</b> <span dangerouslySetInnerHTML={{ __html: hint }} />
               </p>
             ))}
           </div>
