@@ -98,7 +98,7 @@ export const DAYS: Day[] = [
     ],
     reply: [
       'elf',
-      'Das Zuggeschirr! Das liegt nie im Regal, es hängt am Haken neben dem Schlitten. Jemand hat es heute Nacht benutzt und hastig zurückgelegt.',
+      'Das Zuggeschirr! Das liegt nie im Regal, es hängt am Haken neben dem Schlitten. Hat es heute Nacht etwa jemand benutzt und hastig zurückgelegt?',
     ],
     clue: 'In der Nacht hat jemand das Zuggeschirr benutzt, um den Schlitten zu ziehen.',
     strike: [],
@@ -185,11 +185,11 @@ export const DAYS: Day[] = [
     intro: [
       [
         'komet',
-        'Ich soll es gewesen sein? Unverschämt! Nur weil ausgerechnet Rudolph dieses Jahr vorn fliegen darf? Der war doch noch nie vorn!',
+        'Ich soll es gewesen sein? Unverschämt! Warum das denn? Ist mir doch egal, wer vorne vom Schlitten fliegt!',
       ],
       [
         'komet',
-        'Nein, ich habe die ganze Nacht in meiner Box geschlafen. Welche Box? Na, das könnt ihr Schlaumeier doch selber rausfinden.',
+        'Nein, ich habe die ganze Nacht in meiner Box geschlafen. Welche Box? Na, das könnt ihr Schlaumeier selber rausfinden.',
       ],
     ],
     puzzle:
@@ -233,7 +233,7 @@ export const DAYS: Day[] = [
       'grinch',
       'Grmpf. Richtig, der Tannenbaum. Und wisst ihr, was das Schönste an ihm ist? Der Januar, wenn er rausfliegt. Dieses Jahr kommt ohne Schlitten ja vermutlich erst gar keiner rein. Hehe.',
     ],
-    clue: 'Der Grinch freut sich, weil ohne Schlitten kein Weihnachten. Will er sich rächen?',
+    clue: 'Der Grinch freut sich, weil es ohne Schlitten kein Weihnachten gibt. Steckt er dahinter? Wollte er sich rächen?',
     strike: [],
   },
   {
@@ -348,8 +348,8 @@ export const DAYS: Day[] = [
       'Die ganze Nacht hab ich geschuftet! So wohnt man doch am Nordpol, oder? Wenn ich schon nicht nach Hause kann, bau ich mir eben hier eins.',
       'h',
     ],
-    clue: 'Pedro hat Heimweh. Mit dem Schlitten wäre er schnell zu Hause. Aber er hat die ganze Nacht an seinem Iglu gebaut und war nicht mal in der Nähe des Stalls.',
-    strike: ['Pinguin Pedro'],
+    clue: 'Pedro hat Heimweh. Mit dem Schlitten wäre er schnell zu Hause. Aber er hat die ganze Nacht an seinem Iglu gebaut und war nicht mal in der Nähe des Stalls. Heimweh war es also nicht.',
+    strike: ['Pinguin Pedro', 'Heimweh'],
   },
   {
     who: 'ginger',
@@ -380,8 +380,8 @@ export const DAYS: Day[] = [
       'ginger',
       'Zehn nach zwei! Da ist meine Uhr vom Haken gefallen, so doll hat alles gewackelt. Und angehalten hat der Schlitten nicht: Die Spuren gehen einfach weiter, Richtung Norden.',
     ],
-    clue: 'Um 2:10 Uhr fuhr der Schlitten an der Bäckerei vorbei, ohne anzuhalten. Die Spuren führen weiter nach Norden.',
-    strike: ['Bäckerei'],
+    clue: 'Um 2:10 Uhr fuhr der Schlitten an der Bäckerei vorbei, ohne anzuhalten. Die Spuren führen weiter nach Norden, an der Werkstatt war er also nie.',
+    strike: ['Bäckerei', 'Werkstatt'],
   },
   {
     who: 'elf',
@@ -390,10 +390,6 @@ export const DAYS: Day[] = [
       [
         'elf',
         'Der Lebkuchenmann hat vor seiner Tür einen Schlüssel im Schnee gefunden mit einem Anhänger von mir, ich beschrifte alles. Geheim natürlich.',
-      ],
-      [
-        'elf',
-        'Ich war übrigens die ganze Nacht in meiner Werkstatt und hab durchgearbeitet. Da kam niemand mit einem Schlitten vorbei.',
       ],
     ],
     puzzle:
@@ -411,8 +407,8 @@ export const DAYS: Day[] = [
       'elf',
       'Der Schlittenschlüssel! Der hängt sonst im Stall, und nur wer dort wohnt, weiß, an welchem Haken.',
     ],
-    clue: 'Vor der Bäckerei lag der Schlittenschlüssel im Schnee. Wer ihn genommen hat, kannte sich im Stall gut aus. In der Werkstatt war hingegen niemand außer Knöpfchen.',
-    strike: ['Werkstatt'],
+    clue: 'Vor der Bäckerei lag der Schlittenschlüssel im Schnee. Wer ihn genommen hat, kannte sich im Stall gut aus.',
+    strike: [],
   },
   {
     who: 'santa',
@@ -423,7 +419,7 @@ export const DAYS: Day[] = [
       ['mrs', 'Und er versteckt immer ein Wort darin. Jedes Mal.'],
     ],
     puzzle:
-      "<div class='poem'>Auf Zehenspitzen, Schritt für Schritt,<br>bedacht und leise, jeder Tritt.<br>Sanft schob sich der Riegel auf,<br>im Dunkeln nahm es seinen Lauf.<br>Christbaumkugeln klirrten leis,<br>hinaus ging’s in die Nacht so weiß.<br>Tür wieder zu, ganz sacht, und niemand ist erwacht.</div>Welches Wort hat der Weihnachtsmann versteckt?",
+      "<div class='poem'><span>Auf Zehenspitzen, Schritt für Schritt,</span><span>bedacht und leise, jeder Tritt.</span><span>Sanft schob sich der Riegel auf,</span><span>im Dunkeln nahm es seinen Lauf.</span><span>Christbaumkugeln klirrten leis,</span><span>hinaus ging’s in die Nacht so weiß.</span><span>Tür wieder zu, ganz sacht, und niemand ist erwacht.</span></div>Welches Wort hat der Weihnachtsmann versteckt?",
     accept: ['absicht'],
     solution: 'ABSICHT',
     hints: [
@@ -433,7 +429,7 @@ export const DAYS: Day[] = [
     ],
     reply: [
       'santa',
-      'Absicht! Da hat jemand mit Absicht die Tür geöffnet und wieder geschlossen. Das war kein Versehen.',
+      'Da hat jemand mit Absicht die Tür geöffnet und wieder geschlossen. Das war kein Versehen.',
     ],
     clue: 'Die Stalltür wurde geöffnet und hinterher sacht wieder geschlossen. Das war Absicht, kein Versehen.',
     strike: ['Versehen'],
@@ -506,7 +502,7 @@ export const DAYS: Day[] = [
     hints: ['Zuckers Notiz sind Koordinaten.', 'B4 heißt Zeile B, Spalte 4.', 'L, A, C, K: LACK'],
     reply: [
       'twins',
-      'Wir haben im Schuppen die Rodel der Elfen glitzerlackiert und sie heimlich in den Stall gestellt, mit einem Anhänger: „Für euch“. Eine Schlitten-Überraschung für die Elfen, nicht für den Weihnachtsmann!',
+      'Wir haben im Schuppen die Rodel der Elfen glitzerlackiert und sie heimlich in den Stall gestellt, mit einem Anhänger: „Für euch“. Eine schöne Schlitten-Überraschung für die Elfen, keine böse für den Weihnachtsmann!',
     ],
     clue: 'Die Zwillinge haben nachts im Schuppen am Eistor Rodel glitzerlackiert und sie mit dem Anhänger „Für euch“ in den Stall gestellt. Daher der Glitzer.',
     strike: ['Zimt & Zucker', 'Überraschung'],
@@ -557,7 +553,7 @@ export const DAYS: Day[] = [
     ],
     reply: [
       'penguin',
-      '11321! Und schaut mal, auf dem letzten Foto: Mitten auf dem Eissee ist ein dunkler Fleck. Was ist das denn?',
+      'Ja, das ist richtig! Und schaut mal, auf dem letzten Foto: Mitten auf dem Eissee ist ein dunkler Fleck. Was ist das denn?',
     ],
     clue: 'Auf Pedros letztem Foto ist mitten auf dem Eissee ein dunkler Fleck.',
     strike: [],
@@ -591,7 +587,7 @@ export const DAYS: Day[] = [
     ],
     reply: [
       'elf',
-      'Aber Komet hat doch gesagt, dass er die ganze Nacht in seiner Box war. Mein Gerät stand aber gar nicht im Stall.',
+      'Komet hat doch gesagt, dass er die ganze Nacht in seiner Box war. Mein Gerät stand aber gar nicht im Stall!',
     ],
     clue: 'Komet hat geflunkert: Sein Glöckchen hat in der Tatnacht geklingelt, aber nicht in seiner Box.',
     strike: [],
@@ -603,8 +599,9 @@ export const DAYS: Day[] = [
     intro: [
       [
         'mrs',
-        'Ich habe alle Aussagen zur Tatnacht auf Karten geschrieben. Jede trägt einen Buchstaben. Leider sind sie mir runtergefallen.',
+        'Ich habe alle Aussagen zur Tatnacht auf Karten geschrieben, jede trägt einen Buchstaben. Auch meine eigene: Ich hab nachts die Stalltür quietschen hören und dachte, das war nur der Wind.',
       ],
+      ['mrs', 'Leider sind mir die Karten runtergefallen. Kannst du mir helfen?'],
     ],
     puzzle:
       timeCards([
@@ -612,7 +609,7 @@ export const DAYS: Day[] = [
         ['G', 'Die Küchenuhr der Bäckerei fiel um zehn nach zwei vom Haken.'],
         ['T', 'Flocke: „Eine Viertelstunde vor drei waren die Hufspuren schon da.“'],
         ['A', 'Mila: „Punkt zwei bin ich eingenickt.“'],
-        ['N', 'Die Stalltür ging fünf Minuten nach Milas Einnicken auf.'],
+        ['N', 'Weihnachtsfrau: „Fünf nach zwei hat die Stalltür gequietscht.“'],
       ]) + 'Was erzählt die Nacht?',
     accept: ['angst'],
     solution: 'ANGST',
@@ -655,6 +652,27 @@ export const DAYS: Day[] = [
     ],
     reply: ['rudolph', 'Ihr habt den Weg gefunden, in der Ferne glitzert schon der Eissee.', 'n'],
     clue: 'Rudolph führt uns Richtung Eissee und sagt kaum ein Wort.',
+    strike: [],
+  },
+  {
+    who: 'mrs',
+    title: 'Das Tagebuch',
+    intro: [
+      [
+        'mrs',
+        'Jemand hat mir heute Morgen ein Tagebuch vor die Tür gelegt. Mit Hufabdrücken auf dem Umschlag. Die letzte Seite ist seltsam.',
+      ],
+    ],
+    puzzle:
+      "<div class='big mono'>9-3-8 · 23-15-12-12-20-5 · 21-5-2-5-14</div>Was steht auf der letzten Seite?",
+    contains: ['ueben'],
+    solution: 'ICH WOLLTE UEBEN',
+    hints: ['Jede Zahl steht für einen Buchstaben.', '9 ist I, 3 ist C.', 'ICH WOLLTE UEBEN'],
+    reply: [
+      'mrs',
+      'Mhh, jemand wollte heimlich üben? Mit unserem Schlitten? Wer das wohl war? Übermorgen ist Heiligabend, da brauchen wir den Schlitten unbedingt wieder!',
+    ],
+    clue: 'Wer den Schlitten genommen hat, hatte Angst und wollte heimlich üben.',
     strike: [],
   },
   {
@@ -701,27 +719,6 @@ export const DAYS: Day[] = [
     strike: ['Polarlicht-Gipfel'],
   },
   {
-    who: 'mrs',
-    title: 'Das Tagebuch',
-    intro: [
-      [
-        'mrs',
-        'Jemand hat mir heute Morgen ein Tagebuch vor die Tür gelegt. Mit Hufabdrücken auf dem Umschlag. Die letzte Seite ist seltsam.',
-      ],
-    ],
-    puzzle:
-      "<div class='big mono'>9-3-8 · 23-15-12-12-20-5 · 21-5-2-5-14</div>Was steht auf der letzten Seite?",
-    contains: ['ueben'],
-    solution: 'ICH WOLLTE UEBEN',
-    hints: ['Jede Zahl steht für einen Buchstaben.', '9 ist I, 3 ist C.', 'ICH WOLLTE UEBEN'],
-    reply: [
-      'mrs',
-      'Mhh, jemand wollte heimlich üben? Mit unserem Schlitten? Wer das wohl war? Morgen ist Heiligabend, da brauchen wir den Schlitten unbedingt wieder!',
-    ],
-    clue: 'Wer den Schlitten genommen hat, hatte Angst und wollte heimlich üben.',
-    strike: [],
-  },
-  {
     who: 'santa',
     title: 'Heiligabend',
     special: true,
@@ -747,10 +744,10 @@ export const DAYS: Day[] = [
     ],
     reply: [
       'rudolph',
-      'Ja, ich war’s. Ich fliege heute zum ersten Mal ganz vorn und hatte solche Angst, es zu vermasseln. Ich wollte heimlich üben - und dann bin ich auf dem See eingebrochen. Komet hat übrigens nichts damit zu tun: Der lag mit Fieber im Krankenstall und wollte nicht, dass jemand das weiß. Es tut mir so leid.',
+      'Ja, ich war’s. Ich fliege heute zum ersten Mal ganz vorn und hatte solche Angst, es zu vermasseln. Ich wollte heimlich üben, und dann bin ich auf dem See eingebrochen. Komet hat übrigens nichts damit zu tun: Der lag mit Fieber im Krankenstall und wollte nicht, dass jemand das weiß. Es tut mir so leid.',
       'v',
     ],
     clue: 'Fall gelöst: Rudolph hat den Schlitten aus Angst vor seinem ersten Flug zum Eissee gezogen, um heimlich zu üben.',
-    strike: [],
+    strike: ['Komet'],
   },
 ]

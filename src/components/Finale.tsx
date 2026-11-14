@@ -21,7 +21,7 @@ interface Props {
 
 const HUG: Line = [
   'santa',
-  'Angst haben ist erlaubt, Rudolph. Du fliegst trotzdem ganz vorn. Und jetzt: Auf geht’s!',
+  'Angst haben ist erlaubt, Rudolph, das ist nichts Schlimmes. Ich bin mir sicher, du machst das heute super! Komm, lass uns packen und endlich losfliegen, damit wir noch rechtzeitig alle Geschenke verteilen.',
   'h',
 ]
 

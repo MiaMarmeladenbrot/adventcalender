@@ -24,17 +24,27 @@ describe('the 24 days', () => {
   })
 
   it('leaves Rudolph and Komet, the Eissee and Angst for the final accusation', () => {
-    const struck = new Set(DAYS.flatMap((day) => day.strike))
+    const struck = new Set(DAYS.slice(0, 23).flatMap((day) => day.strike))
     expect(BOARD.wer.filter((item) => !struck.has(item))).toEqual(['Rudolph', 'Komet'])
     expect(BOARD.wo.filter((item) => !struck.has(item))).toEqual(['Eissee'])
     expect(BOARD.warum.filter((item) => !struck.has(item))).toEqual(['Angst'])
+  })
+
+  it('leaves only Rudolph once the case is solved', () => {
+    const struck = new Set(DAYS.flatMap((day) => day.strike))
+    expect(BOARD.wer.filter((item) => !struck.has(item))).toEqual(['Rudolph'])
+  })
+
+  it('reveals where the sleigh is only on the day before Christmas Eve', () => {
+    const struck = new Set(DAYS.slice(0, 22).flatMap((day) => day.strike))
+    expect(BOARD.wo.filter((item) => !struck.has(item))).toEqual(['Eissee', 'Polarlicht-Gipfel'])
   })
 })
 
 describe('answer matching', () => {
   it('ignores case, umlauts, spaces and a leading article', () => {
     expect(isCorrect(DAYS[6], 'Ein Tannenbaum')).toBe(true)
-    expect(isCorrect(DAYS[22], 'Ich wollte üben')).toBe(true)
+    expect(isCorrect(DAYS[21], 'Ich wollte üben')).toBe(true)
     expect(isCorrect(DAYS[2], 'das Geschirr')).toBe(true)
   })
 
@@ -45,7 +55,7 @@ describe('answer matching', () => {
   })
 
   it('accepts the floe path and the final accusation in the form the widgets send', () => {
-    expect(isCorrect(DAYS[21], '9,13,18,24,31,39')).toBe(true)
+    expect(isCorrect(DAYS[22], '9,13,18,24,31,39')).toBe(true)
     expect(isCorrect(DAYS[23], 'Rudolph Eissee Angst')).toBe(true)
     expect(isCorrect(DAYS[23], 'Komet Eissee Angst')).toBe(false)
     expect(trapFor(DAYS[23], 'Komet Eissee Angst')).toContain('zum ersten Mal')

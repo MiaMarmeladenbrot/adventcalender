@@ -22,7 +22,7 @@ export const NAMES: Record<Who, string> = {
 export const BOARD = {
   wer: ['Grinch', 'Rudolph', 'Komet', 'Zimt & Zucker', 'Pinguin Pedro', 'Schneemann'],
   wo: ['Werkstatt', 'Rentierstall', 'Eissee', 'Bäckerei', 'Polarlicht-Gipfel'],
-  warum: ['Rache', 'Neid', 'Überraschung', 'Versehen', 'Angst'],
+  warum: ['Rache', 'Neid', 'Heimweh', 'Überraschung', 'Versehen', 'Angst'],
 } as const
 
 export const PROLOG: readonly Line[] = [
