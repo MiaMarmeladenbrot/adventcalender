@@ -929,11 +929,19 @@ input:focus-visible {
     transform: translateX(-50%) translateY(6px) scale(0.92);
   }
 }
+.stamped {
+  position: relative;
+  max-width: 520px;
+  margin: 0 auto;
+}
+.stamped.wide {
+  max-width: 560px;
+}
 .stamp {
   position: absolute;
   z-index: 4;
-  top: 4px;
-  right: max(22px, env(safe-area-inset-right));
+  top: -14px;
+  right: 6px;
   padding: 3px 12px;
   border: 2.5px solid #2e7d4f;
   border-radius: 6px;

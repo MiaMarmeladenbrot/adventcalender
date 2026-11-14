@@ -59,9 +59,11 @@ export function Stage({
         )}
       </header>
       <div className="stage-speech">
-        {stamp && <span className="stamp">{stamp}</span>}
-        {sheet && <div className="stage-note paper">{note}</div>}
-        {!sheet && line && <Bubble line={line} tail={tail} />}
+        <div className={`stamped${sheet ? ' wide' : ''}`}>
+          {stamp && <span className="stamp">{stamp}</span>}
+          {sheet && <div className="stage-note paper">{note}</div>}
+          {!sheet && line && <Bubble line={line} tail={tail} />}
+        </div>
         {!sheet && reply && <div className="answer-bubble">{reply}</div>}
         {!sheet && !line && (
           <div className="bubble waiting" aria-label="Lädt">
