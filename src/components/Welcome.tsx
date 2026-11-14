@@ -12,7 +12,7 @@ export function Welcome() {
       title="Wo ist der Schlitten?"
       line={[
         'snowman',
-        'Hallo! Hier am Nordpol ist etwas verschwunden, und wir brauchen deine Hilfe. Frag einfach bei deiner Familie nach dem richtigen Link und los geht die Spurensuche.',
+        'Hallo! Hier am Nordpol ist etwas verschwunden, und wir brauchen deine Hilfe. Frag einfach in deiner Gruppe nach dem richtigen Link und los geht die Spurensuche.',
       ]}
       ground={<Hill place={WORKSHOP} who="snowman" />}
     >
