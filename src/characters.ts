@@ -143,20 +143,73 @@ const SANTA = figure(
     cut('<circle cx="100" cy="134" r="7.5" fill="#de8a75"/>'),
 )
 
+const CURL_HAIR = '#ddd6cb'
+const CURL_LINE = '#b9b0a2'
+
+type Curl = [number, number, number]
+
+const CROWN_CURLS: Curl[] = [
+  [58, 146, 9],
+  [54, 130, 10],
+  [55, 113, 10],
+  [61, 97, 10],
+  [72, 84, 10],
+  [86, 75, 10],
+  [100, 72, 10],
+  [114, 75, 10],
+  [128, 84, 10],
+  [139, 97, 10],
+  [145, 113, 10],
+  [146, 130, 10],
+  [142, 146, 9],
+]
+
+const BUN_CURLS: Curl[] = [
+  [100, 44, 9],
+  [90, 52, 9],
+  [110, 52, 9],
+  [100, 58, 9],
+  [100, 50, 7],
+]
+
+const FRINGE_CURLS: Curl[] = [
+  [76, 92, 8],
+  [88, 86, 8],
+  [100, 84, 8],
+  [112, 86, 8],
+  [124, 92, 8],
+]
+
+const curls = (list: Curl[]) =>
+  list.map(([x, y, r]) => `<circle cx="${x}" cy="${y}" r="${r}" fill="${CURL_HAIR}"/>`).join('')
+
+const curlMarks = (list: Curl[]) =>
+  `<g fill="none" stroke="${CURL_LINE}" stroke-width="1.8" stroke-linecap="round">` +
+  list
+    .map(
+      ([x, y, r]) =>
+        `<path d="M${round(x - r * 0.4)} ${round(y + r * 0.1)} a ${round(r * 0.4)} ${round(r * 0.4)} 0 1 1 ${round(r * 0.5)} ${round(r * 0.35)}"/>`,
+    )
+    .join('') +
+  '</g>'
+
 const MRS = figure(
   cut(`<path d="M42 240 C 46 202, 68 180, 100 178 C 132 180, 154 202, 158 240 Z" fill="${RED}"/>`) +
     cut(
       `<path d="M74 180 C 86 198, 114 198, 126 180 L118 174 C 108 186, 92 186, 82 174 Z" fill="${CREAM}"/>`,
     ) +
     cut(
-      '<circle cx="100" cy="114" r="52" fill="#e6e1d8"/><circle cx="100" cy="58" r="22" fill="#e6e1d8"/>',
+      `<path d="M58 150 L58 110 C 60 82, 80 70, 100 70 C 120 70, 140 82, 142 110 L142 150 Z" fill="${CURL_HAIR}"/>` +
+        curls(CROWN_CURLS),
     ) +
+    curlMarks(CROWN_CURLS) +
+    cut(curls(BUN_CURLS)) +
+    curlMarks(BUN_CURLS.slice(0, 3)) +
     cut(`<ellipse cx="100" cy="124" rx="38" ry="40" fill="${SKIN}"/>`) +
+    cut(curls(FRINGE_CURLS)) +
+    curlMarks(FRINGE_CURLS) +
     cut(
-      '<path d="M60 114 C 62 86, 84 72, 100 72 C 116 72, 138 86, 140 114 C 128 98, 112 92, 100 94 C 88 92, 72 98, 60 114 Z" fill="#e6e1d8"/>',
-    ) +
-    cut(
-      `<path d="M112 46 C 122 36, 134 38, 136 46 C 128 46, 120 48, 114 52 Z" fill="#2e7d4f"/><circle cx="114" cy="50" r="5" fill="${RED}"/>`,
+      `<path d="M112 38 C 122 28, 134 30, 136 38 C 128 38, 120 40, 114 44 Z" fill="#2e7d4f"/><circle cx="114" cy="42" r="5" fill="${RED}"/>`,
     ) +
     cheeks(138, 74, 126) +
     eyes(122, 84, 116, { size: 5, show: 'on-n on-d' }) +
