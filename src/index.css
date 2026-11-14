@@ -1995,7 +1995,8 @@ input:focus-visible {
     max(16px, env(safe-area-inset-left));
 }
 .fin-foot .go {
-  justify-self: stretch;
+  justify-self: center;
+  width: min(100%, 520px);
   text-align: center;
 }
 .fin-prompt {
@@ -2250,6 +2251,16 @@ input:focus-visible {
 .fin-credits .fin-train {
   opacity: 0;
 }
+.fin-col {
+  position: absolute;
+  z-index: 3;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: min(100%, 620px);
+  transform: translateX(-50%);
+  pointer-events: none;
+}
 .fin-rudolph,
 .fin-santa {
   position: absolute;
@@ -2297,11 +2308,6 @@ input:focus-visible {
   font-weight: 400;
   font-size: 2rem;
   color: var(--red);
-}
-.fin-sub {
-  margin: 0;
-  font-family: var(--f-hand);
-  font-size: 1.3rem;
 }
 .fin-roll {
   display: grid;

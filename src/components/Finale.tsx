@@ -158,7 +158,6 @@ export function Finale({ confession, team, me, finalMessage, onNotebook, onBack 
         {scene === 'credits' && (
           <div className="fin-end">
             <h2>Fall gelöst!</h2>
-            <p className="fin-sub">Frohe Weihnachten</p>
             {finalMessage && <p className="final-message">{finalMessage}</p>}
             <div className="fin-roll">
               <span>Ermittelt von</span>
@@ -238,11 +237,13 @@ export function Finale({ confession, team, me, finalMessage, onNotebook, onBack 
             <span className="fin-leader" dangerouslySetInnerHTML={{ __html: FLYING_RUDOLPH }} />
           </div>
         </div>
-        <div className="fin-rudolph">
-          <Face who="rudolph" size="100%" mood={scene === 'confess' ? 'v' : 'h'} />
-        </div>
-        <div className="fin-santa">
-          <Face who="santa" size="100%" mood="h" />
+        <div className="fin-col">
+          <div className="fin-rudolph">
+            <Face who="rudolph" size="100%" mood={scene === 'confess' ? 'v' : 'h'} />
+          </div>
+          <div className="fin-santa">
+            <Face who="santa" size="100%" mood="h" />
+          </div>
         </div>
       </div>
     </section>
