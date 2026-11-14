@@ -785,6 +785,9 @@ input:focus-visible {
   width: min(36%, 190px);
   height: auto;
 }
+.hill-place.place-lake {
+  bottom: 25%;
+}
 .hill-figure {
   position: absolute;
   left: 50%;
@@ -2284,7 +2287,8 @@ input:focus-visible {
 .fig[data-e='n'] .on-n,
 .fig[data-e='v'] .on-v,
 .fig[data-e='h'] .on-h,
-.fig[data-e='s'] .on-s {
+.fig[data-e='s'] .on-s,
+.fig[data-e='d'] .on-d {
   display: inline;
 }
 .fig.blink .eyes.x.x {

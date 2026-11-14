@@ -129,13 +129,13 @@ export const PLACE_ART = {
     drift,
   bake:
     paper('<path d="M82 14 H92 V36 H82Z" fill="#8a5426"/>') +
-    `<g fill="#ffffff" opacity=".6"><circle cx="88" cy="8" r="3.5"/><circle cx="93" cy="3" r="4"/></g>` +
+    `<g fill="#ffffff" opacity=".6"><circle cx="88" cy="9.5" r="3.5"/><circle cx="93" cy="4.5" r="3.6"/></g>` +
     paper('<path d="M20 48 H100 V95 H20Z" fill="#c4834a"/>') +
     paper('<path d="M8 52 L60 12 L112 52Z" fill="#7a4520"/>') +
     paper(
       `<path d="M6 50 H114 V53 Q108 60 102 53 Q96 60 90 53 Q84 60 78 53 Q72 60 66 53 Q60 60 54 53 Q48 60 42 53 Q36 60 30 53 Q24 60 18 53 Q12 60 6 53Z" fill="${ICING}"/>`,
     ) +
-    `<path d="M8 51 L60 12 L112 51" stroke="${ICING}" stroke-width="4" fill="none" stroke-linejoin="round"/>` +
+    `<path d="M8 51 L60 12 L112 51" stroke="${ICING}" stroke-width="4" fill="none" stroke-linejoin="round" stroke-linecap="round"/>` +
     '<circle cx="40" cy="38" r="3.5" fill="#e53935"/><circle cx="80" cy="38" r="3.5" fill="#e53935"/><circle cx="51" cy="28" r="3" fill="#2e7d4f"/><circle cx="69" cy="28" r="3" fill="#2e7d4f"/>' +
     paper(`<circle cx="60" cy="38" r="6" fill="${LIGHT}"/>`) +
     paper(
@@ -146,9 +146,9 @@ export const PLACE_ART = {
     `<path d="M52 95 V79 Q60 70 68 79 V95" stroke="${ICING}" stroke-width="2" fill="none"/>` +
     `<path d="M24 92 l4 -5 l4 5 l4 -5 l4 5 M80 92 l4 -5 l4 5 l4 -5 l4 5" stroke="${ICING}" stroke-width="2" fill="none" stroke-linejoin="round"/>` +
     paper(
-      `<path d="M107 95 V74 Q107 67 101 67 Q95 67 95 73" stroke="${ICING}" stroke-width="4.5" fill="none" stroke-linecap="round"/>`,
+      `<path d="M107 93 V74 Q107 67 101 67 Q95 67 95 73" stroke="${ICING}" stroke-width="4.5" fill="none" stroke-linecap="round"/>` +
+        '<path d="M107 93 V74 Q107 67 101 67 Q95 67 95 73" stroke="#c62828" stroke-width="4.5" stroke-dasharray="3 3" fill="none"/>',
     ) +
-    '<path d="M107 95 V74 Q107 67 101 67 Q95 67 95 73" stroke="#c62828" stroke-width="4.5" stroke-dasharray="3 3" fill="none"/>' +
     drift,
   gate:
     paper(
@@ -192,7 +192,7 @@ export const PLACE_ART = {
     paper(
       `<path d="M80 18 H92 V40 H80Z" fill="#5a2a20"/><path d="M78 18 H94 V15 Q86 11 78 15Z" fill="${SNOW}"/>`,
     ) +
-    `<g fill="#ffffff" opacity=".6"><circle cx="88" cy="9" r="3.5"/><circle cx="93" cy="3" r="4"/></g>` +
+    `<g fill="#ffffff" opacity=".6"><circle cx="88" cy="10" r="3.5"/><circle cx="93" cy="5" r="3.6"/></g>` +
     paper('<path d="M16 46 H104 V95 H16Z" fill="#8a3b2e"/>') +
     '<path d="M16 60 H104 M16 74 H104 M16 88 H104" stroke="#73301f" stroke-width="1.5"/>' +
     paper('<path d="M6 50 L60 14 L114 50Z" fill="#4a2a22"/>') +

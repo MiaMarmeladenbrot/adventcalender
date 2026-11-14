@@ -1,4 +1,4 @@
-import type { Who } from './types'
+import type { Line, Who } from './types'
 
 export const SEASON_YEAR = 2026
 export const UNLOCK_HOUR = 6
@@ -25,10 +25,11 @@ export const BOARD = {
   warum: ['Rache', 'Neid', 'Überraschung', 'Versehen', 'Angst'],
 } as const
 
-export const PROLOG: readonly (readonly [Who, string])[] = [
+export const PROLOG: readonly Line[] = [
   [
     'santa',
     'Ho ho ho! Schön, dass du da bist. Ich hab ein Problem. Ein großes. Ein schlittengroßes.',
+    'h',
   ],
-  ['mrs', 'Mehr erfährst du morgen früh. Bis dahin nur eins: Wie dürfen wir dich nennen?'],
+  ['mrs', 'Mehr erfährst du morgen früh. Bis dahin nur eins: Wie dürfen wir dich nennen?', 'h'],
 ]

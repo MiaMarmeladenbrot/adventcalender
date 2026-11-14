@@ -99,7 +99,7 @@ export function Hill({ place, who, mood, small, onTap, figureRef }: HillProps) {
     <>
       <div className="hill" />
       <svg
-        className="hill-place"
+        className={`hill-place place-${place.art}`}
         viewBox="0 0 120 100"
         aria-hidden="true"
         dangerouslySetInnerHTML={{ __html: PLACE_ART[place.art] }}
@@ -133,7 +133,7 @@ const GABLE =
   paper(
     '<path d="M80 18 H92 V40 H80Z" fill="#5a2a20"/><path d="M78 18 H94 V15 Q86 11 78 15Z" fill="#f5f8fb"/>',
   ) +
-  '<g fill="#ffffff" opacity=".6"><circle cx="88" cy="9" r="3.5"/><circle cx="93" cy="3" r="4"/></g>' +
+  '<g fill="#ffffff" opacity=".6"><circle cx="88" cy="10" r="3.5"/><circle cx="93" cy="5" r="3.6"/></g>' +
   paper('<path d="M6 50 L60 14 L114 50Z" fill="#4a2a22"/>') +
   paper(
     '<path d="M2 51 L60 10 L118 51 Q112 56 106 51 L60 19 L14 51 Q8 56 2 51Z" fill="#f5f8fb"/>',
@@ -143,7 +143,7 @@ const GABLE =
 
 const RESIDENTS: Who[] = ['santa', 'mrs']
 
-export function House({ speaker }: { speaker: Who }) {
+export function House({ speaker, mood }: { speaker: Who; mood?: Mood }) {
   return (
     <div className="house">
       <svg
@@ -157,7 +157,7 @@ export function House({ speaker }: { speaker: Who }) {
         {RESIDENTS.map((who) => (
           <div key={who} className={`house-window${who === speaker ? ' lit' : ''}`}>
             <div className="pane">
-              <Face who={who} size="112%" />
+              <Face who={who} size="112%" mood={who === speaker ? mood : undefined} />
               <svg
                 className="drapes"
                 viewBox="0 0 108 136"

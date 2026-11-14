@@ -22,13 +22,39 @@ interface EyeStyle {
   iris?: string
   white?: string
   lid?: string
+  show?: string
 }
+
+const round = (value: number) => Math.round(value * 100) / 100
+
+const happyEyes = (y: number, left: number, right: number, size = 7, color = INK) =>
+  `<g class="x on-h" fill="none" stroke="${color}" stroke-width="4" stroke-linecap="round">` +
+  [left, right]
+    .map(
+      (x) => `<path d="M${x - size - 1} ${y + 2} Q${x} ${y - size - 4} ${x + size + 1} ${y + 2}"/>`,
+    )
+    .join('') +
+  '</g>'
+
+const shyEyes = (y: number, left: number, right: number, size = 7, color = INK) =>
+  '<g class="x eyes on-v">' +
+  [left, right]
+    .map(
+      (x) =>
+        `<ellipse cx="${x}" cy="${y + 1}" rx="${round(size * 0.9)}" ry="${round(size * 1.12)}" fill="${color}"/>` +
+        `<circle cx="${round(x + size * 0.3)}" cy="${round(y - size * 0.4)}" r="${round(size * 0.3)}" fill="#ffffff"/>`,
+    )
+    .join('') +
+  '</g>'
+
+const sweat = (x: number, y: number) =>
+  `<path class="x on-v" d="M${x} ${y} C ${x - 5} ${y + 9}, ${x - 5} ${y + 14}, ${x} ${y + 16} C ${x + 5} ${y + 14}, ${x + 5} ${y + 9}, ${x} ${y} Z" fill="#bfe3f2" stroke="#7fb8d1" stroke-width="1"/>`
 
 function eyes(
   y: number,
   left: number,
   right: number,
-  { size = 7, iris = INK, white, lid = INK }: EyeStyle = {},
+  { size = 7, iris = INK, white, lid = INK, show = 'on-n' }: EyeStyle = {},
 ) {
   const open = [left, right]
     .map((x) =>
@@ -41,7 +67,7 @@ function eyes(
     .map((x) => `<path d="M${x - size - 1} ${y} Q${x} ${y + 5} ${x + size + 1} ${y}"/>`)
     .join('')
   return (
-    `<g class="x eyes on-n">${open}</g>` +
+    `<g class="x eyes ${show}">${open}</g>` +
     `<g class="x bl" fill="none" stroke="${lid}" stroke-width="3.5" stroke-linecap="round">${shut}</g>`
   )
 }
@@ -72,14 +98,16 @@ const SANTA = figure(
     ) +
     cheeks(130, 77, 123) +
     eyes(118, 86, 114) +
-    `<g class="x eyes on-s"><ellipse cx="86" cy="118" rx="7.5" ry="8.5" fill="#fff8ec"/><ellipse cx="114" cy="118" rx="7.5" ry="8.5" fill="#fff8ec"/><circle cx="86" cy="118" r="2.8" fill="${INK}"/><circle cx="114" cy="118" r="2.8" fill="${INK}"/></g>` +
-    '<g class="x on-n" fill="none" stroke="#fffaf0" stroke-width="5" stroke-linecap="round"><path d="M77 108 Q86 102 94 106"/><path d="M106 106 Q114 102 123 108"/></g>' +
+    happyEyes(118, 86, 114) +
+    `<g class="x eyes on-s"><ellipse cx="86" cy="117" rx="8" ry="10" fill="${INK}"/><ellipse cx="114" cy="117" rx="8" ry="10" fill="${INK}"/><circle cx="88.6" cy="112.8" r="2.6" fill="#ffffff"/><circle cx="116.6" cy="112.8" r="2.6" fill="#ffffff"/></g>` +
+    '<g class="x on-n on-h" fill="none" stroke="#fffaf0" stroke-width="5" stroke-linecap="round"><path d="M77 108 Q86 102 94 106"/><path d="M106 106 Q114 102 123 108"/></g>' +
     '<g class="x on-s" fill="none" stroke="#fffaf0" stroke-width="5" stroke-linecap="round"><path d="M77 106 Q86 97 94 103"/><path d="M106 103 Q114 97 123 106"/></g>' +
     cut(
       `<path d="M62.7 130 A 38 42 0 0 0 65.7 140 C 64 166, 79 190, 100 195 C 121 190, 136 166, 134.3 140 A 38 42 0 0 0 137.3 130 C 128 141, 116 148, 100 148 C 84 148, 72 141, 62.7 130 Z" fill="${CREAM}"/>`,
     ) +
     '<path class="x on-n" d="M94 161 Q100 166 106 161" fill="none" stroke="#5a2620" stroke-width="3" stroke-linecap="round"/>' +
     '<ellipse class="x on-s" cx="100" cy="163" rx="5.5" ry="7" fill="#5a2620"/>' +
+    '<path class="x on-h" d="M90 157 Q100 172 110 157 Z" fill="#5a2620"/>' +
     cut(
       '<path d="M100 143 C 92 134, 79 136, 71 147 C 83 152, 94 151, 100 146 C 106 151, 117 152, 129 147 C 121 136, 108 134, 100 143 Z" fill="#fffaf0"/>',
     ) +
@@ -102,16 +130,30 @@ const MRS = figure(
       `<path d="M112 46 C 122 36, 134 38, 136 46 C 128 46, 120 48, 114 52 Z" fill="#2e7d4f"/><circle cx="114" cy="50" r="5" fill="${RED}"/>`,
     ) +
     cheeks(138, 74, 126) +
-    eyes(122, 84, 116, { size: 5 }) +
+    eyes(122, 84, 116, { size: 5, show: 'on-n on-d' }) +
+    happyEyes(123, 84, 116, 5) +
+    '<g class="x on-d" fill="none" stroke="#7a6e64" stroke-width="3" stroke-linecap="round"><path d="M75 108 L91 103"/><path d="M109 103 L125 108"/></g>' +
     '<g fill="none" stroke="#7a4a2a" stroke-width="3"><circle cx="84" cy="122" r="12"/><circle cx="116" cy="122" r="12"/><path d="M96 121 H104"/></g>' +
-    '<path d="M88 150 Q100 160 112 150" fill="none" stroke="#8a2a2a" stroke-width="3" stroke-linecap="round"/>',
+    '<path class="x on-n" d="M88 150 Q100 160 112 150" fill="none" stroke="#8a2a2a" stroke-width="3" stroke-linecap="round"/>' +
+    '<path class="x on-h" d="M86 148 Q100 164 114 148 Z" fill="#8a2a2a"/>' +
+    '<path class="x on-d" d="M90 156 Q100 149 110 156" fill="none" stroke="#8a2a2a" stroke-width="3" stroke-linecap="round"/>',
 )
 
-const elf = (hat: string, band: string) =>
+const cheeringArms = (sleeve: string) =>
+  '<g class="x on-h">' +
+  cut(
+    `<path d="M62 206 C 46 192, 36 172, 32 150" fill="none" stroke="${sleeve}" stroke-width="14" stroke-linecap="round"/>` +
+      `<path d="M138 206 C 154 192, 164 172, 168 150" fill="none" stroke="${sleeve}" stroke-width="14" stroke-linecap="round"/>` +
+      `<circle cx="31" cy="145" r="8" fill="${SKIN}"/><circle cx="169" cy="145" r="8" fill="${SKIN}"/>`,
+  ) +
+  '</g>'
+
+const elf = (hat: string, band: string, twin = false) =>
   cut(`<path d="M44 240 C 48 204, 70 184, 100 182 C 130 184, 152 204, 156 240 Z" fill="${hat}"/>`) +
   cut(
     `<path d="M62 186 L74 200 L86 188 L100 202 L114 188 L126 200 L138 186 L132 178 H68 Z" fill="${band}"/>`,
   ) +
+  (twin ? cheeringArms(hat) : '') +
   cut(
     `<path d="M64 124 C 46 112, 36 104, 30 94 C 38 118, 50 136, 66 140 Z" fill="${SKIN}"/><path d="M136 124 C 154 112, 164 104, 170 94 C 162 118, 150 136, 134 140 Z" fill="${SKIN}"/>`,
   ) +
@@ -125,15 +167,24 @@ const elf = (hat: string, band: string) =>
   cheeks(142, 74, 126) +
   '<g fill="#b9773d" opacity=".6"><circle cx="70" cy="136" r="1.6"/><circle cx="76" cy="140" r="1.6"/><circle cx="124" cy="140" r="1.6"/><circle cx="130" cy="136" r="1.6"/></g>' +
   eyes(130, 86, 114) +
-  '<g fill="none" stroke="#7a4a2a" stroke-width="3.5" stroke-linecap="round"><path d="M77 118 Q86 113 94 117"/><path d="M106 117 Q114 113 123 118"/></g>' +
+  `<g${twin ? ' class="x on-n on-h"' : ''} fill="none" stroke="#7a4a2a" stroke-width="3.5" stroke-linecap="round"><path d="M77 118 Q86 113 94 117"/><path d="M106 117 Q114 113 123 118"/></g>` +
   '<path d="M97 136 Q100 142 103 136" fill="none" stroke="#c98a6a" stroke-width="3" stroke-linecap="round"/>' +
-  '<path d="M86 152 Q100 164 114 152" fill="none" stroke="#5a2620" stroke-width="3" stroke-linecap="round"/>'
+  `<path${twin ? ' class="x on-n"' : ''} d="M86 152 Q100 164 114 152" fill="none" stroke="#5a2620" stroke-width="3" stroke-linecap="round"/>` +
+  (twin ? twinMoods : '')
+
+const twinMoods =
+  happyEyes(130, 86, 114) +
+  shyEyes(130, 86, 114) +
+  '<g class="x on-v" fill="none" stroke="#7a4a2a" stroke-width="3.5" stroke-linecap="round"><path d="M77 119 L94 113"/><path d="M106 113 L123 119"/></g>' +
+  '<path class="x on-h" d="M84 150 Q100 170 116 150 Z" fill="#5a2620"/>' +
+  '<path class="x on-v" d="M88 156 Q92 151 96 156 Q100 161 104 156 Q108 151 112 156" fill="none" stroke="#5a2620" stroke-width="3" stroke-linecap="round"/>' +
+  sweat(140, 116)
 
 const ELF = figure(elf('#2e7d4f', RED))
 
 const TWINS = figure(
-  `<g transform="translate(-16 70) scale(.72)">${elf('#9c5a2e', GOLD)}</g>` +
-    `<g transform="translate(72 64) scale(.72)">${elf('#c9d6e3', RED)}</g>`,
+  `<g transform="translate(-16 70) scale(.72)">${elf('#9c5a2e', GOLD, true)}</g>` +
+    `<g transform="translate(72 64) scale(.72)">${elf('#c9d6e3', RED, true)}</g>`,
 )
 
 const KOMET = figure(
@@ -200,7 +251,11 @@ const SNOWMAN = figure(
     cut(`<path d="M66 68 H134 V80 H66 Z" fill="${RED}"/>`) +
     cheeks(134, 70, 130) +
     eyes(114, 84, 116, { size: 6, iris: '#263238', lid: '#263238' }) +
-    '<g fill="#263238"><circle cx="78" cy="148" r="3"/><circle cx="88" cy="155" r="3"/><circle cx="100" cy="158" r="3"/><circle cx="112" cy="155" r="3"/><circle cx="122" cy="148" r="3"/></g>' +
+    shyEyes(114, 84, 116, 6, '#263238') +
+    '<g class="x on-v" fill="none" stroke="#263238" stroke-width="3" stroke-linecap="round"><path d="M75 103 L91 98"/><path d="M109 98 L125 103"/></g>' +
+    '<g class="x on-n" fill="#263238"><circle cx="78" cy="148" r="3"/><circle cx="88" cy="155" r="3"/><circle cx="100" cy="158" r="3"/><circle cx="112" cy="155" r="3"/><circle cx="122" cy="148" r="3"/></g>' +
+    '<g class="x on-v" fill="#263238"><circle cx="78" cy="152" r="3"/><circle cx="88" cy="156" r="3"/><circle cx="100" cy="152" r="3"/><circle cx="112" cy="156" r="3"/><circle cx="122" cy="152" r="3"/></g>' +
+    sweat(142, 100) +
     cut('<path d="M100 124 L150 134 L100 140 Z" fill="#e07b1f"/>'),
 )
 
@@ -232,8 +287,12 @@ const PENGUIN = figure(
       `<path d="M58 68 C 60 26, 140 26, 142 68 Z" fill="${GOLD}"/><path d="M52 60 H148 V76 H52 Z" fill="${RED}"/><circle cx="100" cy="26" r="12" fill="${GOLD}"/>`,
     ) +
     cheeks(132, 74, 126) +
-    eyes(114, 84, 116, { size: 6 }) +
-    cut('<path d="M86 128 L114 128 L100 146 Z" fill="#e07b1f"/>') +
+    eyes(114, 84, 116, { size: 6, show: 'on-n on-d' }) +
+    happyEyes(114, 84, 116, 6) +
+    '<g class="x on-d" fill="none" stroke="#263238" stroke-width="3.5" stroke-linecap="round"><path d="M75 104 L92 99"/><path d="M108 99 L125 104"/></g>' +
+    '<path class="x on-d" d="M78 124 C 75 130, 75 133, 78 135 C 81 133, 81 130, 78 124 Z" fill="#bfe3f2" stroke="#7fb8d1" stroke-width="1"/>' +
+    `<g class="x on-n on-d">${cut('<path d="M86 128 L114 128 L100 146 Z" fill="#e07b1f"/>')}</g>` +
+    `<g class="x on-h">${cut('<path d="M88 130 L112 130 L100 151 Z" fill="#5a2620"/><path d="M86 126 L114 126 L100 137 Z" fill="#e07b1f"/><path d="M92 143 L108 143 L100 151 Z" fill="#c9661a"/>')}</g>` +
     cut(
       `<path d="M100 178 L82 168 L82 188 Z M100 178 L118 168 L118 188 Z" fill="${RED}"/><circle cx="100" cy="178" r="4.5" fill="${DEEP_RED}"/>`,
     ),
@@ -254,10 +313,12 @@ const BEAR = figure(
     cut('<ellipse cx="100" cy="144" rx="25" ry="19" fill="#e6e0d2"/>') +
     cheeks(134, 66, 134) +
     eyes(114, 80, 120, { size: 5.5, iris: '#263238', lid: '#263238' }) +
+    happyEyes(114, 80, 120, 5.5, '#263238') +
+    '<path class="x on-n" d="M100 144 V151 M91 154 Q100 160 109 154" fill="none" stroke="#263238" stroke-width="3" stroke-linecap="round"/>' +
+    '<g class="x on-h"><path d="M100 144 V150" fill="none" stroke="#263238" stroke-width="3" stroke-linecap="round"/><path d="M89 151 Q100 166 111 151 Z" fill="#263238"/></g>' +
     cut(
       '<path d="M89 134 C 89 127, 111 127, 111 134 C 111 140, 105 144, 100 144 C 95 144, 89 140, 89 134 Z" fill="#263238"/>',
-    ) +
-    '<path d="M100 144 V151 M91 154 Q100 160 109 154" fill="none" stroke="#263238" stroke-width="3" stroke-linecap="round"/>',
+    ),
 )
 
 const ART: Record<Exclude<Who, 'rudolph'>, string> = {
@@ -290,7 +351,7 @@ export function rudolphSvg(mood: Mood = 'n') {
     '<g filter="url(#pc)"><path d="M100 128 C 126 128, 136 146, 132 162 C 128 180, 114 190, 100 190 C 86 190, 72 180, 68 162 C 64 146, 74 128, 100 128 Z" fill="#dcb88e"/></g>' +
     '<g class="x on-h on-v"><ellipse cx="70" cy="132" rx="9" ry="5" fill="#e98d7a" opacity=".55"/><ellipse cx="130" cy="132" rx="9" ry="5" fill="#e98d7a" opacity=".55"/></g>' +
     '<g class="x eyes on-n"><ellipse cx="82" cy="112" rx="7" ry="9" fill="#2a1f1a"/><ellipse cx="118" cy="112" rx="7" ry="9" fill="#2a1f1a"/><circle cx="84.5" cy="108" r="2.4" fill="#ffffff"/><circle cx="120.5" cy="108" r="2.4" fill="#ffffff"/></g>' +
-    '<g class="x eyes on-v"><ellipse cx="82" cy="112" rx="8" ry="9" fill="#fff8ec"/><ellipse cx="118" cy="112" rx="8" ry="9" fill="#fff8ec"/><circle cx="87" cy="113" r="4.5" fill="#2a1f1a"/><circle cx="123" cy="113" r="4.5" fill="#2a1f1a"/></g>' +
+    '<g class="x eyes on-v"><ellipse cx="82" cy="113" rx="6.5" ry="8.2" fill="#2a1f1a"/><ellipse cx="118" cy="113" rx="6.5" ry="8.2" fill="#2a1f1a"/><circle cx="84.3" cy="109.4" r="2.2" fill="#ffffff"/><circle cx="120.3" cy="109.4" r="2.2" fill="#ffffff"/></g>' +
     '<g class="x on-h" fill="none" stroke="#2a1f1a" stroke-width="4" stroke-linecap="round"><path d="M74 114 Q82 104 90 114"/><path d="M110 114 Q118 104 126 114"/></g>' +
     '<g class="x bl" fill="none" stroke="#2a1f1a" stroke-width="3.5" stroke-linecap="round"><path d="M75 112 Q82 116 89 112"/><path d="M111 112 Q118 116 125 112"/></g>' +
     '<g fill="none" stroke="#4a2e1a" stroke-width="4" stroke-linecap="round">' +

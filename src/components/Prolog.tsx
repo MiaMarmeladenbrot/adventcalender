@@ -59,7 +59,7 @@ export function Prolog({ code, nickname, notice, onJoined, onContinue, onBack }:
       title="Willkommen am Nordpol"
       line={line}
       tail={line[0] === 'santa' ? 'left' : 'right'}
-      ground={<House speaker={line[0]} />}
+      ground={<House speaker={line[0]} mood={line[2]} />}
       onBack={onBack}
       reply={
         asking || error || notice ? (

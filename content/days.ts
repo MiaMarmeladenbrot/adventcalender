@@ -21,6 +21,7 @@ export const DAYS: Day[] = [
       [
         'santa',
         'Guten Morgen! Komm mit, ich zeig dir unseren Schlitten. Er ist schon frisch geputzt für die große Nacht!',
+        'h',
       ],
       [
         'santa',
@@ -109,6 +110,7 @@ export const DAYS: Day[] = [
       [
         'twins',
         'Wir haben im Stall was gefunden! Einen Geschenkanhänger, der glitzert wie verrückt.',
+        'h',
       ],
       [
         'twins',
@@ -155,7 +157,7 @@ export const DAYS: Day[] = [
     title: 'Die blinkende Nase',
     intro: [
       ['rudolph', 'Psst. Ich darf nichts sagen. Wirklich nicht.'],
-      ['rudolph', 'Aber … meine Nase macht manchmal, was sie will.'],
+      ['rudolph', 'Aber … meine Nase macht manchmal, was sie will.', 'h'],
     ],
     puzzle:
       'An der Stallwand hängt ein altes Plakat, auf das Rudolph immer wieder schielt.' +
@@ -241,6 +243,7 @@ export const DAYS: Day[] = [
       [
         'snowman',
         'Ich stand die ganze Nacht vor der Bäckerei. Ich hab alles gesehen! Ich weiß es noch genau. Also … ungefähr jedenfalls.',
+        'v',
       ],
       ['snowman', 'Ich zeig’s euch, aber schnell. Sonst ist meine Erinnerung wieder weg.'],
     ],
@@ -327,7 +330,8 @@ export const DAYS: Day[] = [
     intro: [
       [
         'penguin',
-        'Huhu, ich bin Pedro vom Südpol. Hier ist es schön, aber ich vermisse meine Familie sehr. Ich hab ihr heute früh eine Postkarte geschrieben.',
+        'Huhu, ich bin Pedro vom Südpol. Es ist zwar schön hier, aber ich vermisse meine Familie sehr. Heute früh habe ich ihr eine Postkarte geschrieben.',
+        'd',
       ],
     ],
     puzzle:
@@ -342,6 +346,7 @@ export const DAYS: Day[] = [
     reply: [
       'penguin',
       'Die ganze Nacht hab ich geschuftet! So wohnt man doch am Nordpol, oder? Wenn ich schon nicht nach Hause kann, bau ich mir eben hier eins.',
+      'h',
     ],
     clue: 'Pedro hat Heimweh. Mit dem Schlitten wäre er schnell zu Hause. Aber er hat die ganze Nacht an seinem Iglu gebaut und war nicht mal in der Nähe des Stalls.',
     strike: ['Pinguin Pedro'],
@@ -477,8 +482,8 @@ export const DAYS: Day[] = [
     who: 'twins',
     title: 'Der Glitzer-Irrtum',
     intro: [
-      ['twins', 'Wir müssen etwas beichten: Der Glitzer ist von uns.'],
-      ['twins', 'Aber was wir damit gemacht haben, verraten wir nur zu zweit.'],
+      ['twins', 'Wir müssen etwas beichten: Der Glitzer ist von uns.', 'v'],
+      ['twins', 'Aber was wir damit gemacht haben, verraten wir nur zu zweit.', 'v'],
     ],
     puzzle: 'Zimt hat ein Raster, Zucker eine Notiz. Was haben die beiden in der Nacht gemacht?',
     halves: [
@@ -510,7 +515,11 @@ export const DAYS: Day[] = [
     who: 'snowman',
     title: 'Flocke erinnert sich',
     intro: [
-      ['snowman', 'Mir ist noch was eingefallen! Aber es ist irgendwie … verkehrt rausgekommen.'],
+      [
+        'snowman',
+        'Mir ist noch was eingefallen! Aber es ist irgendwie … verkehrt rausgekommen.',
+        'v',
+      ],
     ],
     puzzle: "<div class='big mono'>EES SIEMU ZGE WNIE</div>Was wollte Flocke sagen?",
     contains: ['eissee'],
@@ -531,6 +540,7 @@ export const DAYS: Day[] = [
       [
         'penguin',
         'Ich hab Fotos für meine Familie gemacht! Von den Lichtern am Himmel, damit sie die mit denen zu Hause vergleichen können.',
+        'h',
       ],
     ],
     puzzle:
@@ -611,7 +621,7 @@ export const DAYS: Day[] = [
       'Bring die Karten in die zeitliche Reihenfolge.',
       '2:00 A, 2:05 N, 2:10 G, 2:30 S, 2:45 T: ANGST',
     ],
-    reply: ['mrs', 'Wer den Schlitten genommen hat, meinte es nicht böse. Er hatte Angst.'],
+    reply: ['mrs', 'Wer den Schlitten genommen hat, meinte es nicht böse. Er hatte Angst.', 'd'],
     clue: 'Der Täter hatte keine bösen Absichten, sondern Angst. Neid können wir also auch ausschließen.',
     strike: ['Neid'],
   },
@@ -623,6 +633,7 @@ export const DAYS: Day[] = [
       [
         'rudolph',
         'Heute ist die längste Nacht des Jahres. Aber keine Sorge, ich zeig euch den Weg. Ich leuchte, ihr sucht.',
+        'h',
       ],
     ],
     puzzle: 'Irgendwo in der Dunkelheit stehen vier Ziffern. Lies sie von links nach rechts.',
@@ -642,7 +653,7 @@ export const DAYS: Day[] = [
       'Es ist ein Datum.',
       '2112, also der 21.12.',
     ],
-    reply: ['rudolph', 'Ihr habt den Weg gefunden, in der Ferne glitzert schon der Eissee.', 'v'],
+    reply: ['rudolph', 'Ihr habt den Weg gefunden, in der Ferne glitzert schon der Eissee.', 'n'],
     clue: 'Rudolph führt uns Richtung Eissee und sagt kaum ein Wort.',
     strike: [],
   },
@@ -684,6 +695,7 @@ export const DAYS: Day[] = [
     reply: [
       'bear',
       'Gut gesprungen. Und hier, mitten im See … da ragen zwei Kufen aus dem Eis! Ist das etwa …?',
+      'h',
     ],
     clue: 'In der Mitte des Eissees ragen Kufen aus dem Eis. Der Schlitten ist eingefroren!',
     strike: ['Polarlicht-Gipfel'],
@@ -717,6 +729,7 @@ export const DAYS: Day[] = [
       [
         'santa',
         'Heiligabend! Habt ihr den Fall gelöst? Dann sagt mir doch bitte, wo ich meinen treuen Schlitten finden kann.',
+        'h',
       ],
     ],
     puzzle: 'Erhebe Anklage und zeig mir, wo der Schlitten steckt.',

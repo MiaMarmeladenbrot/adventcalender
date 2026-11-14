@@ -306,7 +306,6 @@ export function DayView({
   } else {
     who = data.day.who
     tappable = Boolean(signal) && who === 'rudolph'
-    mood = tappable ? 'v' : undefined
     const typed = data.day.widget?.kind !== 'floes' && data.day.widget?.kind !== 'final'
     note = (
       <>

@@ -11,7 +11,7 @@ export type Who =
   | 'penguin'
   | 'bear'
 
-export type Mood = 'n' | 'v' | 'h' | 's'
+export type Mood = 'n' | 'v' | 'h' | 's' | 'd'
 
 export type Line = readonly [Who, string, Mood?]
 
