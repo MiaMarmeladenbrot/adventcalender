@@ -6,7 +6,7 @@ import { Notebook } from './components/Notebook'
 import { Prolog } from './components/Prolog'
 import { Waiting, Welcome } from './components/Welcome'
 import { api, ApiError, messageOf, rememberPreviewToken } from './lib/api'
-import { familyCode, storedPlayer, storePlayer } from './lib/session'
+import { familyCode, storedPlace, storedPlayer, storePlace, storePlayer } from './lib/session'
 import type { GameState, View } from './lib/types'
 
 const BLINK_EVERY = 3600
@@ -33,8 +33,8 @@ export default function App() {
   const [code] = useState(familyCode)
   const [player, setPlayer] = useState(() => (code ? storedPlayer(code) : null))
   const [state, setState] = useState<GameState | null>(null)
-  const [view, setView] = useState<View>({ kind: 'map' })
-  const [selected, setSelected] = useState<number | null>(null)
+  const [view, setView] = useState<View>(() => storedPlace(code).view)
+  const [selected, setSelected] = useState<number | null>(() => storedPlace(code).selected)
   const [book, setBook] = useState<'closed' | 'open' | 'closing'>('closed')
   const [fresh, setFresh] = useState<number | null>(null)
   const [error, setError] = useState('')
@@ -72,6 +72,10 @@ export default function App() {
   useEffect(() => {
     if (state && selected === null) setSelected(firstOpenDay(state))
   }, [state, selected])
+
+  useEffect(() => {
+    if (code) storePlace(code, { view, selected })
+  }, [code, view, selected])
 
   useEffect(() => {
     window.scrollTo(0, 0)
@@ -153,7 +157,7 @@ export default function App() {
         <PaperDefs />
         <Landscape
           state={state}
-          selected={selected ?? 0}
+          selected={selected ?? firstOpenDay(state)}
           onSelect={setSelected}
           onOpen={(day) => setView(day === 0 ? { kind: 'prolog' } : { kind: 'day', day })}
           onNotebook={() => setBook('open')}
