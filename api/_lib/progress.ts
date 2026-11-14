@@ -5,6 +5,13 @@ export async function solvedDays(playerId: string) {
   return rows.map((row) => row.day)
 }
 
+export async function hasSolved(playerId: string, day: number) {
+  const rows = await rest<{ day: number }[]>(
+    `solves?select=day&player_id=eq.${playerId}&day=eq.${day}`,
+  )
+  return rows.length > 0
+}
+
 export async function hintLevel(playerId: string, day: number) {
   const rows = await rest<{ level: number }[]>(
     `hints_taken?select=level&player_id=eq.${playerId}&day=eq.${day}`,

@@ -1,5 +1,5 @@
 import { DAYS } from '../content/days'
-import { findFamily, findPlayer, rest } from './_lib/db'
+import { findMembership, rest } from './_lib/db'
 import { json, refuse, safely } from './_lib/http'
 import { solvedDays } from './_lib/progress'
 import { isPreview, unlockedThrough } from './_lib/unlock'
@@ -8,10 +8,9 @@ export const config = { runtime: 'edge' }
 
 export default safely(async (request) => {
   const parameters = new URL(request.url).searchParams
-  const code = parameters.get('code')
-  const player = await findPlayer(code, parameters.get('player'))
-  const family = await findFamily(code)
-  if (!player || !family) return refuse('Unbekannt. Bitte den Familien-Link neu öffnen.', 404)
+  const membership = await findMembership(parameters.get('code'), parameters.get('player'))
+  if (!membership) return refuse('Unbekannt. Bitte den Familien-Link neu öffnen.', 404)
+  const { player, family } = membership
 
   const [solved, hints, marks, team] = await Promise.all([
     solvedDays(player.id),

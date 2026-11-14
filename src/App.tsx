@@ -83,13 +83,16 @@ export default function App() {
   }, [])
 
   async function mark(item: string, crossed: boolean) {
-    if (!code || !player || !state) return
-    const previous = state.marks
-    setState({ ...state, marks: { ...previous, [item]: crossed } })
+    if (!code || !player) return
+    const flip = (value: boolean) =>
+      setState((current) =>
+        current ? { ...current, marks: { ...current.marks, [item]: value } } : current,
+      )
+    flip(crossed)
     try {
       await api.mark(code, player, item, crossed)
     } catch {
-      setState((current) => (current ? { ...current, marks: previous } : current))
+      flip(!crossed)
     }
   }
 

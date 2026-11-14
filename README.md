@@ -13,9 +13,10 @@ Escape-Adventskalender für die Familie, Dezember 2026. Mobile first, kein Login
   - `POST /api/hint` – nächsten Hinweis holen
   - `POST /api/mark` – Eintrag auf der Tafel streichen oder zurückholen
 - `supabase/schema.sql` – Schema `adventskalender` im Lesestapel-Projekt. RLS an, keine Policies: Browser kommen nicht an die Tabellen, nur die API.
-- `src/` – die App (noch das Vite-Gerüst).
+- `src/` – die App (React). Landschaft mit 24 Laternen als Startbildschirm, Türchen als Bühne mit Gespräch, Rätsel und Antwort, Notizbuch mit Indizien und Tafel, Finale an Tag 24. Figuren und Orte sind Papier-SVGs im Code (`characters.ts`, `landscape.ts`).
+- `public/` – Manifest und Icons, damit sich der Kalender auf den Startbildschirm legen lässt.
 
-Türen öffnen am jeweiligen Dezembertag um 6 Uhr Berliner Zeit. Mit dem Header `x-preview: <PREVIEW_TOKEN>` sind alle Türen offen.
+Türen öffnen am jeweiligen Dezembertag um 6 Uhr Berliner Zeit. Mit dem Header `x-preview: <PREVIEW_TOKEN>` sind alle Türen offen. Im Browser reicht einmal `?preview=<PREVIEW_TOKEN>` an der Adresse, der Token wird dann gespeichert.
 
 ## Einrichten
 
@@ -29,6 +30,12 @@ Türen öffnen am jeweiligen Dezembertag um 6 Uhr Berliner Zeit. Mit dem Header 
    returning join_code;
    ```
    Der Link für die Gruppe ist dann `https://<domain>/f/<join_code>`.
+5. Optional eine eigene Nachricht für den Abspann nach Tag 24:
+   ```sql
+   update adventskalender.families
+   set final_message = 'Frohe Weihnachten, ihr Spürnasen!'
+   where join_code = '<join_code>';
+   ```
 
 ## Entwickeln
 

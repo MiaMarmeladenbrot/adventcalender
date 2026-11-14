@@ -56,12 +56,23 @@ export async function findPlayerByName(familyId: string, nickname: string) {
   return players.find((player) => player.nickname.toLocaleLowerCase('de') === wanted) ?? null
 }
 
-export async function findPlayer(code: unknown, playerId: unknown): Promise<Player | null> {
+export async function findMembership(
+  code: unknown,
+  playerId: unknown,
+): Promise<{ player: Player; family: Family } | null> {
   if (typeof code !== 'string' || !JOIN_CODE.test(code)) return null
   if (typeof playerId !== 'string' || !UUID.test(playerId)) return null
-  const rows = await rest<(Player & { family: unknown })[]>(
-    `players?select=id,nickname,family_id,family:families!inner(join_code)&id=eq.${playerId}&family.join_code=eq.${code}`,
+  const rows = await rest<(Player & { family: Family })[]>(
+    `players?select=id,nickname,family_id,family:families!inner(id,name,final_message,final_media_url,join_code)&id=eq.${playerId}&family.join_code=eq.${code}`,
   )
   const row = rows[0]
-  return row ? { id: row.id, nickname: row.nickname, family_id: row.family_id } : null
+  if (!row) return null
+  return {
+    player: { id: row.id, nickname: row.nickname, family_id: row.family_id },
+    family: row.family,
+  }
+}
+
+export async function findPlayer(code: unknown, playerId: unknown): Promise<Player | null> {
+  return (await findMembership(code, playerId))?.player ?? null
 }

@@ -2,7 +2,7 @@ import { DAYS } from '../content/days'
 import type { PublicDay } from '../content/types'
 import { findPlayer } from './_lib/db'
 import { dayNumber, json, refuse, safely } from './_lib/http'
-import { hintLevel, solvedDays } from './_lib/progress'
+import { hasSolved, hintLevel } from './_lib/progress'
 import { familyInJoinOrder, shareOut } from './_lib/team'
 import { isPreview, unlockedThrough } from './_lib/unlock'
 
@@ -20,7 +20,7 @@ export default safely(async (request) => {
 
   const day = DAYS[number - 1]
   const [solved, level, members] = await Promise.all([
-    solvedDays(player.id),
+    hasSolved(player.id, number),
     hintLevel(player.id, number),
     day.halves ? familyInJoinOrder(player.family_id) : [],
   ])
@@ -37,8 +37,6 @@ export default safely(async (request) => {
   return json({
     day: view,
     hints: day.hints.slice(0, level),
-    solved: solved.includes(number)
-      ? { reply: day.reply, clue: day.clue, strike: day.strike }
-      : null,
+    solved: solved ? { reply: day.reply, clue: day.clue, strike: day.strike } : null,
   })
 })
