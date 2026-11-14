@@ -170,7 +170,6 @@ input:focus-visible {
       #16224a 76%,
       #0a1230 100%
     );
-  will-change: transform;
 }
 .scape .stars {
   position: absolute;
@@ -218,6 +217,37 @@ input:focus-visible {
   bottom: 0;
   pointer-events: none;
   will-change: transform;
+}
+.scape .starclip,
+.scape .starfield {
+  position: absolute;
+  inset: 0;
+}
+.scape .starfield {
+  will-change: transform;
+}
+@supports (animation-timeline: scroll()) {
+  .scape .track {
+    scroll-timeline: --scape inline;
+  }
+  .scape .far {
+    animation: far-drift linear both;
+    animation-timeline: --scape;
+  }
+  .scape .starfield {
+    animation: star-hold linear both;
+    animation-timeline: --scape;
+  }
+}
+@keyframes far-drift {
+  to {
+    transform: translateX(var(--drift));
+  }
+}
+@keyframes star-hold {
+  to {
+    transform: translateX(calc(var(--drift) * -1));
+  }
 }
 .scape .far i {
   position: absolute;

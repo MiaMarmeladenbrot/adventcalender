@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef } from 'react'
+import { useEffect, useMemo, useRef, type CSSProperties } from 'react'
 import {
   LANTERN_SVG,
   otherSledSvg,
@@ -39,6 +39,11 @@ const RIDGE_BOTTOM = LIFT + 168
 const RIDGE_HEIGHT = 150
 const RIDGE_CLIP = `polygon(0 100%, ${RIDGE.map(([x, y]) => `${x}% ${y}%`).join(', ')}, 100% 100%)`
 const STARS_FROM = 1000
+const FAR_STYLE: CSSProperties & Record<'--drift', string> = {
+  width: `calc(${Math.ceil(WORLD_WIDTH * PARALLAX)}px + 100vw)`,
+  '--drift': `calc((${WORLD_WIDTH}px - 100vw) * ${1 - PARALLAX})`,
+}
+const SCROLL_DRIVEN = typeof CSS !== 'undefined' && CSS.supports('animation-timeline: scroll()')
 const PLACE_BOTTOM = LIFT + 182
 const BAKERY_DROP = 14
 
@@ -236,9 +241,9 @@ function Scenery() {
 
 export function Landscape({ state, selected, onSelect, onOpen, onNotebook }: Props) {
   const track = useRef<HTMLDivElement>(null)
-  const sky = useRef<HTMLDivElement>(null)
   const far = useRef<HTMLDivElement>(null)
-  const stars = useRef<SVGSVGElement>(null)
+  const starClip = useRef<HTMLDivElement>(null)
+  const starField = useRef<HTMLDivElement>(null)
   const solved = new Set(state.solved)
   const sledDay = ownSledDay(state)
 
@@ -246,9 +251,13 @@ export function Landscape({ state, selected, onSelect, onOpen, onNotebook }: Pro
     const element = track.current
     if (!element) return
     element.scrollLeft = xOf(selected) - element.clientWidth / 2
-    follow()
-    window.addEventListener('resize', follow)
-    return () => window.removeEventListener('resize', follow)
+    const settle = () => {
+      clipStars()
+      follow()
+    }
+    settle()
+    window.addEventListener('resize', settle)
+    return () => window.removeEventListener('resize', settle)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
@@ -317,59 +326,62 @@ export function Landscape({ state, selected, onSelect, onOpen, onNotebook }: Pro
 
   function follow() {
     const element = track.current
-    if (!element) return
-    const left = element.scrollLeft
-    if (sky.current) sky.current.style.transform = `translateX(${-left}px)`
-    if (far.current) far.current.style.transform = `translateX(${-left * PARALLAX}px)`
-    if (far.current && stars.current) {
-      const shift = left * (1 - PARALLAX) - STARS_FROM
-      const width = far.current.offsetWidth
-      const base = element.clientHeight - RIDGE_BOTTOM - RIDGE_HEIGHT
-      const ridge = [...RIDGE]
-        .reverse()
-        .map(
-          ([x, y]) =>
-            `${Math.round(shift + (x / 100) * width)}px ${Math.round(base + (y / 100) * RIDGE_HEIGHT)}px`,
-        )
-      stars.current.style.clipPath = `polygon(${Math.round(shift + width)}px 0, ${ridge.join(', ')}, ${Math.round(shift)}px 0)`
-    }
+    if (SCROLL_DRIVEN || !element || !far.current || !starField.current) return
+    const drift = element.scrollLeft * (1 - PARALLAX)
+    far.current.style.transform = `translateX(${drift}px)`
+    starField.current.style.transform = `translateX(${-drift}px)`
+  }
+
+  function clipStars() {
+    const element = track.current
+    if (!element || !far.current || !starClip.current) return
+    const width = far.current.offsetWidth
+    const base = element.clientHeight - RIDGE_BOTTOM - RIDGE_HEIGHT
+    const ridge = [...RIDGE]
+      .reverse()
+      .map(
+        ([x, y]) =>
+          `${Math.round((x / 100) * width)}px ${Math.round(base + (y / 100) * RIDGE_HEIGHT)}px`,
+      )
+    starClip.current.style.clipPath = `polygon(${width}px 0, ${ridge.join(', ')}, 0 0)`
   }
 
   const door = state.doors.find((entry) => entry.day === selected)
 
   return (
     <section className="scape">
-      <div className="sky" ref={sky} style={{ width: WORLD_WIDTH }}>
-        <svg
-          className="stars"
-          ref={stars}
-          style={{ left: STARS_FROM, width: WORLD_WIDTH - STARS_FROM }}
-          aria-hidden="true"
-        >
-          {STARS.map((star, index) => (
-            <circle
-              key={index}
-              className={star.twinkle ? 'tw' : undefined}
-              cx={`${star.x.toFixed(2)}%`}
-              cy={`${star.y.toFixed(2)}%`}
-              r={star.r.toFixed(2)}
-              fill="#ffffff"
-              opacity={star.opacity.toFixed(2)}
-              style={star.twinkle ? { animationDelay: `${star.delay.toFixed(2)}s` } : undefined}
-            />
-          ))}
-        </svg>
-        <div className="aurora" />
-      </div>
-      <div
-        className="far"
-        ref={far}
-        style={{ width: `calc(${Math.ceil(WORLD_WIDTH * PARALLAX)}px + 100vw)` }}
-      >
-        <i style={{ bottom: RIDGE_BOTTOM, height: RIDGE_HEIGHT, clipPath: RIDGE_CLIP }} />
-      </div>
       <div className="track" ref={track} onScroll={follow}>
         <div className="world" style={{ width: WORLD_WIDTH }}>
+          <div className="sky" style={{ width: WORLD_WIDTH }}>
+            <div className="aurora" />
+          </div>
+          <div className="far" ref={far} style={FAR_STYLE}>
+            <div className="starclip" ref={starClip}>
+              <div className="starfield" ref={starField}>
+                <svg
+                  className="stars"
+                  style={{ left: STARS_FROM, width: WORLD_WIDTH - STARS_FROM }}
+                  aria-hidden="true"
+                >
+                  {STARS.map((star, index) => (
+                    <circle
+                      key={index}
+                      className={star.twinkle ? 'tw' : undefined}
+                      cx={`${star.x.toFixed(2)}%`}
+                      cy={`${star.y.toFixed(2)}%`}
+                      r={star.r.toFixed(2)}
+                      fill="#ffffff"
+                      opacity={star.opacity.toFixed(2)}
+                      style={
+                        star.twinkle ? { animationDelay: `${star.delay.toFixed(2)}s` } : undefined
+                      }
+                    />
+                  ))}
+                </svg>
+              </div>
+            </div>
+            <i style={{ bottom: RIDGE_BOTTOM, height: RIDGE_HEIGHT, clipPath: RIDGE_CLIP }} />
+          </div>
           <Scenery />
           <div className="place" style={{ left: START_X - 95, bottom: PLACE_BOTTOM }}>
             <svg
