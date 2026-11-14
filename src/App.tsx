@@ -180,6 +180,7 @@ export default function App() {
           day={view.day}
           door={state.doors.find((entry) => entry.day === view.day)}
           nickname={state.me.nickname}
+          team={state.team}
           finalMessage={state.family.finalMessage}
           onSolved={() => void refresh()}
           onBack={() => backToMap(view.day)}

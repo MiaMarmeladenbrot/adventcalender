@@ -1,9 +1,10 @@
 import { useEffect, useRef, useState, type FormEvent, type ReactNode } from 'react'
-import { rudolphSvg, type Mood } from '../characters'
+import { type Mood } from '../characters'
 import { placeOf, skyAt } from '../landscape'
 import { api, ApiError, messageOf } from '../lib/api'
 import { withTransition } from '../lib/transition'
 import type { AnswerResponse, DayResponse, Line, Solved, Who } from '../lib/types'
+import { Finale } from './Finale'
 import { Hill, Stage } from './Stage'
 import { Bells } from './widgets/Bells'
 import { Final } from './widgets/Final'
@@ -13,7 +14,7 @@ import { MorseTape } from './widgets/Morse'
 import { useMorse } from './widgets/useMorse'
 import { Torch } from './widgets/Torch'
 
-type Phase = 'talk' | 'puzzle' | 'reply' | 'clue'
+type Phase = 'talk' | 'puzzle' | 'reply' | 'finale'
 
 interface Props {
   code: string
@@ -21,6 +22,7 @@ interface Props {
   day: number
   door?: { who: Who; title: string }
   nickname: string
+  team: { nickname: string; solved: number }[]
   finalMessage: string | null
   onSolved: () => void
   onBack: () => void
@@ -87,6 +89,7 @@ export function DayView({
   day,
   door,
   nickname,
+  team,
   finalMessage,
   onSolved,
   onBack,
@@ -114,7 +117,8 @@ export function DayView({
         if (!current) return
         withTransition(() => {
           setData(response)
-          setPhase(response.solved ? 'reply' : 'talk')
+          const finale = response.day.widget?.kind === 'final'
+          setPhase(response.solved ? (finale ? 'finale' : 'reply') : 'talk')
         })
       })
       .catch((failure: unknown) => {
@@ -138,10 +142,10 @@ export function DayView({
     withTransition(() => setPhase(next))
   }
 
-  function finish(solved: Solved) {
+  function finish(solved: Solved, next: Phase = 'reply') {
     withTransition(() => {
       setData((previous) => (previous ? { ...previous, solved } : previous))
-      setPhase('reply')
+      setPhase(next)
     })
     onSolved()
   }
@@ -261,44 +265,8 @@ export function DayView({
     mood = solved.reply[2] ?? (who === 'rudolph' ? 'h' : undefined)
     foot = (
       <>
-        {day === 24 ? (
-          <button type="button" className="go" onClick={() => go('clue')}>
-            Weiter
-          </button>
-        ) : (
-          <button type="button" className="go" onClick={onNotebook}>
-            Indiz ins Notizbuch schreiben
-          </button>
-        )}
-        <Steps at="reply" solved onGo={step} />
-      </>
-    )
-  } else if (solved && phase === 'clue') {
-    who = solved.reply[0]
-    mood = solved.reply[2] ?? (who === 'rudolph' ? 'h' : undefined)
-    note = (
-      <div className="solved">
-        <div className="clue">
-          <span className="eyebrow">Neues Indiz im Notizbuch</span>
-          <p>{solved.clue}</p>
-        </div>
-        <div className="finale">
-          <div style={{ width: 120 }} dangerouslySetInnerHTML={{ __html: rudolphSvg('h') }} />
-          <h2>Fall gelöst!</h2>
-          <p>
-            Der Weihnachtsmann nimmt Rudolph in den Arm: „Angst haben ist erlaubt. Du fliegst
-            trotzdem ganz vorn.“ Dann bricht der Schlitten aus dem Eis, und alle Schlitten der
-            Familie hängen sich hinten dran.
-          </p>
-          {finalMessage && <p className="final-message">{finalMessage}</p>}
-          <p className="credits">Abspann · Gelöst von: {nickname}</p>
-        </div>
-      </div>
-    )
-    foot = (
-      <>
-        <button type="button" className="go" onClick={onBack}>
-          Zurück zur Landschaft
+        <button type="button" className="go" onClick={onNotebook}>
+          Indiz ins Notizbuch schreiben
         </button>
         <Steps at="reply" solved onGo={step} />
       </>
@@ -349,7 +317,10 @@ export function DayView({
             />
           )}
           {data.day.widget?.kind === 'final' && !solved && (
-            <Final accuse={submit} onFound={(result) => result.solved && finish(result.solved)} />
+            <Final
+              accuse={submit}
+              onConvicted={(result) => result.solved && finish(result.solved, 'finale')}
+            />
           )}
         </div>
         {!solved && shownHints > 0 && (
@@ -408,6 +379,18 @@ export function DayView({
       </>
     )
   }
+
+  if (solved && phase === 'finale')
+    return (
+      <Finale
+        confession={solved.reply}
+        team={team}
+        me={nickname}
+        finalMessage={finalMessage}
+        onNotebook={onNotebook}
+        onBack={onBack}
+      />
+    )
 
   return (
     <Stage
