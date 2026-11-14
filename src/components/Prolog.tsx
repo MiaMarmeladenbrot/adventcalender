@@ -18,7 +18,7 @@ interface Props {
 function welcome(name: string): Line {
   return [
     'mrs',
-    `Schön, dich kennenzulernen, ${name}! Ab dem 1. Dezember leuchtet jeden Morgen eine neue Laterne. Alles, was du herausfindest, kommt in dein Notizbuch.`,
+    `Schön, dich kennenzulernen, ${name}! Ab dem 1. Dezember leuchtet jeden Morgen eine neue Laterne in der Landschaft. Begib dich auf Spurensuche, notiere alles, was du herausfindest, in deinem Notizbuch und löse diesen Fall für uns.`,
   ]
 }
 
@@ -37,7 +37,10 @@ export function Prolog({ code, nickname, notice, onJoined, onContinue, onBack }:
 
   async function join(event: FormEvent) {
     event.preventDefault()
-    if (!name.trim()) return
+    if (!name.trim()) {
+      setError('Verrat uns noch deinen Namen, dann geht’s los.')
+      return
+    }
     setBusy(true)
     setError('')
     try {
@@ -75,7 +78,10 @@ export function Prolog({ code, nickname, notice, onJoined, onContinue, onBack }:
                   maxLength={30}
                   placeholder="dein Name"
                   value={name}
-                  onChange={(event) => setName(event.target.value)}
+                  onChange={(event) => {
+                    setName(event.target.value)
+                    setError('')
+                  }}
                 />
               </label>
             )}
@@ -89,7 +95,10 @@ export function Prolog({ code, nickname, notice, onJoined, onContinue, onBack }:
           <button className="go" type="submit" disabled={busy}>
             Ich bin dabei
           </button>
-          <small>Schon mal dabei? Gleicher Name, gleicher Stand.</small>
+          <small>
+            Du bist schon dabei? Gib deinen Namen ein und lande wieder bei deinem gespeicherten
+            Stand.
+          </small>
         </form>
       ) : (
         <button

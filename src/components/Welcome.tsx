@@ -12,12 +12,12 @@ export function Welcome() {
       title="Wo ist der Schlitten?"
       line={[
         'snowman',
-        'Hallo! Hier am Nordpol ist etwas verschwunden. Rein kommst du aber nur mit dem Link, den du von deiner Familie bekommen hast. Frag dort einfach nach!',
+        'Hallo! Hier am Nordpol ist etwas verschwunden, und wir brauchen deine Hilfe. Frag einfach bei deiner Familie nach dem richtigen Link und los geht die Spurensuche.',
       ]}
       ground={<Hill place={WORKSHOP} who="snowman" />}
     >
       <p className="welcome-note">
-        Du hast den Link schon? Dann öffne ihn direkt, und es geht los.
+        Du hast schon einen Zugang? Dann achte darauf, dass du gerade den richtigen Link offen hast.
       </p>
     </Stage>
   )
