@@ -72,6 +72,37 @@ function eyes(
   )
 }
 
+const BEARD = '#f7f2e8'
+const BEARD_SHADE = '#e4dccd'
+
+const BEARD_TUFTS: [number, number, number][] = [
+  [65, 110, 8],
+  [62, 124, 11],
+  [62, 140, 14],
+  [67, 157, 16],
+  [77, 172, 17],
+  [89, 184, 17],
+  [100, 189, 17],
+  [111, 184, 17],
+  [123, 172, 17],
+  [133, 157, 16],
+  [138, 140, 14],
+  [138, 124, 11],
+  [135, 110, 8],
+]
+
+const tufts = (drop: number, fill: string) =>
+  BEARD_TUFTS.map(
+    ([x, y, r]) => `<circle cx="${x}" cy="${y + drop}" r="${r}" fill="${fill}"/>`,
+  ).join('')
+
+const SANTA_BEARD =
+  cut(tufts(3, BEARD_SHADE)) +
+  cut(
+    tufts(0, BEARD) +
+      `<path d="M70 132 Q100 150 130 132 L136 150 Q132 180 100 186 Q68 180 64 150 Z" fill="${BEARD}"/>`,
+  )
+
 const SANTA = figure(
   cut(
     '<path d="M38 240 C 42 200, 66 178, 100 176 C 134 178, 158 200, 162 240 Z" fill="' +
@@ -102,14 +133,12 @@ const SANTA = figure(
     `<g class="x eyes on-s"><ellipse cx="86" cy="117" rx="8" ry="10" fill="${INK}"/><ellipse cx="114" cy="117" rx="8" ry="10" fill="${INK}"/><circle cx="88.6" cy="112.8" r="2.6" fill="#ffffff"/><circle cx="116.6" cy="112.8" r="2.6" fill="#ffffff"/></g>` +
     '<g class="x on-n on-h" fill="none" stroke="#fffaf0" stroke-width="5" stroke-linecap="round"><path d="M77 108 Q86 102 94 106"/><path d="M106 106 Q114 102 123 108"/></g>' +
     '<g class="x on-s" fill="none" stroke="#fffaf0" stroke-width="5" stroke-linecap="round"><path d="M77 106 Q86 97 94 103"/><path d="M106 103 Q114 97 123 106"/></g>' +
-    cut(
-      `<path d="M62.7 130 A 38 42 0 0 0 65.7 140 C 64 166, 79 190, 100 195 C 121 190, 136 166, 134.3 140 A 38 42 0 0 0 137.3 130 C 128 141, 116 148, 100 148 C 84 148, 72 141, 62.7 130 Z" fill="${CREAM}"/>`,
-    ) +
+    SANTA_BEARD +
     '<path class="x on-n" d="M94 161 Q100 166 106 161" fill="none" stroke="#5a2620" stroke-width="3" stroke-linecap="round"/>' +
     '<ellipse class="x on-s" cx="100" cy="163" rx="5.5" ry="7" fill="#5a2620"/>' +
     '<path class="x on-h" d="M90 157 Q100 172 110 157 Z" fill="#5a2620"/>' +
     cut(
-      '<path d="M100 143 C 92 134, 79 136, 71 147 C 83 152, 94 151, 100 146 C 106 151, 117 152, 129 147 C 121 136, 108 134, 100 143 Z" fill="#fffaf0"/>',
+      '<path d="M100 141 C 92 132, 78 133, 68 144 C 74 152, 86 154, 94 150 C 97 149, 99 147, 100 145 C 101 147, 103 149, 106 150 C 114 154, 126 152, 132 144 C 122 133, 108 132, 100 141 Z" fill="#fffaf0"/>',
     ) +
     cut('<circle cx="100" cy="134" r="7.5" fill="#de8a75"/>'),
 )
