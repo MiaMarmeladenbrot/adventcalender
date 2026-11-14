@@ -15,6 +15,7 @@ import {
   WORLD_WIDTH,
 } from '../landscape'
 import type { GameState } from '../lib/types'
+import { InstallHint } from './InstallHint'
 import { ICON_TILT, LeatherCover } from './Notebook'
 import { Sheet } from './Sheet'
 
@@ -452,6 +453,7 @@ export function Landscape({ state, selected, onSelect, onOpen, onNotebook }: Pro
       >
         <LeatherCover count={state.clues.length} />
       </button>
+      <InstallHint />
 
       <Sheet day={selected} door={door} solved={solved.has(selected)} onOpen={onOpen} />
     </section>

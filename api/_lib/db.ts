@@ -48,6 +48,14 @@ export async function findFamily(code: unknown): Promise<Family | null> {
   return rows[0] ?? null
 }
 
+export async function findPlayerByName(familyId: string, nickname: string) {
+  const players = await rest<Player[]>(
+    `players?select=id,nickname,family_id&family_id=eq.${familyId}&order=created_at.asc`,
+  )
+  const wanted = nickname.toLocaleLowerCase('de')
+  return players.find((player) => player.nickname.toLocaleLowerCase('de') === wanted) ?? null
+}
+
 export async function findPlayer(code: unknown, playerId: unknown): Promise<Player | null> {
   if (typeof code !== 'string' || !JOIN_CODE.test(code)) return null
   if (typeof playerId !== 'string' || !UUID.test(playerId)) return null

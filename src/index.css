@@ -417,6 +417,51 @@ input:focus-visible {
 .scape .bookbtn:hover .leather {
   translate: 0 -3px;
 }
+.scape .install-hint {
+  position: absolute;
+  top: max(14px, env(safe-area-inset-top));
+  left: max(14px, env(safe-area-inset-left));
+  right: calc(max(14px, env(safe-area-inset-right)) + 96px);
+  z-index: 5;
+  max-width: 340px;
+  padding: 10px 34px 12px 14px;
+  border-radius: 2px;
+  background: var(--paper);
+  color: var(--paper-ink);
+  box-shadow: 0 6px 14px rgba(10, 18, 48, 0.3);
+  transform: rotate(-1.2deg);
+  font-family: var(--f-hand);
+  font-size: 1.02rem;
+  line-height: 1.3;
+}
+.install-hint p {
+  margin: 0;
+}
+.install-hint .share {
+  display: inline-block;
+  vertical-align: -2px;
+}
+.install-hint .install-go {
+  margin-top: 8px;
+  padding: 6px 12px;
+  border: 0;
+  border-radius: 8px;
+  background: var(--red);
+  color: #ffffff;
+  font: 600 0.85rem var(--f-body);
+}
+.install-hint .install-close {
+  position: absolute;
+  top: 2px;
+  right: 4px;
+  padding: 4px 8px;
+  border: 0;
+  background: none;
+  color: var(--paper-ink);
+  font-size: 1.3rem;
+  line-height: 1;
+  opacity: 0.6;
+}
 .scape .ssheet {
   position: absolute;
   left: max(10px, env(safe-area-inset-left));
