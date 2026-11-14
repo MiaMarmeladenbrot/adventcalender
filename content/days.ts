@@ -743,7 +743,7 @@ export const DAYS: Day[] = [
     hints: [
       'Schau auf deine Tafel im Notizbuch. Bei „Wer“ sind noch zwei übrig.',
       'Wer muss dieses Jahr zum ersten Mal ganz vorn fliegen? Komet hat es dir an Tag 6 verraten.',
-      'Rudolph, Eissee, Angst. Danach tipp rechts im Eis auf die zwei Kufenspitzen.',
+      'Rudolph, Eissee, Angst.',
     ],
     reply: [
       'rudolph',
