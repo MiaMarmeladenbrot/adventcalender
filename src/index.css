@@ -2152,6 +2152,7 @@ input:focus-visible {
 .nb-front .leather {
   position: absolute;
   inset: 0;
+  border-top-left-radius: 0;
 }
 .nb-back {
   transform: rotateY(180deg);
